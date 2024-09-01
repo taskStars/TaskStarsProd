@@ -1,7 +1,7 @@
 const express = require("express");
 const next = require("next");
 const dotenv = require("dotenv");
-// const connectDB = require("./config/db"); // Adjusted path
+const connectDB = require("./config/db"); // Adjusted path
 const cors = require("cors");
 
 dotenv.config();
@@ -18,7 +18,7 @@ app.use(express.json());
 // API routes
 
 app.use("/api/users", require("./routes/userRoutes")); // Adjusted path
-// app.use("/api/tasks", require("./routes/taskRoutes")); // Adjusted path
+app.use("/api/tasks", require("./routes/taskRoutes")); // Adjusted path
 
 // Next.js handling
 nextApp.prepare().then(() => {
