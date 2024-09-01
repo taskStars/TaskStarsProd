@@ -11,6 +11,7 @@ const dev = process.env.NODE_ENV !== "production";
 const nextApp = next({ dev, dir: "../client" }); // Point Next.js to the client folder
 const handle = nextApp.getRequestHandler();
 
+//middlewares
 const app = express();
 app.use(cors());
 app.use(express.json());
