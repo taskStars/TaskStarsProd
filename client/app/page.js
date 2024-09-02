@@ -6,9 +6,9 @@ export default function Home() {
   return (
     <>
       <header>
-        <nav className="bg-white p-4 shadow-md">
-          <div className="container mx-auto flex justify-between items-center">
-            <div className="flex items-center space-x-2">
+      <nav className="bg-white p-4 shadow-md">
+        <div className="flex justify-between items-center px-4"> 
+          <div className="flex items-center space-x-2">
               {/* Star icon in front of TaskStars */}
               <Image
                 src="/icon.svg"
