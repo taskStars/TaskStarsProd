@@ -35,11 +35,8 @@ export default function Home() {
                 />
               </a>
               {/* Login and Signup Links */}
-              <Link href="/login" className="text-black">
-                Login
-              </Link>
-              <Link href="/signup" className="text-black">
-                Signup
+              <Link href="/api/auth/signin" className="text-black">
+                Signup/Login
               </Link>
             </div>
           </div>
