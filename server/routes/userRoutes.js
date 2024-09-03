@@ -14,6 +14,6 @@ router.get("/test", (req, res) => {
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
-router.get("/profile", protect, getUserProfile);
+router.get("/profile", getUserProfile); // Remove `protect` middleware temporarily
 
 module.exports = router;
