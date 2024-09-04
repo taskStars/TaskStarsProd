@@ -1,28 +1,24 @@
-// server/middlewares/authMiddleware.js
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+// middlewares/authMiddleware.js
+const jwt = require("jsonwebtoken");
 
-exports.protect = async (req, res, next) => {
-  let token;
+const protect = (req, res, next) => {
+  const authHeader = req.header("Authorization");
 
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer')
-  ) {
-    try {
-      token = req.headers.authorization.split(' ')[1]; // Get token from header
-      const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verify token
-
-      req.user = await User.findById(decoded.id).select('-password'); // Get user from the token
-
-      next(); // Proceed to the next middleware or route handler
-    } catch (error) {
-      console.error(error);
-      res.status(401).json({ message: 'Not authorized, token failed' });
-    }
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res
+      .status(401)
+      .json({ message: "Not authorized, token missing or malformed" });
   }
 
-  if (!token) {
-    res.status(401).json({ message: 'Not authorized, no token' });
+  const token = authHeader.split(" ")[1];
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verify token
+    req.user = decoded; // Attach user to request object
+    next();
+  } catch (err) {
+    res.status(401).json({ message: "Not authorized, token invalid" });
   }
 };
+
+module.exports = { protect };

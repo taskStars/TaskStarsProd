@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from "next/image";
 import Link from "next/link";
 import APIMessage from "@/components/apitest";
 
@@ -6,16 +6,11 @@ export default function Home() {
   return (
     <>
       <header>
-      <nav className="bg-white p-4 shadow-md">
-        <div className="flex justify-between items-center px-4"> 
-          <div className="flex items-center space-x-2">
+        <nav className="bg-white p-4 shadow-md">
+          <div className="flex justify-between items-center px-4">
+            <div className="flex items-center space-x-2">
               {/* Star icon in front of TaskStars */}
-              <Image
-                src="/icon.svg"
-                alt="Star Icon"
-                width={30}
-                height={30}
-              />
+              <Image src="/icon.svg" alt="Star Icon" width={30} height={30} />
               <h1 className="text-2xl font-bold text-black">
                 <Link href="/">TaskStars</Link>
               </h1>
@@ -27,16 +22,14 @@ export default function Home() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Image
-                  src="/github.svg"  
-                  alt="GitHub"
-                  width={24}  
-                  height={24}  
-                />
+                <Image src="/github.svg" alt="GitHub" width={24} height={24} />
               </a>
               {/* Login and Signup Links */}
-              <Link href="/api/auth/signin" className="text-black">
-                Signup/Login
+              <Link href="/signup" className="text-black">
+                Signup
+              </Link>
+              <Link href="/login" className="text-black">
+                Login
               </Link>
             </div>
           </div>
@@ -56,7 +49,7 @@ export default function Home() {
             {/* Three stars icon under the description */}
             <div className="mt-4 flex justify-center">
               <Image
-                src="/document-sign.svg"  // Adjust the path if necessary
+                src="/document-sign.svg" // Adjust the path if necessary
                 alt="welcome"
                 width={150}
                 height={70}
