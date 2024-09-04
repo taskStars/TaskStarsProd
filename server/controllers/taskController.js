@@ -3,7 +3,6 @@ const Task = require("../models/Task");
 // Create a new task
 exports.createTask = async (req, res) => {
   try {
-    // Include the user ID in the task creation
     const task = new Task({
       ...req.body,
       user: req.user.id, // Associate task with the logged-in user
@@ -16,11 +15,12 @@ exports.createTask = async (req, res) => {
   }
 };
 
-// Get all tasks for the logged-in user
+// Get all tasks for the logged-in user, sorted by deadline
 exports.getTasks = async (req, res) => {
   try {
-    // Fetch tasks only for the logged-in user
-    const tasks = await Task.find({ user: req.user.id });
+    // Fetch tasks only for the logged-in user and sort by deadline in ascending order
+    const tasks = await Task.find({ user: req.user.id }).sort({ deadline: 1 }); // 1 for ascending order
+
     res.status(200).json(tasks);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -30,7 +30,6 @@ exports.getTasks = async (req, res) => {
 // Update a task if it belongs to the logged-in user
 exports.updateTask = async (req, res) => {
   try {
-    // Find the task by ID and ensure it belongs to the logged-in user
     const task = await Task.findOneAndUpdate(
       { _id: req.params.id, user: req.user.id }, // Ensure user can only update their own tasks
       req.body,
@@ -52,7 +51,6 @@ exports.updateTask = async (req, res) => {
 // Delete a task if it belongs to the logged-in user
 exports.deleteTask = async (req, res) => {
   try {
-    // Find the task by ID and ensure it belongs to the logged-in user
     const task = await Task.findOneAndDelete({
       _id: req.params.id,
       user: req.user.id,

@@ -24,7 +24,12 @@ const nextApp = next({ dev, dir: "../client" }); // Ensure this path is correct
 const handle = nextApp.getRequestHandler();
 
 // Middleware
-app.use(cors()); // Add CORS middleware to prevent CORS issues
+app.use(
+  cors({
+    origin: "http://localhost:3000", // Allow frontend URL
+    credentials: true, // If using cookies for sessions
+  })
+); // Add CORS middleware to prevent CORS issues
 app.use(express.json());
 app.use(passport.initialize()); // Initialize Passport middleware
 
