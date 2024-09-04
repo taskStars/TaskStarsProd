@@ -24,8 +24,14 @@ const nextApp = next({ dev, dir: "../client" }); // Ensure this path is correct
 const handle = nextApp.getRequestHandler();
 
 // Middleware
+app.use(cors()); // Add CORS middleware to prevent CORS issues
 app.use(express.json());
 app.use(passport.initialize()); // Initialize Passport middleware
+
+// Test Route - Keep this above the Next.js handler
+app.get("/test", (req, res) => {
+  res.json({ message: "API is working properly!" });
+});
 
 // Routes
 app.use("/api/auth", authRoutes); // Authentication routes
@@ -36,8 +42,9 @@ app.use("/api/tasks", taskRoutes); // Task routes
 nextApp
   .prepare()
   .then(() => {
+    // Handle all other routes with Next.js
     app.get("*", (req, res) => {
-      return handle(req, res); // Handle all other routes with Next.js
+      return handle(req, res);
     });
 
     // Start the server

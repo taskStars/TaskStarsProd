@@ -1,10 +1,14 @@
-// server/controllers/taskController.js
-const Task = require('../models/Task');
+const Task = require("../models/Task");
 
 // Create a new task
 exports.createTask = async (req, res) => {
   try {
-    const task = new Task(req.body);
+    // Include the user ID in the task creation
+    const task = new Task({
+      ...req.body,
+      user: req.user.id, // Associate task with the logged-in user
+    });
+
     await task.save();
     res.status(201).json(task);
   } catch (error) {
@@ -12,30 +16,54 @@ exports.createTask = async (req, res) => {
   }
 };
 
-// Get all tasks
+// Get all tasks for the logged-in user
 exports.getTasks = async (req, res) => {
   try {
-    const tasks = await Task.find();
+    // Fetch tasks only for the logged-in user
+    const tasks = await Task.find({ user: req.user.id });
     res.status(200).json(tasks);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-// Update a task
+// Update a task if it belongs to the logged-in user
 exports.updateTask = async (req, res) => {
   try {
-    const task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    // Find the task by ID and ensure it belongs to the logged-in user
+    const task = await Task.findOneAndUpdate(
+      { _id: req.params.id, user: req.user.id }, // Ensure user can only update their own tasks
+      req.body,
+      { new: true }
+    );
+
+    if (!task) {
+      return res
+        .status(404)
+        .json({ message: "Task not found or not authorized" });
+    }
+
     res.status(200).json(task);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
-// Delete a task
+// Delete a task if it belongs to the logged-in user
 exports.deleteTask = async (req, res) => {
   try {
-    await Task.findByIdAndDelete(req.params.id);
+    // Find the task by ID and ensure it belongs to the logged-in user
+    const task = await Task.findOneAndDelete({
+      _id: req.params.id,
+      user: req.user.id,
+    });
+
+    if (!task) {
+      return res
+        .status(404)
+        .json({ message: "Task not found or not authorized" });
+    }
+
     res.status(204).send();
   } catch (error) {
     res.status(500).json({ error: error.message });

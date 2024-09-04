@@ -7,7 +7,7 @@ export default function APIMessage() {
 
   useEffect(() => {
     // Fetch from backend API
-    fetch("http://localhost:8080/api/users/test") // URL to the backend endpoint
+    fetch("http://localhost:8080/test") // URL to the backend endpoint
       .then((response) => response.json())
       .then((data) => setApiMessage(data.message))
       .catch((error) => console.error("Error fetching API:", error));
