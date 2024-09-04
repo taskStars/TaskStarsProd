@@ -1,35 +1,49 @@
-// server.js
+// Load environment variables
+require("dotenv").config();
+
+// Import necessary packages
 const express = require("express");
+const mongoose = require("mongoose");
 const next = require("next");
-const dotenv = require("dotenv");
-const connectDB = require("./config/db");
+const passport = require("./config/passportConfig"); // Import Passport configuration
 const cors = require("cors");
+const connectDB = require("./config/db"); // Import your custom DB connection
+const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
+const taskRoutes = require("./routes/taskRoutes"); // Task routes
 
-dotenv.config(); // Load environment variables
+// Initialize Express app
+const app = express();
 
-// Connect to the database
-connectDB();
+// Database Connection
+connectDB(); // Connect to MongoDB using your custom connection file
 
+// Next.js setup
 const dev = process.env.NODE_ENV !== "production";
-const nextApp = next({ dev, dir: "../client" }); 
+const nextApp = next({ dev, dir: "../client" }); // Ensure this path is correct
 const handle = nextApp.getRequestHandler();
 
-const app = express(); // Initialize Express
-
-// Middlewares
-app.use(cors());
+// Middleware
 app.use(express.json());
+app.use(passport.initialize()); // Initialize Passport middleware
 
-// API routes
-app.use("/api/users", require("./routes/userRoutes"));
-app.use("/api/tasks", require("./routes/taskRoutes"));
+// Routes
+app.use("/api/auth", authRoutes); // Authentication routes
+app.use("/api/users", userRoutes); // User routes
+app.use("/api/tasks", taskRoutes); // Task routes
 
 // Next.js handling
-// nextApp.prepare().then(() => {
-//   app.get("*", (req, res) => {
-//     return handle(req, res);
-//   });
+nextApp
+  .prepare()
+  .then(() => {
+    app.get("*", (req, res) => {
+      return handle(req, res); // Handle all other routes with Next.js
+    });
 
-  const PORT = process.env.PORT || 8080;
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
+    // Start the server
+    const PORT = process.env.PORT || 8080;
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  })
+  .catch((err) => {
+    console.error("Error preparing Next.js app:", err);
+  });

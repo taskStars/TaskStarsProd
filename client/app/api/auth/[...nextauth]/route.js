@@ -12,6 +12,14 @@ export const authOptions = {
     GitHubProvider({
       clientId: process.env.GITHUB_CLIENT_ID, // Use GitHub client ID
       clientSecret: process.env.GITHUB_CLIENT_SECRET, // Use GitHub client secret
+      profile(profile) {
+        return {
+          id: profile.id,
+          name: profile.name || profile.login, // Use GitHub login if name is not available
+          email: profile.email, // GitHub email
+          image: profile.avatar_url, // GitHub avatar
+        };
+      },
     }),
   ],
   session: {

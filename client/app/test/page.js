@@ -2,6 +2,7 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../api/auth/[...nextauth]/route"; // Adjust path as needed
 import { redirect } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 export default async function ProtectedPage() {
   // Fetch the session server-side
