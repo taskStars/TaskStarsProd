@@ -1,17 +1,11 @@
-// app/test/page.js
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../api/auth/[...nextauth]/route"; // Adjust path as needed
-import { redirect } from "next/navigation";
-import { signIn } from "next-auth/react";
+import SaveProductivity from "./components/saveProductivity"; // Import the client-side component
 
-export default async function ProtectedPage() {
-  // Fetch the session server-side
-  const session = await getServerSession(authOptions);
-
-  // If there is no session, redirect to the sign-in page
-  if (!session) {
-    redirect("/api/auth/signin"); // Use next/navigation for server-side redirect
-  }
-
-  return <div>Welcome to the protected page, {session.user.email}!</div>;
+export default function TestPage() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
+        <SaveProductivity /> {/* Use the client-side component */}
+      </div>
+    </div>
+  );
 }
