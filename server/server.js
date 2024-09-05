@@ -11,6 +11,7 @@ const connectDB = require("./config/db"); // Import your custom DB connection
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const taskRoutes = require("./routes/taskRoutes"); // Task routes
+const productivityRoutes = require("./routes/productivityRoutes"); // Import Productivity routes
 
 // Initialize Express app
 const app = express();
@@ -42,6 +43,7 @@ app.get("/test", (req, res) => {
 app.use("/api/auth", authRoutes); // Authentication routes
 app.use("/api/users", userRoutes); // User routes
 app.use("/api/tasks", taskRoutes); // Task routes
+app.use("/api", productivityRoutes); // Register Productivity routes
 
 // Next.js handling
 nextApp
