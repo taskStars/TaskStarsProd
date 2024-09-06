@@ -1,11 +1,12 @@
 "use client"; // Ensure it's marked as a Client Component
-import { useState } from 'react';
+import { useState } from "react";
 
 const TaskModal = ({ isOpen, onClose, onSave, generateDescription }) => {
   const [taskName, setTaskName] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [deadline, setDeadline] = useState(""); // State for the deadline
   const [priority, setPriority] = useState("Medium"); // State for priority with default value
+  const [tags, setTags] = useState(""); // State for tags
 
   const handleSave = () => {
     // Ensure required fields are not empty
@@ -14,11 +15,15 @@ const TaskModal = ({ isOpen, onClose, onSave, generateDescription }) => {
       return;
     }
 
+    // Split tags by comma, remove empty spaces around them
+    const tagsArray = tags.split(",").map((tag) => tag.trim());
+
     onSave({
       title: taskName,
       description: taskDescription,
       deadline,
       priority,
+      tags: tagsArray,
     })
       .then(() => {
         // If onSave is successful, close the modal and reset fields
@@ -27,6 +32,7 @@ const TaskModal = ({ isOpen, onClose, onSave, generateDescription }) => {
         setTaskDescription("");
         setDeadline(""); // Reset the deadline
         setPriority("Medium"); // Reset the priority to default
+        setTags(""); // Reset the tags
       })
       .catch((error) => {
         console.error("Error saving task:", error);
@@ -95,10 +101,22 @@ const TaskModal = ({ isOpen, onClose, onSave, generateDescription }) => {
           </select>
         </div>
 
+        {/* Task Tags Input */}
+        <div className="mb-5">
+          <label className="block text-lg font-semibold text-gray-700 mb-2">Tags (comma separated)</label>
+          <input
+            type="text"
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black"
+            placeholder="e.g. work, important"
+          />
+        </div>
+
         {/* Generate Description Button */}
         <button
           onClick={handleGenerateDescription}
-          className="mb-4 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md w-full"
+          className="mb-4 bg-orange-500 hover:bg-orange-600 px-4 py-2 rounded-md w-full text-black"
         >
           Generate Description
         </button>
@@ -106,13 +124,13 @@ const TaskModal = ({ isOpen, onClose, onSave, generateDescription }) => {
         <div className="flex justify-end space-x-3">
           <button
             onClick={onClose}
-            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md"
+            className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-md text-black"
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
-            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md"
+            className="bg-green-500 hover:bg-green-600 px-4 py-2 rounded-md text-black"
           >
             Save
           </button>

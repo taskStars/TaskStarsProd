@@ -54,6 +54,7 @@ const TaskManager = () => {
       const data = await response.json();
       return data.text; // Assuming your API returns { text } for the description
     } catch (error) {
+      console.error("Error generating description:", error);
       return "Error generating description";
     }
   };
