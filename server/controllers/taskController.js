@@ -27,6 +27,24 @@ exports.getTasks = async (req, res) => {
   }
 };
 
+// Get a single task by ID if it belongs to the logged-in user
+exports.getTaskById = async (req, res) => {
+  try {
+    // Ensure that the task belongs to the logged-in user
+    const task = await Task.findOne({ _id: req.params.id, user: req.user.id });
+
+    if (!task) {
+      return res
+        .status(404)
+        .json({ message: "Task not found or not authorized" });
+    }
+
+    res.status(200).json(task);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // Update a task if it belongs to the logged-in user
 exports.updateTask = async (req, res) => {
   try {
