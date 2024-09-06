@@ -83,6 +83,12 @@ const addFriend = async (req, res) => {
       return res.status(400).json({ message: 'Friend email is required.' });
     }
 
+    // Check if the user is trying to add themselves
+    const user = await User.findById(req.user.id);
+    if (user.email === email) {
+      return res.status(400).json({ message: 'You cannot add yourself as a friend.' });
+    }
+
     // Find the friend by their email
     const friend = await User.findOne({ email });
     
@@ -94,11 +100,8 @@ const addFriend = async (req, res) => {
       return res.status(404).json({ message: 'Friend not found' });
     }
 
-    // Re-fetch the user to make sure friends list is up-to-date
-    const user = await User.findById(req.user._id).populate('friends');
-
     // Check if the friend is already added
-    const isAlreadyFriend = user.friends.some(f => f._id.toString() === friend._id.toString());
+    const isAlreadyFriend = user.friends.some(f => f.toString() === friend._id.toString());
     console.log("Is Already Friend:", isAlreadyFriend);
 
     if (isAlreadyFriend) {
