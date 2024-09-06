@@ -1,5 +1,6 @@
 const User = require("../models/User");
-const Task = require("../models/Task"); 
+const Task = require("../models/Task");
+const Productivity = require("../models/Productivity") 
 const jwt = require("jsonwebtoken");
 
 // Register User
@@ -43,15 +44,18 @@ const getFriendsProductivity = async (req, res) => {
 
     // Loop through each friend and fetch their productivity data
     for (const friend of user.friends) {
-      const productivityTasks = await Task.find({ user: friend._id }); // Fetch tasks for this friend
-      const totalProductivityTime = productivityTasks.reduce((acc, task) => {
-        return acc + (task.productivityTime || 0); // Assuming each task has a 'productivityTime' field
+      // Fetch all productivity sessions for this friend
+      const productivitySessions = await Productivity.find({ userId: friend._id });
+
+      // Sum up the sessionTime for all sessions
+      const totalProductivityTime = productivitySessions.reduce((acc, session) => {
+        return acc + session.sessionTime;
       }, 0);
 
       friendsProductivity.push({
         id: friend._id,
         name: friend.name,
-        productivityTime: totalProductivityTime,
+        productivityTime: totalProductivityTime, // Total productivity time in seconds
       });
     }
 
