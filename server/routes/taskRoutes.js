@@ -11,7 +11,7 @@ const { protect } = require("../middlewares/authMiddleware"); // Correct import
 
 // Task CRUD routes with authentication
 router.post("/createtask", protect, createTask);
-router.get("/readtask", protect, getTasks);
+router.get("/readtasks", protect, getTasks);
 router.put("/:id", protect, updateTask);
 router.delete("/:id", protect, deleteTask);
 
