@@ -5,9 +5,16 @@ const TaskModal = ({ isOpen, onClose, onSave, generateDescription }) => {
   const [taskName, setTaskName] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [deadline, setDeadline] = useState(""); // State for the deadline
-  const [tags, setTags] = useState(""); // State for tags (as a comma-separated string)
+  const [priority, setPriority] = useState("Medium"); // State for priority with default value
+  const [tags, setTags] = useState(""); // State for tags
 
   const handleSave = () => {
+    // Ensure required fields are not empty
+    if (!taskName || !taskDescription || !deadline) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
     // Split tags by comma, remove empty spaces around them
     const tagsArray = tags.split(",").map((tag) => tag.trim());
 
@@ -15,13 +22,22 @@ const TaskModal = ({ isOpen, onClose, onSave, generateDescription }) => {
       title: taskName,
       description: taskDescription,
       deadline,
+      priority,
       tags: tagsArray,
-    });
-    onClose();
-    setTaskName("");
-    setTaskDescription("");
-    setDeadline(""); // Reset the deadline
-    setTags(""); // Reset the tags
+    })
+      .then(() => {
+        // If onSave is successful, close the modal and reset fields
+        onClose();
+        setTaskName("");
+        setTaskDescription("");
+        setDeadline(""); // Reset the deadline
+        setPriority("Medium"); // Reset the priority to default
+        setTags(""); // Reset the tags
+      })
+      .catch((error) => {
+        console.error("Error saving task:", error);
+        alert("Failed to save task. Please try again.");
+      });
   };
 
   const handleGenerateDescription = async () => {
@@ -33,39 +49,36 @@ const TaskModal = ({ isOpen, onClose, onSave, generateDescription }) => {
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-        <h2 className="text-xl font-bold text-black">Add Task</h2>
+      <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+        <h2 className="text-2xl font-bold mb-6 text-center">Add Task</h2>
 
         {/* Task Name Input */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-black">
-            Task Name:{" "}
-          </label>
+        <div className="mb-5">
+          <label className="block text-lg font-semibold text-gray-700 mb-2">Task Name</label>
           <input
             type="text"
             value={taskName}
             onChange={(e) => setTaskName(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black"
+            placeholder="Enter task name"
           />
         </div>
 
         {/* Task Description Input */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-black">
-            Task Description:
-          </label>
+        <div className="mb-5">
+          <label className="block text-lg font-semibold text-gray-700 mb-2">Task Description</label>
           <textarea
             value={taskDescription}
             onChange={(e) => setTaskDescription(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black"
+            rows={3}
+            placeholder="Enter task description"
           />
         </div>
 
         {/* Task Deadline Input */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-black">
-            Deadline:
-          </label>
+        <div className="mb-5">
+          <label className="block text-lg font-semibold text-gray-700 mb-2">Deadline</label>
           <input
             type="date"
             value={deadline}
@@ -74,16 +87,29 @@ const TaskModal = ({ isOpen, onClose, onSave, generateDescription }) => {
           />
         </div>
 
+        {/* Task Priority Selector */}
+        <div className="mb-5">
+          <label className="block text-lg font-semibold text-gray-700 mb-2">Priority</label>
+          <select
+            value={priority}
+            onChange={(e) => setPriority(e.target.value)}
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black"
+          >
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
+        </div>
+
         {/* Task Tags Input */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-black">
-            Tags (comma separated):
-          </label>
+        <div className="mb-5">
+          <label className="block text-lg font-semibold text-gray-700 mb-2">Tags (comma separated)</label>
           <input
             type="text"
             value={tags}
             onChange={(e) => setTags(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black"
+            placeholder="e.g. work, important"
           />
         </div>
 

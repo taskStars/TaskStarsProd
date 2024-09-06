@@ -18,10 +18,37 @@ exports.createTask = async (req, res) => {
 // Get all tasks for the logged-in user, sorted by deadline
 exports.getTasks = async (req, res) => {
   try {
+    // Ensure the user is authenticated
+    if (!req.user || !req.user.id) {
+      console.error("Authorization Error: No user found in request.");
+      return res.status(401).json({ message: "Unauthorized: No user found." });
+    }
+
     // Fetch tasks only for the logged-in user and sort by deadline in ascending order
-    const tasks = await Task.find({ user: req.user.id }).sort({ deadline: 1 }); // 1 for ascending order
+    const tasks = await Task.find({ user: req.user.id }).sort({ deadline: 1 });
 
     res.status(200).json(tasks);
+  } catch (error) {
+    console.error("Error fetching tasks:", error); // Improved error logging
+    res.status(500).json({ error: "Failed to fetch tasks." });
+  }
+};
+
+
+
+// Get a single task by ID if it belongs to the logged-in user
+exports.getTaskById = async (req, res) => {
+  try {
+    // Ensure that the task belongs to the logged-in user
+    const task = await Task.findOne({ _id: req.params.id, user: req.user.id });
+
+    if (!task) {
+      return res
+        .status(404)
+        .json({ message: "Task not found or not authorized" });
+    }
+
+    res.status(200).json(task);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
