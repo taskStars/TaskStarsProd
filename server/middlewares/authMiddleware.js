@@ -1,7 +1,8 @@
 // middlewares/authMiddleware.js
 const jwt = require("jsonwebtoken");
+const User = require("../models/User"); // Import the User model
 
-const protect = (req, res, next) => {
+const protect = async (req, res, next) => {
   const authHeader = req.header("Authorization");
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -14,7 +15,7 @@ const protect = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verify token
-    req.user = decoded; // Attach user to request object
+    req.user = await User.findById(decoded.id).select('-password').populate('friends');
     next();
   } catch (err) {
     res.status(401).json({ message: "Not authorized, token invalid" });
