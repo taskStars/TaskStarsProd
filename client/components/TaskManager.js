@@ -8,7 +8,7 @@ const TaskManager = () => {
   const handleSaveTask = async (task) => {
     try {
       const response = await fetch(
-        "http://localhost:8080/api/tasks",
+        "http://localhost:8080/api/tasks/createtasks",
         {
           method: "POST",
           headers: {
