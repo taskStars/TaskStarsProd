@@ -1,6 +1,6 @@
 "use client";
 import TaskModal from "./TaskModal"; // Ensure the import path is correct
-import { useState } from 'react';
+import { useState } from "react";
 
 const ModalButton = ({ onSave, generateDescription }) => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -17,7 +17,7 @@ const ModalButton = ({ onSave, generateDescription }) => {
     <div>
       <button
         onClick={handleButtonClick}
-        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+        className="bg-blue-500 hover:bg-blue-600 text-black font-bold py-2 px-4 rounded"
       >
         Add Task
       </button>
