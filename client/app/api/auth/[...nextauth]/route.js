@@ -2,7 +2,7 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
 import User from "../../../../../server/models/User"; // Import User model
 
 export const authOptions = {
