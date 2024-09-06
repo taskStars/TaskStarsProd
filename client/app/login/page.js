@@ -34,9 +34,13 @@ export default function LoginPage() {
 
       const data = await response.json();
       if (response.ok) {
+        localStorage.setItem("token", data.token); // Store the JWT token in localStorage
+        console.log(
+          "Token stored in localStorage:",
+          localStorage.getItem("token")
+        ); // Debug: Log stored token
         setMessage("Login successful!");
-        // Redirect to dashboard or home page after successful login
-        router.push("/dashboard"); // Update this path to where you want to redirect after login
+        router.push("/dashboard"); // Redirect to dashboard or home page after successful login
       } else {
         setMessage(data.message || "Login failed. Please try again.");
       }
