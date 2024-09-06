@@ -43,7 +43,7 @@ app.get("/test", (req, res) => {
 app.use("/api/auth", authRoutes); // Authentication routes
 app.use("/api/users", userRoutes); // User routes
 app.use("/api/tasks", taskRoutes); // Task routes
-app.use("/api", productivityRoutes); // Register Productivity routes
+app.use("/api/productivity", productivityRoutes); // Register Productivity routes
 
 // Next.js handling
 nextApp
