@@ -1,23 +1,52 @@
-// components/TaskCard.js TS-14
+// components/TaskCard.js
 import React from 'react';
 
-const TaskCard = ({ title, description, deadline, tags, priority }) => {
+const TaskCard = ({ task }) => {
+  const { title, description, deadline, tags, priority } = task;
+
+  const handleDelete = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("No token found, user is not authenticated.");
+      alert("You are not authenticated. Please log in.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8080/api/tasks/${task._id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include token for protected routes
+        },
+      });
+
+      if (response.ok) {
+        console.log("Task deleted successfully");
+        window.location.reload(); // Refresh the page after deletion
+      } else {
+        console.error("Failed to delete task");
+      }
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
+  };
+
   return (
-    <div className="bg-white shadow-md rounded-lg p-6 mb-4 max-w-sm w-full">
-      <div className="flex justify-between items-center border-b pb-4 mb-4">
-        <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
-        <p className="text-sm text-gray-500">
-          {new Date(deadline).toLocaleDateString('en-US', {
-            weekday: 'short',
-            month: 'long',
-            day: 'numeric',
-          })}
-        </p>
+    <div className="bg-gray-100 shadow-md rounded-lg p-4 mb-3 w-full relative border border-gray-200"> {/* Added border for better UI */}
+      <button
+        onClick={handleDelete}
+        className="absolute top-2 right-2 text-red-600 hover:text-red-800"
+      >
+        ✕
+      </button>
+      <div className="flex justify-between items-center border-b pb-2 mb-2">
+        <h3 className="text-md font-semibold text-gray-800">{title}</h3>
       </div>
       <p className="text-gray-600 mb-2">{description}</p>
-      <p className="text-sm font-medium text-red-600 mb-4">Priority: {priority}</p>
+      <p className="text-sm font-medium text-red-600 mb-2">Priority: {priority}</p>
       {tags && tags.length > 0 && (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 mt-2"> {/* Added margin-top for spacing */}
           {tags.map((tag, index) => (
             <span
               key={index}

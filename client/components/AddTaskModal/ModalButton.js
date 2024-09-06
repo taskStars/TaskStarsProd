@@ -17,11 +17,14 @@ const ModalButton = ({ onSave, generateDescription }) => {
     <div>
       <button
         onClick={handleButtonClick}
-        className="bg-blue-500 hover:bg-blue-600 text-black font-bold py-2 px-4 rounded"
+        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
+        aria-label="Add a new task"
+        role="button"
       >
         Add Task
       </button>
 
+      {/* Render the Task Modal */}
       {isModalOpen && (
         <TaskModal
           isOpen={isModalOpen}
