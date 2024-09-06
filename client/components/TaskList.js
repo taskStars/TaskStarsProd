@@ -1,6 +1,7 @@
+// components/TaskList.js
 "use client";
 import React, { useEffect, useState } from 'react';
-import TaskCard from '../../components/TaskCard'; // Ensure the import path is correct
+import TaskCard from './TaskCard'; // Ensure the import path is correct
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
