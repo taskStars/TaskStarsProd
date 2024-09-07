@@ -1,40 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import APIMessage from "@/components/apitest";
+import Navbar from "@/components/Navbar"; // Import Navbar component
 
 export default function Home() {
   return (
     <>
-      <header>
-        <nav className="bg-white p-4 shadow-md">
-          <div className="flex justify-between items-center px-4">
-            <div className="flex items-center space-x-2">
-              {/* Star icon in front of TaskStars */}
-              <Image src="/icon.svg" alt="Star Icon" width={30} height={30} />
-              <h1 className="text-2xl font-bold text-black">
-                <Link href="/">TaskStars</Link>
-              </h1>
-            </div>
-            <div className="flex items-center space-x-4">
-              {/* GitHub Icon Link */}
-              <a
-                href="https://github.com/taskStars/TaskStarsProd.git"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Image src="/github.svg" alt="GitHub" width={24} height={24} />
-              </a>
-              {/* Login and Signup Links */}
-              <Link href="/signup" className="text-black">
-                Signup
-              </Link>
-              <Link href="/login" className="text-black">
-                Login
-              </Link>
-            </div>
-          </div>
-        </nav>
-      </header>
+      {/* Use the Navbar component with props to show GitHub and auth links */}
+      <Navbar showAuthLinks={true} showGitHubLink={true} />
       <main>
         {/* Increased padding for the blue section */}
         <section className="bg-mainBlue py-16 text-center">
@@ -57,7 +30,7 @@ export default function Home() {
             </div>
             <div className="mt-8 space-x-4">
               <Link
-                href="/Login"
+                href="/login"
                 className="bg-blue-500 text-white px-4 py-2 rounded"
               >
                 Join the Community

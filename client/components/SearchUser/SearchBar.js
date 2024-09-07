@@ -10,17 +10,17 @@ const SearchBar = ({ onSearch }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mb-4">
+    <form onSubmit={handleSubmit} className="flex flex-col space-y-3 mb-4">
       <input
         type="text"
         placeholder="Search for users..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="border border-gray-300 p-2 rounded-md w-full"
+        className="border border-gray-300 p-2 rounded-md w-full text-black"
       />
       <button
         type="submit"
-        className="bg-blue-500 hover:bg-blue-600 text-black font-bold py-2 px-4 rounded mt-2 w-full"
+        className="bg-gradient-to-r from-purple-500 to-teal-400 text-white font-bold py-2 px-4 rounded hover:from-purple-600 hover:to-teal-500 w-full"
       >
         Search
       </button>

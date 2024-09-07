@@ -17,7 +17,6 @@ const LockInTimer = () => {
       timerId.current = setInterval(() => {
         setTimeRemaining((prevTime) => {
           if (prevTime === 1) {
-            // Check if prevTime is 1
             clearInterval(timerId.current); // Clear interval when time is up
             setIsLockedIn(false); // Stop the timer
             endSession(prevTime); // Save session when timer ends naturally
@@ -60,7 +59,6 @@ const LockInTimer = () => {
     clearInterval(timerId.current);
 
     if (isNaturalEnd) {
-      // Save only if the session ends naturally
       const timeElapsed = initialTime - remainingTime; // Calculate correct timeElapsed
       if (token && timeElapsed > 0) {
         saveProductivityData(timeElapsed + 1); // Add 1 second before saving the correct time elapsed
@@ -132,57 +130,57 @@ const LockInTimer = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2 text-black">
-      <h1 className="text-4xl font-bold mb-4">Lock-In Mode</h1>
-      <div className="flex items-center mb-4">
-        <input
-          type="text" // Changed to text to allow free typing
-          name="hours"
-          value={Math.floor(initialTime / 3600) || ""}
-          onChange={handleTimeChange}
-          className="w-20 p-2 mr-2 border border-gray-300 rounded"
-          placeholder="Hours"
-        />
-        <span className="text-2xl mr-2">:</span>
-        <input
-          type="text" // Changed to text to allow free typing
-          name="minutes"
-          value={Math.floor((initialTime % 3600) / 60) || ""}
-          onChange={handleTimeChange}
-          className="w-20 p-2 mr-2 border border-gray-300 rounded"
-          placeholder="Minutes"
-        />
-        <span className="text-2xl mr-2">:</span>
-        <input
-          type="text" // Changed to text to allow free typing
-          name="seconds"
-          value={initialTime % 60 || ""}
-          onChange={handleTimeChange}
-          className="w-20 p-2 border border-gray-300 rounded"
-          placeholder="Seconds"
-        />
-      </div>
-      <p className="text-2xl mb-6">
-        Time Remaining: {formatTime(timeRemaining)}
-      </p>
-      <div className="space-x-4">
+    <div className="flex flex-col items-center justify-center h-auto bg-white shadow-sm rounded-lg text-black max-w-sm mx-auto p-4"> {/* Adjusted padding */}
+  <h1 className="text-3xl font-bold mb-3 text-gray-800">Lock-In Mode</h1>
+  <div className="flex items-center mb-3"> {/* Added padding here */}
+    <input
+      type="text"
+      name="hours"
+      value={Math.floor(initialTime / 3600) || ""}
+      onChange={handleTimeChange}
+      className="w-16 p-2 mr-2 border border-gray-300 rounded text-center text-black" 
+      placeholder="Hrs"
+    />
+    <span className="text-2xl mr-2">:</span>
+    <input
+      type="text"
+      name="minutes"
+      value={Math.floor((initialTime % 3600) / 60) || ""}
+      onChange={handleTimeChange}
+      className="w-16 p-2 mr-2 border border-gray-300 rounded text-center text-black" 
+      placeholder="Min"
+    />
+    <span className="text-2xl mr-2">:</span>
+    <input
+      type="text"
+      name="seconds"
+      value={initialTime % 60 || ""}
+      onChange={handleTimeChange}
+      className="w-16 p-2 border border-gray-300 rounded text-center text-black" 
+      placeholder="Sec"
+    />
+  </div>
+  <p className="text-xl mb-3 text-gray-700"> {/* Adjusted margin for spacing */}
+    Time Remaining: {formatTime(timeRemaining)}
+  </p>
+      <div className="space-x-2">
         <button
           onClick={handleStart}
-          className="px-4 py-2 bg-blue-500 text-white rounded"
+          className="px-3 py-1 bg-gradient-to-r from-blue-400 to-purple-500 text-white rounded hover:from-blue-500 hover:to-purple-600 transition duration-300"
           disabled={isLockedIn}
         >
           Start
         </button>
         <button
           onClick={handlePause}
-          className="px-4 py-2 bg-yellow-500 text-white rounded"
+          className="px-3 py-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded hover:from-yellow-500 hover:to-orange-600 transition duration-300"
           disabled={!isLockedIn}
         >
           Pause
         </button>
         <button
           onClick={handleEnd}
-          className="px-4 py-2 bg-red-500 text-white rounded"
+          className="px-3 py-1 bg-gradient-to-r from-red-400 to-pink-500 text-white rounded hover:from-red-500 hover:to-pink-600 transition duration-300"
         >
           End
         </button>
@@ -190,22 +188,22 @@ const LockInTimer = () => {
 
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-8 rounded shadow-lg text-center">
-            <h2 className="text-xl font-bold mb-4 text-black">
+          <div className="bg-white p-4 rounded shadow-lg text-center max-w-xs w-full">
+            <h2 className="text-lg font-bold mb-2 text-black">
               Are you sure you want to quit?
             </h2>
-            <p className="mb-6 text-black">
+            <p className="mb-4 text-black">
               All progress from this current timer will be lost.
             </p>
             <button
               onClick={confirmEndSession}
-              className="px-4 py-2 bg-red-500 text-white rounded mr-4"
+              className="px-3 py-1 bg-red-500 text-white rounded mr-2"
             >
               Yes, Quit
             </button>
             <button
               onClick={cancelEndSession}
-              className="px-4 py-2 bg-green-500 text-white rounded"
+              className="px-3 py-1 bg-green-500 text-white rounded"
             >
               No, Continue
             </button>

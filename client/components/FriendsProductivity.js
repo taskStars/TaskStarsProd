@@ -43,23 +43,23 @@ const FriendsProductivity = () => {
   // Edge case: When there are no friends in the list
   if (friends.length === 0) {
     return (
-      <div className="fixed top-0 right-0 h-screen w-64 p-4 bg-gray-100 overflow-y-auto">
-        <h2 className="text-2xl font-bold mb-4 text-black">
+      <div className="absolute right-0 top-20 max-h-[calc(100vh-5rem)] w-64 p-4 bg-white shadow-lg rounded-lg overflow-y-auto m-4"> {/* Adjusted styles */}
+        <h2 className="text-2xl font-bold mb-4 text-gray-800">
           Friends' Productivity
         </h2>
-        <p>No friends found. Add some friends to track their productivity!</p>
+        <p className="text-gray-600">No friends found. Add some friends to track their productivity!</p>
       </div>
     );
   }
 
   return (
-    <div className="fixed top-0 right-0 h-screen w-64 p-4 bg-gray-100 overflow-y-auto">
-      <h2 className="text-2xl font-bold mb-4 text-black">
+    <div className="absolute right-0 top-20 max-h-[calc(100vh-5rem)] w-64 p-4 bg-white shadow-lg rounded-lg overflow-y-auto m-4"> {/* Adjusted styles */}
+      <h2 className="text-2xl font-bold mb-4 text-gray-800">
         Friends' Productivity
       </h2>
-      <ul>
+      <ul className="space-y-4">
         {friends.map((friend) => (
-          <FriendCard key={friend.id} friend={friend} /> // Render each friend with FriendCard
+          <FriendCard key={friend.id} friend={friend} />
         ))}
       </ul>
     </div>

@@ -1,3 +1,5 @@
+// /components/AddtaskModal/ModalButton
+
 "use client";
 import TaskModal from "./TaskModal"; // Ensure the import path is correct
 import { useState } from "react";
@@ -17,7 +19,7 @@ const ModalButton = ({ onSave, generateDescription }) => {
     <div>
       <button
         onClick={handleButtonClick}
-        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
+        className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-bold py-2 px-4 rounded-full shadow-lg"
         aria-label="Add a new task"
         role="button"
       >

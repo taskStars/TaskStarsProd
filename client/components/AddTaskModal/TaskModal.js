@@ -48,29 +48,35 @@ const TaskModal = ({ isOpen, onClose, onSave, generateDescription }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-        <h2 className="text-2xl font-bold mb-6 text-center">Add Task</h2>
+    <div className="fixed inset-0 bg-gray-700 bg-opacity-50 flex justify-center items-center z-50">
+      <div className="bg-gradient-to-br from-blue-200 via-blue-300 to-blue-400 p-8 rounded-xl shadow-2xl max-w-md w-full relative">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-700 hover:text-red-500"
+        >
+          ✕
+        </button>
+        <h2 className="text-2xl font-bold mb-6 text-center text-white">Add Task</h2>
 
         {/* Task Name Input */}
         <div className="mb-5">
-          <label className="block text-lg font-semibold text-gray-700 mb-2">Task Name</label>
+          <label className="block text-lg font-semibold text-white mb-2">Task Name</label>
           <input
             type="text"
             value={taskName}
             onChange={(e) => setTaskName(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black"
+            className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-800"
             placeholder="Enter task name"
           />
         </div>
 
         {/* Task Description Input */}
         <div className="mb-5">
-          <label className="block text-lg font-semibold text-gray-700 mb-2">Task Description</label>
+          <label className="block text-lg font-semibold text-white mb-2">Task Description</label>
           <textarea
             value={taskDescription}
             onChange={(e) => setTaskDescription(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black"
+            className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-800"
             rows={3}
             placeholder="Enter task description"
           />
@@ -78,22 +84,22 @@ const TaskModal = ({ isOpen, onClose, onSave, generateDescription }) => {
 
         {/* Task Deadline Input */}
         <div className="mb-5">
-          <label className="block text-lg font-semibold text-gray-700 mb-2">Deadline</label>
+          <label className="block text-lg font-semibold text-white mb-2">Deadline</label>
           <input
             type="date"
             value={deadline}
             onChange={(e) => setDeadline(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black"
+            className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-800"
           />
         </div>
 
         {/* Task Priority Selector */}
         <div className="mb-5">
-          <label className="block text-lg font-semibold text-gray-700 mb-2">Priority</label>
+          <label className="block text-lg font-semibold text-white mb-2">Priority</label>
           <select
             value={priority}
             onChange={(e) => setPriority(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black"
+            className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-800"
           >
             <option value="High">High</option>
             <option value="Medium">Medium</option>
@@ -103,12 +109,12 @@ const TaskModal = ({ isOpen, onClose, onSave, generateDescription }) => {
 
         {/* Task Tags Input */}
         <div className="mb-5">
-          <label className="block text-lg font-semibold text-gray-700 mb-2">Tags (comma separated)</label>
+          <label className="block text-lg font-semibold text-white mb-2">Tags (comma separated)</label>
           <input
             type="text"
             value={tags}
             onChange={(e) => setTags(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black"
+            className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-800"
             placeholder="e.g. work, important"
           />
         </div>
@@ -116,7 +122,7 @@ const TaskModal = ({ isOpen, onClose, onSave, generateDescription }) => {
         {/* Generate Description Button */}
         <button
           onClick={handleGenerateDescription}
-          className="mb-4 bg-orange-500 hover:bg-orange-600 px-4 py-2 rounded-md w-full text-black"
+          className="mb-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 px-4 py-2 rounded-md w-full text-white font-bold shadow-md"
         >
           Generate Description
         </button>
@@ -124,13 +130,13 @@ const TaskModal = ({ isOpen, onClose, onSave, generateDescription }) => {
         <div className="flex justify-end space-x-3">
           <button
             onClick={onClose}
-            className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-md text-black"
+            className="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 px-4 py-2 rounded-md text-white font-bold shadow-md"
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
-            className="bg-green-500 hover:bg-green-600 px-4 py-2 rounded-md text-black"
+            className="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 px-4 py-2 rounded-md text-white font-bold shadow-md"
           >
             Save
           </button>
