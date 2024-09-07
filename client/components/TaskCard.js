@@ -1,4 +1,3 @@
-// components/TaskCard.js
 import React from 'react';
 
 const TaskCard = ({ task }) => {
@@ -33,10 +32,10 @@ const TaskCard = ({ task }) => {
   };
 
   return (
-    <div className="bg-gray-100 shadow-md rounded-lg p-4 mb-3 w-full relative border border-gray-200"> {/* Added border for better UI */}
+    <div className="bg-gradient-to-r from-blue-100 to-blue-200 shadow-md rounded-lg p-4 mb-3 w-full relative border border-gray-200">
       <button
         onClick={handleDelete}
-        className="absolute top-2 right-2 text-red-600 hover:text-red-800"
+        className="absolute top-2 right-2 text-red-600 hover:text-red-800 bg-white rounded-full p-1 shadow-lg"
       >
         ✕
       </button>
@@ -46,7 +45,7 @@ const TaskCard = ({ task }) => {
       <p className="text-gray-600 mb-2">{description}</p>
       <p className="text-sm font-medium text-red-600 mb-2">Priority: {priority}</p>
       {tags && tags.length > 0 && (
-        <div className="flex flex-wrap gap-2 mt-2"> {/* Added margin-top for spacing */}
+        <div className="flex flex-wrap gap-2 mt-2">
           {tags.map((tag, index) => (
             <span
               key={index}
