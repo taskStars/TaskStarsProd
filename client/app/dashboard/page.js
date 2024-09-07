@@ -8,46 +8,34 @@ import Navbar from "@/components/Navbar";
 
 const Dashboard = () => {
   return (
-    <div className="min-h-screen bg-gray-100"> {/* Light background for contrast */}
-      {/* Navbar Component */}
-      <Navbar />
+    <div className="min-h-screen bg-gray-100">
+      <Navbar /> {/* Navbar */}
 
       {/* Main Dashboard Content */}
-      <div className="container mx-auto mt-6"> {/* Removed extra padding */}
-        <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">Dashboard</h1> {/* Kept a margin for title */}
-
-        {/* Grid Layout for Main Components */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4"> {/* Reduced gap for tighter layout */}
-          {/* Left Column - Timer and Task Manager */}
+      <div className="container mx-auto mt-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Left Column */}
           <div className="space-y-4">
-            {/* Lock-In Timer Component */}
-            <div className="rounded-lg shadow bg-gray-50"> {/* Removed padding */}
+            <div className="rounded-lg shadow bg-gray-50">
               <LockInTimer />
             </div>
-
-            {/* Task Manager Component */}
-            <div className="rounded-lg shadow bg-gray-50"> {/* Removed padding */}
+            <div className="rounded-lg shadow bg-gray-50">
               <TaskManager />
+            </div>
+            <div className="rounded-lg shadow bg-gray-50">
+              <FriendSearch />
             </div>
           </div>
 
-          {/* Middle Column - Task List */}
-          <div className="rounded-lg shadow bg-gray-50 h-full flex flex-col justify-between"> {/* Removed padding */}
+          {/* Middle Column */}
+          <div className="rounded-lg shadow bg-gray-50 h-full flex flex-col lg:col-span-2">
             <TaskList />
           </div>
 
-          {/* Right Column - Friend Search and Productivity */}
-          <div className="space-y-4">
-            {/* Friend Search Component */}
-            <div className="rounded-lg shadow bg-gray-50"> {/* Removed padding */}
-              <FriendSearch />
-            </div>
-
-            {/* Friends Productivity Component */}
-            <div className="rounded-lg shadow bg-gray-50"> {/* Removed padding */}
-              <FriendsProductivity />
-            </div>
-          </div>
+          {/* Right Column */}
+          {/* <div className="rounded-lg shadow bg-gray-50"> */}
+            <FriendsProductivity />
+          {/* </div> */}
         </div>
       </div>
     </div>

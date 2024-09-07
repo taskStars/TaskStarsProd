@@ -6,32 +6,32 @@ import Navbar from "@/components/Navbar"; // Import Navbar component
 export default function Home() {
   return (
     <>
-      {/* Use the Navbar component with props to show GitHub and auth links */}
+      {/* Navbar with GitHub and auth links */}
       <Navbar showAuthLinks={true} showGitHubLink={true} />
       <main>
-        {/* Increased padding for the blue section */}
-        <section className="bg-mainBlue py-16 text-center">
-          <div className="container mx-auto">
-            <h2 className="text-3xl font-bold text-black">
+        {/* Compact Ombre Blue Background Section */}
+        <section className="bg-gradient-to-b from-blue-500 to-blue-300 py-10 text-center">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-white">
               Welcome to TaskStars
             </h2>
-            <p className="mt-4 text-lg text-black">
-              Complete tasks and compete with friends to build competition
-              through productivity.
+            <p className="mt-2 text-base text-white max-w-xl mx-auto">
+              Complete tasks and compete with friends to build competition through productivity.
             </p>
-            {/* Three stars icon under the description */}
+            {/* Smaller icon under the description */}
             <div className="mt-4 flex justify-center">
               <Image
-                src="/document-sign.svg" // Adjust the path if necessary
+                src="/document-sign.svg"
                 alt="welcome"
-                width={150}
-                height={70}
+                width={100}
+                height={50}
+                className="mx-auto"
               />
             </div>
-            <div className="mt-8 space-x-4">
+            <div className="mt-6">
               <Link
                 href="/login"
-                className="bg-blue-500 text-white px-4 py-2 rounded"
+                className="bg-white text-blue-500 hover:bg-blue-100 font-semibold px-4 py-2 rounded-lg shadow-md"
               >
                 Join the Community
               </Link>
@@ -39,66 +39,65 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Adjusted Section to be slightly more in height */}
+        {/* Why TaskStars Section with refined styles */}
         <section className="py-8 bg-white">
-          <div className="container mx-auto">
-            <h2 className="text-2xl font-bold mb-4 text-black text-center">
+          <div className="container mx-auto px-4">
+            <h2 className="text-2xl font-bold mb-6 text-gray-900 text-center">
               Why TaskStars?
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="text-center">
+              {/* Card 1 */}
+              <div className="text-center p-4 bg-gradient-to-b from-blue-200 to-white shadow-lg rounded-lg">
                 <Image
                   src="/business-presentation.svg"
                   alt="Organize Tasks Efficiently"
-                  width={150}
-                  height={150}
-                  className="mx-auto mb-4"
+                  width={100}
+                  height={100}
+                  className="mx-auto mb-3"
                 />
-                <h3 className="text-xl font-bold text-black mb-2">
+                <h3 className="text-lg font-bold text-gray-800 mb-2">
                   Organize Tasks Efficiently
                 </h3>
-                <p className="text-black">
-                  TaskStars helps you plan, organize, and complete tasks
-                  efficiently while competing with friends to make productivity
-                  fun.
+                <p className="text-sm text-gray-700">
+                  Plan, organize, and complete tasks efficiently while competing with friends.
                 </p>
               </div>
-              <div className="text-center">
+              {/* Card 2 */}
+              <div className="text-center p-4 bg-gradient-to-b from-blue-200 to-white shadow-lg rounded-lg">
                 <Image
                   src="/facetime-meeting.svg"
                   alt="Compete with Friends"
-                  width={150}
-                  height={150}
-                  className="mx-auto mb-4"
+                  width={100}
+                  height={100}
+                  className="mx-auto mb-3"
                 />
-                <h3 className="text-xl font-bold text-black mb-2">
+                <h3 className="text-lg font-bold text-gray-800 mb-2">
                   Compete with Friends
                 </h3>
-                <p className="text-black">
-                  Compete weekly with friends to see who can be the most
-                  productive, using our integrated OpenAI-powered assistant to
-                  help with task planning and execution.
+                <p className="text-sm text-gray-700">
+                  Weekly competitions with friends to see who can be the most productive.
                 </p>
               </div>
-              <div className="text-center">
+              {/* Card 3 */}
+              <div className="text-center p-4 bg-gradient-to-b from-blue-200 to-white shadow-lg rounded-lg">
                 <Image
                   src="/designer-desk.svg"
                   alt="Transform Productivity"
-                  width={150}
-                  height={150}
-                  className="mx-auto mb-4"
+                  width={100}
+                  height={100}
+                  className="mx-auto mb-3"
                 />
-                <h3 className="text-xl font-bold text-black mb-2">
+                <h3 className="text-lg font-bold text-gray-800 mb-2">
                   Transform Productivity
                 </h3>
-                <p className="text-black">
-                  Track your progress, challenge friends, and use AI to boost
-                  your productivity like never before.
+                <p className="text-sm text-gray-700">
+                  Track your progress, challenge friends, and use AI to boost your productivity.
                 </p>
               </div>
             </div>
           </div>
         </section>
+
         <APIMessage />
       </main>
     </>
