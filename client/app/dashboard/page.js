@@ -5,6 +5,7 @@ import TaskManager from "../../components/TaskManager";
 import LockInTimer from "@/components/LockInTimer";
 import TaskList from "../../components/TaskList";
 import Navbar from "@/components/Navbar";
+import AIModal from "@/components/OpenAITaskCreator/AIModal";
 
 const Dashboard = () => {
   return (
@@ -25,12 +26,16 @@ const Dashboard = () => {
             <div className="rounded-lg shadow bg-gray-50">
               <FriendSearch />
             </div>
+            <div>
+            <AIModal></AIModal>
+          </div>
           </div>
 
           {/* Middle Column */}
           <div className="rounded-lg shadow bg-gray-50 h-full flex flex-col lg:col-span-2">
             <TaskList />
           </div>
+          
 
           {/* Right Column */}
           {/* <div className="rounded-lg shadow bg-gray-50"> */}
