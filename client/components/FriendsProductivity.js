@@ -43,7 +43,7 @@ const FriendsProductivity = () => {
   // Edge case: When there are no friends in the list
   if (friends.length === 0) {
     return (
-      <div className="absolute right-0 top-20 max-h-[calc(100vh-5rem)] w-64 p-4 bg-white shadow-lg rounded-lg overflow-y-auto m-4"> {/* Adjusted styles */}
+      <div className="max-h-[calc(100vh-5rem)] p-4 bg-white shadow-lg rounded-lg overflow-y-auto m-4"> {/* Removed absolute positioning */}
         <h2 className="text-2xl font-bold mb-4 text-gray-800">
           Friends' Productivity
         </h2>
@@ -53,7 +53,7 @@ const FriendsProductivity = () => {
   }
 
   return (
-    <div className="absolute right-0 top-20 max-h-[calc(100vh-5rem)] w-64 p-4 bg-white shadow-lg rounded-lg overflow-y-auto m-4"> {/* Adjusted styles */}
+    <div className="max-h-[calc(100vh-5rem)] p-4 bg-white shadow-lg rounded-lg overflow-y-auto m-4"> {/* Removed absolute positioning */}
       <h2 className="text-2xl font-bold mb-4 text-gray-800">
         Friends' Productivity
       </h2>
