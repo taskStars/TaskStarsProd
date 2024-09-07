@@ -11,8 +11,8 @@ const formatTime = (seconds) => {
 
 const FriendCard = ({ friend }) => {
   return (
-    <li className="mb-2 border-b border-gray-200 pb-2">
-      <p className="text-lg font-semibold text-black">{friend.name}</p>
+    <li className="mb-4 p-4 bg-white rounded-lg shadow-md">
+      <p className="text-lg font-semibold text-gray-800">{friend.name}</p>
       <p className="text-sm text-gray-600">
         Time spent being productive: {formatTime(friend.productivityTime)}
       </p>

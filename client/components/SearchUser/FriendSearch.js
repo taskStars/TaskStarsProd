@@ -60,14 +60,17 @@ const FriendSearch = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 bg-gradient-to-r from-teal-400 to-blue-500 rounded-lg shadow-lg text-white">
+      <h2 className="text-xl font-bold mb-4">Search for Users</h2>
       <SearchBar onSearch={handleSearch} />
       {loading && <p>Loading users...</p>}
-      {error && <p className="text-red-500">{error}</p>}
+      {error && <p className="text-red-300">{error}</p>}
       {!loading && users.length > 0 && (
         <UserList users={users} onAddFriend={handleAddFriend} />
       )}
-      {!loading && users.length === 0 && !error && <p>No users found.</p>}
+      {!loading && users.length === 0 && !error && (
+        <p className="text-white">No users found.</p>
+      )}
     </div>
   );
 };

@@ -19,13 +19,17 @@ const UserCard = ({ user, onAddFriend }) => {
   };
 
   return (
-    <li className="mb-2 border-b border-gray-200 pb-2">
+    <li className="bg-white p-4 rounded-lg shadow-md mb-4 text-black">
       <p className="text-lg font-semibold">{user.name}</p>
       <p className="text-sm text-gray-600">{user.email}</p>
       <button
         onClick={handleAddFriend}
         disabled={loading}
-        className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mt-2 w-full"
+        className={`mt-2 py-2 px-4 rounded w-full ${
+          loading
+            ? "bg-gray-300 cursor-not-allowed"
+            : "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-bold"
+        }`}
       >
         {loading ? "Adding..." : "Add Friend"}
       </button>

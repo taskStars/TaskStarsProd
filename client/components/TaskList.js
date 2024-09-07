@@ -1,4 +1,3 @@
-// components/TaskList.js
 "use client";
 import React, { useEffect, useState } from 'react';
 import TaskCard from './TaskCard'; // Ensure the import path is correct
@@ -64,8 +63,8 @@ const TaskList = () => {
   const dates = Object.keys(tasksByDate); // Get all unique dates
 
   return (
-    <div className="container mx-auto mt-6 p-4 flex flex-col items-center"> {/* Center content */}
-      <h1 className="text-2xl font-bold mb-4">Tasks</h1>
+    <div className="container mx-auto mt-6 p-6 flex flex-col items-center bg-white shadow-lg rounded-lg"> {/* Updated styles */}
+      <h1 className="text-2xl font-bold mb-4 text-gray-800">Tasks</h1> {/* Changed text color to gray-800 */}
 
       {/* Dates Display */}
       <div className="flex overflow-x-auto mb-6 space-x-4 p-2 max-w-lg w-full justify-center"> {/* Centered and matched width */}
