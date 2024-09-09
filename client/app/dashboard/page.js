@@ -12,30 +12,31 @@ const Dashboard = () => {
       <Navbar /> {/* Navbar */}
 
       {/* Main Dashboard Content */}
-      <div className="container mx-auto mt-6">
+      <div className="container mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Left Column */}
-          <div className="space-y-4">
-            <div className="rounded-lg shadow bg-gray-50">
+          <div className="space-y-4 flex flex-col items-start"> {/* Updated styles */}
+            {/* Lock-In Timer Component */}
+            <div className="w-full">
               <LockInTimer />
             </div>
-            <div className="rounded-lg shadow bg-gray-50">
+
+            {/* Task Manager Component */}
+            <div className="w-full">
               <TaskManager />
-            </div>
-            <div className="rounded-lg shadow bg-gray-50">
-              <FriendSearch />
             </div>
           </div>
 
           {/* Middle Column */}
-          <div className="rounded-lg shadow bg-gray-50 h-full flex flex-col lg:col-span-2">
+          <div className="shadow h-full flex flex-col lg:col-span-2">
             <TaskList />
           </div>
 
           {/* Right Column */}
-          {/* <div className="rounded-lg shadow bg-gray-50"> */}
+          <div className="w-1/4 h-full fixed right-0 top-17 flex flex-col p-0">
+            {/* Friends list */}
             <FriendsProductivity />
-          {/* </div> */}
+          </div>
         </div>
       </div>
     </div>

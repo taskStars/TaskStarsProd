@@ -5,7 +5,7 @@ import TaskCard from "./TaskCard"; // Ensure the import path is correct
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedDate, setSelectedDate] = useState(null); // State to track selected date
+  const [selectedSection, setSelectedSection] = useState("Today's Tasks"); // State to track selected section
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -47,65 +47,75 @@ const TaskList = () => {
     fetchTasks();
   }, []);
 
+  // Filter and categorize tasks
+  const todayTasks = tasks.filter(
+    (task) => new Date(task.deadline).toDateString() === new Date().toDateString()
+  );
+  const nextWeekTasks = tasks.filter((task) => {
+    const taskDate = new Date(task.deadline);
+    const today = new Date();
+    return taskDate > today && taskDate <= new Date(today.setDate(today.getDate() + 7));
+  });
+  const nextMonthTasks = tasks.filter((task) => {
+    const taskDate = new Date(task.deadline);
+    const today = new Date();
+    return taskDate > new Date(today.setDate(today.getDate() + 7)) && taskDate <= new Date(today.setDate(today.getDate() + 30));
+  });
+
+  const sections = {
+    "Today's Tasks": todayTasks,
+    "Next Week": nextWeekTasks,
+    "Next Month": nextMonthTasks,
+  };
+
   if (loading) return <p>Loading tasks...</p>;
 
-  // Group tasks by date
-  const tasksByDate = tasks.reduce((group, task) => {
-    const date = new Date(task.deadline).toLocaleDateString("en-US", {
-      weekday: "short",
-      month: "long",
-      day: "numeric",
-    });
-    if (!group[date]) {
-      group[date] = [];
-    }
-    group[date].push(task);
-    return group;
-  }, {});
-
-  const dates = Object.keys(tasksByDate); // Get all unique dates
-
   return (
-    <div className="container mx-auto mt-8 p-8 flex flex-col items-center bg-gray-50 shadow-lg rounded-xl">
-      <h1 className="text-3xl font-bold mb-4 text-gray-900">
-        Tasks
-      </h1>
+    <div className="container mx-auto mt-8 p-8 bg-gray-100 shadow-lg">
+      <h1 className="text-2xl font-bold mb-4 text-gray-900">Work Plan</h1>
 
-      {/* Dates Display */}
-      <div className="flex overflow-x-auto mb-8 space-x-4 p-3 max-w-xl w-full justify-center bg-gray-100 rounded-lg">
-        {dates.map((date) => (
+      {/* Date Selection Buttons */}
+      <div className="flex space-x-2 mb-6">
+        {Object.keys(sections).map((section) => (
           <button
-            key={date}
-            className={`px-6 py-3 rounded-md transition-all duration-300 shadow-md ${
-              selectedDate === date
+            key={section}
+            className={`px-4 py-2 text-sm font-medium transition-all duration-300 shadow ${
+              selectedSection === section
                 ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white"
-                : "bg-gradient-to-r from-gray-300 to-gray-400 text-gray-800 hover:from-gray-400 hover:to-gray-500"
+                : "bg-gray-300 text-gray-800 hover:bg-gray-400"
             }`}
-            onClick={() => setSelectedDate(date)}
+            onClick={() => setSelectedSection(section)}
           >
-            {date}
+            {section}
           </button>
         ))}
       </div>
 
-      {/* Task List for Selected Date */}
-      <div className="bg-white rounded-xl shadow-xl p-6 max-w-xl w-full">
-        {selectedDate ? (
-          <div>
-            <h2 className="text-xl font-semibold mb-4 text-gray-700">
-              {selectedDate} 
-            </h2>
-            <div className="space-y-4 max-h-[450px] overflow-y-auto">
-              {tasksByDate[selectedDate].map((task) => (
+      {/* Task List for Selected Section */}
+      <div className="bg-white shadow p-4 w-full">
+        <table className="w-full border-collapse">
+          <thead>
+            <tr className="border-b">
+              <th className="p-2 text-left font-semibold text-gray-600">Name</th>
+              <th className="p-2 text-left font-semibold text-gray-600">Description</th>
+              <th className="p-2 text-left font-semibold text-gray-600">Date</th>
+              <th className="p-2 text-left font-semibold text-gray-600">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sections[selectedSection].length > 0 ? (
+              sections[selectedSection].map((task) => (
                 <TaskCard key={task._id} task={task} />
-              ))}
-            </div>
-          </div>
-        ) : (
-          <p className="text-center text-gray-600">
-            Select a date to view tasks
-          </p>
-        )}
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" className="text-center text-gray-600 py-4">
+                  No tasks found for this section.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );
