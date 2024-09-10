@@ -2,6 +2,7 @@ const Task = require("../models/Task");
 const User = require("../models/User");
 const { Configuration, OpenAIApi } = require("openai");
 const OpenAI = require("openai"); // Require the OpenAI module
+const chrono = require('chrono-node');
 
 // Create a new task
 exports.createTask = async (req, res) => {
@@ -123,7 +124,7 @@ exports.createTaskWithAI = async (req, res) => {
       messages: [
         {
           role: "user",
-          content: `Generate a task title and a short description based on this input: "${taskDescription}". If applicable, include a deadline as "Deadline: [date]" or "No deadline" if none.`,
+          content: `Generate a task title and a short description based on this input: "${taskDescription}". If applicable, include a deadline as "Deadline: [actual date or relative expression]" by interpreting any relative date expressions (like "tomorrow", "next week") into natural language. Do not use "[date]", instead give the date in a readable format.`,
         },
       ],
       max_tokens: 150,
@@ -147,9 +148,10 @@ exports.createTaskWithAI = async (req, res) => {
     let deadline = null;
 
     if (deadlineString && deadlineString.toLowerCase() !== "no deadline") {
-      const parsedDate = new Date(deadlineString);
-      if (!isNaN(parsedDate.getTime())) {
-        deadline = parsedDate;
+      // Use chrono-node to parse the natural language date
+      const parsedDate = chrono.parseDate(deadlineString);
+      if (parsedDate) {
+        deadline = parsedDate; // Assign the parsed date if it's valid
       } else {
         console.warn("Invalid deadline provided by OpenAI:", deadlineString);
       }
