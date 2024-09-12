@@ -113,78 +113,84 @@ const LockInTimer = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2 text-black">
-      <h1 className="text-4xl font-bold mb-4">Lock-In Mode</h1>
-      <p className="text-6xl mb-6">{formatTime(timeRemaining)}</p>
-      <input
-        type="range"
-        min="0"
-        max="7200" // 2 hours in seconds
-        value={timeRemaining}
-        onChange={handleSliderChange}
-        step="5" // Adjust step size to 30 seconds
-        className="w-full max-w-lg mb-6"
-      />
-      <div className="space-x-4">
-        <button
-          onClick={handleStart}
-          className="px-4 py-2 bg-blue-500 text-white rounded"
-          disabled={isLockedIn}
-        >
-          Start
-        </button>
-        <button
-          onClick={handlePause}
-          className="px-4 py-2 bg-yellow-500 text-white rounded"
-          disabled={!isLockedIn}
-        >
-          Pause
-        </button>
-        <button
-          onClick={handleEnd}
-          className="px-4 py-2 bg-red-500 text-white rounded"
-        >
-          End
-        </button>
+    <div className="flex flex-col items-center justify-center py-2 bg-white text-black">
+      <div className="bg-white p-7  w-300">
+        <h1 className="text-2xl font-bold mb-4 text-center">Lock-In Mode</h1>
+        <p className="text-4xl font-bold mb-4 text-center">{formatTime(timeRemaining)}</p>
+        <input
+          type="range"
+          min="0"
+          max="7200" // 2 hours in seconds
+          value={timeRemaining}
+          onChange={handleSliderChange}
+          step="5" // Adjust step size to 30 seconds
+          className="w-full mb-4"
+        />
+        <div className="flex justify-center space-x-2">
+          <button
+            onClick={handleStart}
+            className="bg-[#2C3E50] text-white px-4 py-2 rounded-full hover:bg-[#34495E] transition duration-200"
+            disabled={isLockedIn}
+          >
+            Start
+          </button>
+          <button
+            onClick={handlePause}
+            className="bg-[#1A1A1A] text-white px-4 py-2 rounded-full hover:bg-[#333333] transition duration-200"
+            disabled={!isLockedIn}
+          >
+            Pause
+          </button>
+          <button
+            onClick={handleEnd}
+            className="bg-[#1E3A8A] text-white px-4 py-2 rounded-full hover:bg-[#1E40AF] transition duration-200"
+          >
+            End
+          </button>
+        </div>
       </div>
 
+      {/* Confirmation Modal */}
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-8 rounded shadow-lg text-center">
-            <h2 className="text-xl font-bold mb-4 text-black">
+          <div className="bg-white p-4 shadow-md border border-gray-200 w-80">
+            <h2 className="text-lg font-bold mb-2 text-black text-center">
               Are you sure you want to quit?
             </h2>
-            <p className="mb-6 text-black">
+            <p className="mb-4 text-center text-black">
               All progress from this current timer will be lost.
             </p>
-            <button
-              onClick={confirmEndSession}
-              className="px-4 py-2 bg-red-500 text-white rounded mr-4"
-            >
-              Yes, Quit
-            </button>
-            <button
-              onClick={cancelEndSession}
-              className="px-4 py-2 bg-green-500 text-white rounded"
-            >
-              No, Continue
-            </button>
+            <div className="flex justify-center space-x-2">
+              <button
+                onClick={confirmEndSession}
+                className="px-4 py-2 text-white bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700"
+              >
+                Yes, Quit
+              </button>
+              <button
+                onClick={cancelEndSession}
+                className="px-4 py-2 text-white bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700"
+              >
+                No, Continue
+              </button>
+            </div>
           </div>
         </div>
       )}
 
+      {/* Congratulations Modal */}
       {showCongratsModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-8 rounded shadow-lg text-center">
-            <h2 className="text-xl font-bold mb-4 text-black">
+          <div className="bg-white p-4 shadow-md border border-gray-200 w-80">
+            <h2 className="text-lg font-bold mb-2 text-black text-center">
               Congratulations!
             </h2>
-            <p className="mb-6 text-black">
+            <p className="mb-4 text-center text-black">
               You have been productive for {formatTime(initialTime)}!
             </p>
             <button
               onClick={() => setShowCongratsModal(false)}
-              className="px-4 py-2 bg-green-500 text-white rounded"
+              className="px-4 py-2 text-white bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700"
             >
               Close
             </button>

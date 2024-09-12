@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useState } from "react";
 
 const TaskCard = ({ task }) => {
-  const { title, description, deadline, tags, priority } = task;
+  const { title, description, deadline, status } = task;
+  const [isDescriptionVisible, setDescriptionVisible] = useState(false);
+
+  const toggleDescription = () => {
+    setDescriptionVisible(!isDescriptionVisible);
+  };
 
   const handleDelete = async () => {
     const token = localStorage.getItem("token");
@@ -32,31 +37,24 @@ const TaskCard = ({ task }) => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-blue-100 to-blue-200 shadow-md rounded-lg p-4 mb-3 w-full relative border border-gray-200">
-      <button
-        onClick={handleDelete}
-        className="absolute top-2 right-2 text-red-600 hover:text-red-800 bg-white rounded-full p-1 shadow-lg"
-      >
-        ✕
-      </button>
-      <div className="flex justify-between items-center border-b pb-2 mb-2">
-        <h3 className="text-md font-semibold text-gray-800">{title}</h3>
-      </div>
-      <p className="text-gray-600 mb-2">{description}</p>
-      <p className="text-sm font-medium text-red-600 mb-2">Priority: {priority}</p>
-      {tags && tags.length > 0 && (
-        <div className="flex flex-wrap gap-2 mt-2">
-          {tags.map((tag, index) => (
-            <span
-              key={index}
-              className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-      )}
-    </div>
+    <tr className="border-b">
+      <td className="p-2 text-gray-800">{title}</td>
+      <td className="p-2 text-gray-600">{isDescriptionVisible ? description : "—"}</td>
+      <td className="p-2 text-gray-600">{new Date(deadline).toLocaleDateString()}</td>
+      <td className="p-2">
+        <span className={`px-2 py-1 text-xs font-semibold ${status === "Done" ? "bg-green-200 text-green-800" : status === "Start" ? "bg-purple-200 text-purple-800" : status === "Pending" ? "bg-red-200 text-red-800" : "bg-gray-200 text-gray-800"}`}>
+          {status}
+        </span>
+      </td>
+      <td className="p-2">
+        <button
+          onClick={handleDelete}
+          className="text-red-600 hover:text-red-800 bg-white rounded p-1"
+        >
+          ✕
+        </button>
+      </td>
+    </tr>
   );
 };
 
