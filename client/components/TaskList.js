@@ -1,15 +1,15 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import TaskCard from "./TaskCard"; // Ensure the import path is correct
+import TaskCard from "./TaskCard";
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedSection, setSelectedSection] = useState("Today's Tasks"); // State to track selected section
+  const [selectedSection, setSelectedSection] = useState("Today's Tasks");
 
   useEffect(() => {
     const fetchTasks = async () => {
-      const token = localStorage.getItem("token"); // Retrieve token from localStorage
+      const token = localStorage.getItem("token");
       if (!token) {
         console.error("No token found, user is not authenticated.");
         setLoading(false);
@@ -23,7 +23,7 @@ const TaskList = () => {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`, // Include token for protected routes
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -47,20 +47,45 @@ const TaskList = () => {
     fetchTasks();
   }, []);
 
-  // Filter and categorize tasks
+  // Corrected time categorization
+  const today = new Date();
+  const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0, 0);
+  const endOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59, 999);
+
+  // Start and end of the current week (Monday to Sunday)
+  const startOfThisWeek = new Date(today);
+  startOfThisWeek.setDate(today.getDate() - today.getDay() + 1); // Monday
+  startOfThisWeek.setHours(0, 0, 0, 0);
+
+  const endOfThisWeek = new Date(startOfThisWeek);
+  endOfThisWeek.setDate(startOfThisWeek.getDate() + 6); // Sunday
+  endOfThisWeek.setHours(23, 59, 59, 999);
+
+  // Start and end of the next week
+  const startOfNextWeek = new Date(endOfThisWeek);
+  startOfNextWeek.setDate(endOfThisWeek.getDate() + 1); // Monday after this Sunday
+  startOfNextWeek.setHours(0, 0, 0, 0);
+
+  const endOfNextWeek = new Date(startOfNextWeek);
+  endOfNextWeek.setDate(startOfNextWeek.getDate() + 6); // Next Sunday
+  endOfNextWeek.setHours(23, 59, 59, 999);
+
+  // Start and end of next month
+  const startOfNextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+  const endOfNextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 0); // Last day of next month
+  endOfNextMonth.setHours(23, 59, 59, 999);
+
   const todayTasks = tasks.filter(
-    (task) => new Date(task.deadline).toDateString() === new Date().toDateString()
+    (task) => new Date(task.deadline) >= startOfToday && new Date(task.deadline) <= endOfToday
   );
-  const nextWeekTasks = tasks.filter((task) => {
-    const taskDate = new Date(task.deadline);
-    const today = new Date();
-    return taskDate > today && taskDate <= new Date(today.setDate(today.getDate() + 7));
-  });
-  const nextMonthTasks = tasks.filter((task) => {
-    const taskDate = new Date(task.deadline);
-    const today = new Date();
-    return taskDate > new Date(today.setDate(today.getDate() + 7)) && taskDate <= new Date(today.setDate(today.getDate() + 30));
-  });
+
+  const nextWeekTasks = tasks.filter(
+    (task) => new Date(task.deadline) >= startOfNextWeek && new Date(task.deadline) <= endOfNextWeek
+  );
+
+  const nextMonthTasks = tasks.filter(
+    (task) => new Date(task.deadline) > endOfNextWeek && new Date(task.deadline) <= endOfNextMonth
+  );
 
   const sections = {
     "Today's Tasks": todayTasks,
@@ -103,7 +128,7 @@ const TaskList = () => {
               <th className="p-2 text-left font-semibold text-gray-600">Name</th>
               <th className="p-2 text-left font-semibold text-gray-600">Description</th>
               <th className="p-2 text-left font-semibold text-gray-600">Date</th>
-              <th className="p-2 text-left font-semibold text-gray-600">Status</th>
+              <th className="p-2 text-left font-semibold text-gray-600">Due In</th>
             </tr>
           </thead>
           <tbody>
