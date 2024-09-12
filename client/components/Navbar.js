@@ -52,7 +52,7 @@ const Navbar = ({ showAuthLinks = true, showGitHubLink = true }) => {
           {isLoggedIn ? (
             <button
               onClick={handleLogout}
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-200"
+              className="bg-[#E3F2FD] text-black px-4 py-2 rounded hover:bg-[#3949AB] transition duration-200"
               aria-label="Logout"
             >
               Logout

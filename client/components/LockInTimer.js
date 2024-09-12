@@ -129,21 +129,21 @@ const LockInTimer = () => {
         <div className="flex justify-center space-x-2">
           <button
             onClick={handleStart}
-            className="px-4 py-2 text-white bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700"
+            className="bg-[#2C3E50] text-white px-4 py-2 rounded-full hover:bg-[#34495E] transition duration-200"
             disabled={isLockedIn}
           >
             Start
           </button>
           <button
             onClick={handlePause}
-            className="px-4 py-2 text-white bg-gradient-to-r from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700"
+            className="bg-[#1A1A1A] text-white px-4 py-2 rounded-full hover:bg-[#333333] transition duration-200"
             disabled={!isLockedIn}
           >
             Pause
           </button>
           <button
             onClick={handleEnd}
-            className="px-4 py-2 text-white bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700"
+            className="bg-[#1E3A8A] text-white px-4 py-2 rounded-full hover:bg-[#1E40AF] transition duration-200"
           >
             End
           </button>

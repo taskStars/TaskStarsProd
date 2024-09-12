@@ -76,13 +76,17 @@ const TaskList = () => {
 
       {/* Date Selection Buttons */}
       <div className="flex space-x-2 mb-6">
-        {Object.keys(sections).map((section) => (
+        {Object.keys(sections).map((section, index) => (
           <button
             key={section}
-            className={`px-4 py-2 text-sm font-medium transition-all duration-300 shadow ${
+            className={`px-4 py-2 text-sm font-medium transition-all duration-300 shadow rounded-full ${
               selectedSection === section
-                ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white"
-                : "bg-gray-300 text-gray-800 hover:bg-gray-400"
+                ? index === 0
+                  ? "bg-[#3949AB] text-white"
+                  : index === 1
+                  ? "bg-[#283593] text-white"
+                  : "bg-[#1A237E] text-white border border-[#3949AB]"
+                : "bg-grey text-black border border-black hover:bg-[#BBDEFB] hover:text-[#283593]"
             }`}
             onClick={() => setSelectedSection(section)}
           >

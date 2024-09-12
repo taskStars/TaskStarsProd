@@ -32,7 +32,7 @@ const UserCard = ({ user, onAddFriend }) => {
        className={`mt-2 py-2 px-4 rounded w-full ${
          loading
            ? "bg-gray-300 cursor-not-allowed"
-           : "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-bold"
+           : "bg-[#3949AB] text-white px-4 py-2 rounded-full hover:bg-[#1A237E] transition duration-200"
        }`}
      >
        {loading ? "Adding..." : "Add Friend"}
