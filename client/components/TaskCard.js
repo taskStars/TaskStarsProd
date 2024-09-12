@@ -1,11 +1,30 @@
 import React, { useState } from "react";
+import DescriptionModal from "./DescriptionModal";
 
 const TaskCard = ({ task }) => {
-  const { title, description, deadline, status } = task;
-  const [isDescriptionVisible, setDescriptionVisible] = useState(false);
+  const { title, description, deadline, priority, tags } = task;
+  const [isDescriptionModalOpen, setDescriptionModalOpen] = useState(false);
 
-  const toggleDescription = () => {
-    setDescriptionVisible(!isDescriptionVisible);
+  const toggleDescriptionModal = () => {
+    console.log("Toggling Modal: ", !isDescriptionModalOpen); // Debugging
+    console.log("Task Data: ", task); // Debugging
+    setDescriptionModalOpen(!isDescriptionModalOpen);
+  };
+
+  // Calculate the number of days until the task is due
+  const calculateDaysUntilDue = () => {
+    const today = new Date();
+    const taskDeadline = new Date(deadline);
+    const timeDifference = taskDeadline - today; // Difference in milliseconds
+    const daysUntilDue = Math.ceil(timeDifference / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+
+    if (daysUntilDue < 0) {
+      return "Overdue";
+    } else if (daysUntilDue === 0) {
+      return "Due Today";
+    } else {
+      return `Due in ${daysUntilDue} day${daysUntilDue > 1 ? 's' : ''}`;
+    }
   };
 
   const handleDelete = async () => {
@@ -21,7 +40,7 @@ const TaskCard = ({ task }) => {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Include token for protected routes
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -37,24 +56,37 @@ const TaskCard = ({ task }) => {
   };
 
   return (
-    <tr className="border-b">
-      <td className="p-2 text-gray-800">{title}</td>
-      <td className="p-2 text-gray-600">{isDescriptionVisible ? description : "—"}</td>
-      <td className="p-2 text-gray-600">{new Date(deadline).toLocaleDateString()}</td>
-      <td className="p-2">
-        <span className={`px-2 py-1 text-xs font-semibold ${status === "Done" ? "bg-green-200 text-green-800" : status === "Start" ? "bg-purple-200 text-purple-800" : status === "Pending" ? "bg-red-200 text-red-800" : "bg-gray-200 text-gray-800"}`}>
-          {status}
-        </span>
-      </td>
-      <td className="p-2">
-        <button
-          onClick={handleDelete}
-          className="text-red-600 hover:text-red-800 bg-white rounded p-1"
-        >
-          ✕
-        </button>
-      </td>
-    </tr>
+    <>
+      <tr className="border-b">
+        <td className="p-2 text-gray-800">{title}</td>
+        <td className="p-2 text-gray-600">
+          <button
+            className="text-blue-600 hover:text-blue-800 underline"
+            onClick={toggleDescriptionModal}
+          >
+            View Details
+          </button>
+        </td>
+        <td className="p-2 text-gray-600">{new Date(deadline).toLocaleDateString()}</td>
+        <td className="p-2 text-gray-800">{calculateDaysUntilDue()}</td>
+        <td className="p-2">
+          <button
+            onClick={handleDelete}
+            className="text-red-600 hover:text-red-800 bg-white rounded p-1"
+          >
+            ✕
+          </button>
+        </td>
+      </tr>
+
+      {/* Description Modal */}
+      <DescriptionModal isOpen={isDescriptionModalOpen} onClose={toggleDescriptionModal}>
+        <h2 className="text-lg font-bold mb-2">{title || 'No Title'}</h2>
+        <p className="mb-2"><strong>Description:</strong> {description || 'No Description Available'}</p>
+        <p className="mb-2"><strong>Priority:</strong> {priority || 'No Priority Set'}</p>
+        <p className="mb-2"><strong>Tags:</strong> {tags && tags.length ? tags.join(", ") : 'No Tags Available'}</p>
+      </DescriptionModal>
+    </>
   );
 };
 
