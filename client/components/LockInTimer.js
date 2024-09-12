@@ -113,8 +113,8 @@ const LockInTimer = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center py-2 bg-gray-100 text-black">
-      <div className="bg-white p-6 shadow-md border border-gray-200 w-96">
+    <div className="flex flex-col items-center justify-center py-2 bg-white text-black">
+      <div className="bg-white p-7  w-300">
         <h1 className="text-2xl font-bold mb-4 text-center">Lock-In Mode</h1>
         <p className="text-4xl font-bold mb-4 text-center">{formatTime(timeRemaining)}</p>
         <input

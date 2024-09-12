@@ -20,7 +20,7 @@ const Navbar = ({ showAuthLinks = true, showGitHubLink = true }) => {
   };
 
   return (
-    <nav className="bg-white shadow-md p-4">
+    <nav className="bg-[#2C3E50] shadow-md p-4"> {/* Updated background color to dark blue */}
       <div className="flex justify-between items-center px-4">
         <div className="flex items-center space-x-2">
           {/* Star icon in front of TaskStars */}
@@ -31,7 +31,7 @@ const Navbar = ({ showAuthLinks = true, showGitHubLink = true }) => {
             height={30}
             aria-label="TaskStars Logo"
           />
-          <h1 className="text-2xl font-bold text-black">
+          <h1 className="text-2xl font-bold text-white"> {/* Text color changed to white for better contrast */}
             <Link href="/">TaskStars</Link>
           </h1>
         </div>
@@ -61,12 +61,12 @@ const Navbar = ({ showAuthLinks = true, showGitHubLink = true }) => {
             showAuthLinks && (
               <div className="flex space-x-4">
                 <Link href="/signup">
-                  <span className="text-black hover:text-blue-500 transition-colors duration-200">
+                  <span className="text-white hover:text-blue-300 transition-colors duration-200"> {/* Text color updated for better visibility */}
                     Signup
                   </span>
                 </Link>
                 <Link href="/login">
-                  <span className="text-black hover:text-blue-500 transition-colors duration-200">
+                  <span className="text-white hover:text-blue-300 transition-colors duration-200"> {/* Text color updated for better visibility */}
                     Login
                   </span>
                 </Link>

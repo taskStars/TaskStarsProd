@@ -48,7 +48,7 @@ const FriendsProductivity = () => {
 
 
  return (
-   <div className="flex flex-col h-full bg-gray-50 border-l border-gray-200 shadow-lg">
+   <div className="flex flex-col h-full bg-white ">
      {/* Friends' Productivity List */}
      <div className="flex-1 p-4 overflow-y-auto">
        <h2 className="text-2xl font-bold mb-4 text-gray-800">
