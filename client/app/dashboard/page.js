@@ -5,40 +5,44 @@ import TaskManager from "../../components/TaskManager";
 import LockInTimer from "@/components/LockInTimer";
 import TaskList from "../../components/TaskList";
 import Navbar from "@/components/Navbar";
+import AIModal from "@/components/OpenAITaskCreator/AIModal";
+import FriendSearch from "@/components/FriendSearch"; // Assuming this component exists
 
 const Dashboard = () => {
   return (
     <div className="min-h-screen flex flex-col overflow-hidden bg-white"> {/* Full height, white background */}
-      {/* Line above Navbar */}
       {/* Navbar */}
       <Navbar />
 
       {/* Main Dashboard Content */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-4 h-[calc(100vh-4rem)]"> {/* Full height grid layout without gaps */}
-
-        {/* Left Column: Lock-In Timer and Task Manager */}
-        <div className="flex flex-col h-full lg:col-span-1 border-r border-gray-300"> {/* Left column with right border */}
-          {/* Lock-In Timer Component */}
-          <div className="flex-1 border-b border-gray-300 flex items-center justify-center bg-white"> {/* Full height with bottom border */}
-            <LockInTimer />
+      <div className="container mx-auto mt-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Left Column */}
+          <div className="space-y-4">
+            <div className="rounded-lg shadow bg-gray-50">
+              <LockInTimer />
+            </div>
+            <div className="rounded-lg shadow bg-gray-50">
+              <TaskManager />
+            </div>
+            <div className="rounded-lg shadow bg-gray-50">
+              <FriendSearch />
+            </div>
+            <div>
+              <AIModal />
+            </div>
           </div>
 
-          {/* Task Manager Component */}
-          <div className="flex-1 flex items-center justify-center bg-white"> {/* Full height */}
-            <TaskManager />
+          {/* Middle Column: Task List */}
+          <div className="lg:col-span-2 h-full border-r border-gray-300 flex items-center justify-center bg-white">
+            <TaskList />
+          </div>
+
+          {/* Right Column: Friends Productivity */}
+          <div className="lg:col-span-1 h-full flex items-center justify-center bg-white">
+            <FriendsProductivity />
           </div>
         </div>
-
-        {/* Middle Column: Task List */}
-        <div className="lg:col-span-2 h-full border-r border-gray-300 flex items-center justify-center bg-white"> {/* Middle column with right border */}
-          <TaskList />
-        </div>
-
-        {/* Right Column: Friends Productivity */}
-        <div className="lg:col-span-1 h-full flex items-center justify-center bg-white"> {/* Right column */}
-          <FriendsProductivity />
-        </div>
-
       </div>
     </div>
   );
