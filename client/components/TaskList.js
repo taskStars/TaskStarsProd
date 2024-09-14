@@ -96,9 +96,9 @@ const TaskList = () => {
   if (loading) return <p>Loading tasks...</p>;
 
   return (
-    <div className="container mx-auto mt-8 p-8 bg-gray-100 shadow-lg">
+    <div className="w-full h-full bg-gray-100 shadow-lg p-4"> {/* Adjusted padding */}
       <h1 className="text-2xl font-bold mb-4 text-gray-900">Work Plan</h1>
-
+  
       {/* Date Selection Buttons */}
       <div className="flex space-x-2 mb-6">
         {Object.keys(sections).map((section, index) => (
