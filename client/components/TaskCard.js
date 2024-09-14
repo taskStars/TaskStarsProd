@@ -5,13 +5,12 @@ const TaskCard = ({ task }) => {
   const { title, description, deadline, priority, tags } = task;
   const [isDescriptionModalOpen, setDescriptionModalOpen] = useState(false);
 
+  // Toggle modal visibility
   const toggleDescriptionModal = () => {
-    console.log("Toggling Modal: ", !isDescriptionModalOpen); // Debugging
-    console.log("Task Data: ", task); // Debugging
     setDescriptionModalOpen(!isDescriptionModalOpen);
   };
 
-  // Calculate the number of days until the task is due
+  // Calculate days until due or overdue status
   const calculateDaysUntilDue = () => {
     const today = new Date();
     const taskDeadline = new Date(deadline);
@@ -23,10 +22,11 @@ const TaskCard = ({ task }) => {
     } else if (daysUntilDue === 0) {
       return "Due Today";
     } else {
-      return `Due in ${daysUntilDue} day${daysUntilDue > 1 ? 's' : ''}`;
+      return `Due in ${daysUntilDue} day${daysUntilDue > 1 ? "s" : ""}`;
     }
   };
 
+  // Handle task deletion
   const handleDelete = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -36,24 +36,35 @@ const TaskCard = ({ task }) => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/api/tasks/${task._id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `http://localhost:8080/api/tasks/${task._id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (response.ok) {
         console.log("Task deleted successfully");
         window.location.reload(); // Refresh the page after deletion
       } else {
-        console.error("Failed to delete task");
+        const errorData = await response.json();
+        console.error("Failed to delete task:", errorData.message);
+        alert(`Failed to delete task: ${errorData.message}`);
       }
     } catch (error) {
       console.error("Error deleting task:", error);
+      alert(`Error deleting task: ${error.message}`);
     }
   };
+
+  // Format date in UTC to avoid timezone issues
+  const formattedDeadline = new Date(deadline).toLocaleDateString("en-US", {
+    timeZone: "UTC",
+  });
 
   return (
     <>
@@ -67,7 +78,8 @@ const TaskCard = ({ task }) => {
             View Details
           </button>
         </td>
-        <td className="p-2 text-gray-600">{new Date(deadline).toLocaleDateString()}</td>
+        <td className="p-2 text-gray-600">{formattedDeadline}</td>{" "}
+        {/* Corrected date display */}
         <td className="p-2 text-gray-800">{calculateDaysUntilDue()}</td>
         <td className="p-2">
           <button
@@ -80,12 +92,25 @@ const TaskCard = ({ task }) => {
       </tr>
 
       {/* Description Modal */}
-      <DescriptionModal isOpen={isDescriptionModalOpen} onClose={toggleDescriptionModal}>
-        <h2 className="text-lg font-bold mb-2">{title || 'No Title'}</h2>
-        <p className="mb-2"><strong>Description:</strong> {description || 'No Description Available'}</p>
-        <p className="mb-2"><strong>Priority:</strong> {priority || 'No Priority Set'}</p>
-        <p className="mb-2"><strong>Tags:</strong> {tags && tags.length ? tags.join(", ") : 'No Tags Available'}</p>
-      </DescriptionModal>
+      {isDescriptionModalOpen && (
+        <DescriptionModal
+          isOpen={isDescriptionModalOpen}
+          onClose={toggleDescriptionModal}
+        >
+          <h2 className="text-lg font-bold mb-2">{title || "No Title"}</h2>
+          <p className="mb-2">
+            <strong>Description:</strong>{" "}
+            {description || "No Description Available"}
+          </p>
+          <p className="mb-2">
+            <strong>Priority:</strong> {priority || "No Priority Set"}
+          </p>
+          <p className="mb-2">
+            <strong>Tags:</strong>{" "}
+            {tags && tags.length ? tags.join(", ") : "No Tags Available"}
+          </p>
+        </DescriptionModal>
+      )}
     </>
   );
 };
