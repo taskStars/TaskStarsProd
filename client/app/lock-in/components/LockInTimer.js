@@ -106,65 +106,26 @@ const LockInTimer = () => {
     }${seconds}`;
   };
 
-  const handleTimeChange = (e) => {
-    const { name, value } = e.target;
-    let numericValue = parseInt(value, 10);
-
-    if (isNaN(numericValue) || numericValue < 0) numericValue = 0; // Validate input to avoid NaN and negative values
-
-    if (name === "hours") {
-      const newTime = numericValue * 3600 + (timeRemaining % 3600); // Convert hours to seconds and add to remaining minutes and seconds
-      setInitialTime(newTime);
-      setTimeRemaining(newTime);
-    } else if (name === "minutes") {
-      const newTime =
-        Math.floor(timeRemaining / 3600) * 3600 + // Keep current hours
-        numericValue * 60 + // Convert minutes to seconds
-        (timeRemaining % 60); // Keep current seconds
-      setInitialTime(newTime);
-      setTimeRemaining(newTime);
-    } else if (name === "seconds") {
-      const newTime =
-        Math.floor(timeRemaining / 60) * 60 + Math.min(numericValue, 59); // Ensure seconds don't exceed 59
-      setInitialTime(newTime);
-      setTimeRemaining(newTime);
-    }
+  const handleSliderChange = (e) => {
+    const newTime = parseInt(e.target.value, 10);
+    setInitialTime(newTime);
+    setTimeRemaining(newTime);
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 text-black">
       <h1 className="text-4xl font-bold mb-4">Lock-In Mode</h1>
-      <div className="flex items-center mb-4">
-        <input
-          type="text" // Changed to text to allow free typing
-          name="hours"
-          value={Math.floor(initialTime / 3600) || ""}
-          onChange={handleTimeChange}
-          className="w-20 p-2 mr-2 border border-gray-300 rounded"
-          placeholder="Hours"
-        />
-        <span className="text-2xl mr-2">:</span>
-        <input
-          type="text" // Changed to text to allow free typing
-          name="minutes"
-          value={Math.floor((initialTime % 3600) / 60) || ""}
-          onChange={handleTimeChange}
-          className="w-20 p-2 mr-2 border border-gray-300 rounded"
-          placeholder="Minutes"
-        />
-        <span className="text-2xl mr-2">:</span>
-        <input
-          type="text" // Changed to text to allow free typing
-          name="seconds"
-          value={initialTime % 60 || ""}
-          onChange={handleTimeChange}
-          className="w-20 p-2 border border-gray-300 rounded"
-          placeholder="Seconds"
-        />
-      </div>
-      <p className="text-2xl mb-6">
+      <p className="text-6xl mb-6">
         Time Remaining: {formatTime(timeRemaining)}
       </p>
+      <input
+        type="range"
+        min="0"
+        max="7200" // 2 hours in seconds
+        value={timeRemaining}
+        onChange={handleSliderChange}
+        className="w-full max-w-lg mb-6"
+      />
       <div className="space-x-4">
         <button
           onClick={handleStart}

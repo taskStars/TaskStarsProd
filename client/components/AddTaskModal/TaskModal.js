@@ -48,11 +48,11 @@ const TaskModal = ({ isOpen, onClose, onSave, generateDescription }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-700 bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-gradient-to-br from-blue-200 via-blue-300 to-blue-400 p-8 rounded-xl shadow-2xl max-w-md w-full relative">
+    <div className="fixed inset-0 bg-gray-800 bg-opacity-60 flex justify-center items-center z-50">
+      <div className="bg-[#1C2331] p-8 rounded-lg shadow-2xl max-w-md w-full relative">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-700 hover:text-red-500"
+          className="absolute top-4 right-4 text-white hover:text-[#F87171] transition duration-200"
         >
           ✕
         </button>
@@ -65,7 +65,7 @@ const TaskModal = ({ isOpen, onClose, onSave, generateDescription }) => {
             type="text"
             value={taskName}
             onChange={(e) => setTaskName(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-800"
+            className="mt-1 block w-full px-3 py-2 border border-[#0A1F44] rounded-full focus:outline-none focus:ring-2 focus:ring-[#3B5998] text-black"
             placeholder="Enter task name"
           />
         </div>
@@ -76,7 +76,7 @@ const TaskModal = ({ isOpen, onClose, onSave, generateDescription }) => {
           <textarea
             value={taskDescription}
             onChange={(e) => setTaskDescription(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-800"
+            className="mt-1 block w-full px-3 py-2 border border-[#0A1F44] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#3B5998] text-black"
             rows={3}
             placeholder="Enter task description"
           />
@@ -89,7 +89,7 @@ const TaskModal = ({ isOpen, onClose, onSave, generateDescription }) => {
             type="date"
             value={deadline}
             onChange={(e) => setDeadline(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-800"
+            className="mt-1 block w-full px-3 py-2 border border-[#0A1F44] rounded-full focus:outline-none focus:ring-2 focus:ring-[#3B5998] text-black"
           />
         </div>
 
@@ -99,7 +99,7 @@ const TaskModal = ({ isOpen, onClose, onSave, generateDescription }) => {
           <select
             value={priority}
             onChange={(e) => setPriority(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-800"
+            className="mt-1 block w-full px-3 py-2 border border-[#0A1F44] rounded-full focus:outline-none focus:ring-2 focus:ring-[#3B5998] text-black"
           >
             <option value="High">High</option>
             <option value="Medium">Medium</option>
@@ -114,7 +114,7 @@ const TaskModal = ({ isOpen, onClose, onSave, generateDescription }) => {
             type="text"
             value={tags}
             onChange={(e) => setTags(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 border border-blue-200 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-800"
+            className="mt-1 block w-full px-3 py-2 border border-[#0A1F44] rounded-full focus:outline-none focus:ring-2 focus:ring-[#3B5998] text-black"
             placeholder="e.g. work, important"
           />
         </div>
@@ -122,7 +122,7 @@ const TaskModal = ({ isOpen, onClose, onSave, generateDescription }) => {
         {/* Generate Description Button */}
         <button
           onClick={handleGenerateDescription}
-          className="mb-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 px-4 py-2 rounded-md w-full text-white font-bold shadow-md"
+          className="mb-4 bg-[#1E3A8A] hover:bg-[#34495E] px-4 py-2 rounded-full w-full text-white font-bold shadow-md transition duration-200"
         >
           Generate Description
         </button>
@@ -130,13 +130,13 @@ const TaskModal = ({ isOpen, onClose, onSave, generateDescription }) => {
         <div className="flex justify-end space-x-3">
           <button
             onClick={onClose}
-            className="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 px-4 py-2 rounded-md text-white font-bold shadow-md"
+            className="bg-[#E74C3C] hover:bg-[#C0392B] px-4 py-2 rounded-full text-white font-bold shadow-md transition duration-200"
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
-            className="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 px-4 py-2 rounded-md text-white font-bold shadow-md"
+            className="bg-[#27AE60] hover:bg-[#229954] px-4 py-2 rounded-full text-white font-bold shadow-md transition duration-200"
           >
             Save
           </button>

@@ -8,6 +8,7 @@ const LockInTimer = () => {
   const [timeRemaining, setTimeRemaining] = useState(1500); // Default to 25 minutes (1500 seconds)
   const [initialTime, setInitialTime] = useState(1500); // Initial time set for the timer (25 minutes)
   const [showModal, setShowModal] = useState(false);
+  const [showCongratsModal, setShowCongratsModal] = useState(false); // State for congrats modal
   const timerId = useRef(null); // Use a ref to store timerId to avoid re-renders
   const isSessionEnded = useRef(false); // Flag to prevent multiple calls to endSession
 
@@ -59,13 +60,14 @@ const LockInTimer = () => {
     clearInterval(timerId.current);
 
     if (isNaturalEnd) {
+      // Save only if the session ends naturally
       const timeElapsed = initialTime - remainingTime; // Calculate correct timeElapsed
       if (token && timeElapsed > 0) {
         saveProductivityData(timeElapsed + 1); // Add 1 second before saving the correct time elapsed
       } else {
         console.error("Invalid session or time elapsed is zero.");
       }
-      alert("Session completed! Your progress has been saved.");
+      setShowCongratsModal(true); // Show congrats modal instead of alert
     }
 
     setTimeRemaining(initialTime); // Reset the timer to initial time
@@ -104,108 +106,93 @@ const LockInTimer = () => {
     }${seconds}`;
   };
 
-  const handleTimeChange = (e) => {
-    const { name, value } = e.target;
-    let numericValue = parseInt(value, 10);
-
-    if (isNaN(numericValue) || numericValue < 0) numericValue = 0; // Validate input to avoid NaN and negative values
-
-    if (name === "hours") {
-      const newTime = numericValue * 3600 + (timeRemaining % 3600); // Convert hours to seconds and add to remaining minutes and seconds
-      setInitialTime(newTime);
-      setTimeRemaining(newTime);
-    } else if (name === "minutes") {
-      const newTime =
-        Math.floor(timeRemaining / 3600) * 3600 + // Keep current hours
-        numericValue * 60 + // Convert minutes to seconds
-        (timeRemaining % 60); // Keep current seconds
-      setInitialTime(newTime);
-      setTimeRemaining(newTime);
-    } else if (name === "seconds") {
-      const newTime =
-        Math.floor(timeRemaining / 60) * 60 + Math.min(numericValue, 59); // Ensure seconds don't exceed 59
-      setInitialTime(newTime);
-      setTimeRemaining(newTime);
-    }
+  const handleSliderChange = (e) => {
+    const newTime = parseInt(e.target.value, 10);
+    setInitialTime(newTime);
+    setTimeRemaining(newTime);
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-auto bg-white shadow-sm rounded-lg text-black max-w-sm mx-auto p-4"> {/* Adjusted padding */}
-  <h1 className="text-3xl font-bold mb-3 text-gray-800">Lock-In Mode</h1>
-  <div className="flex items-center mb-3"> {/* Added padding here */}
-    <input
-      type="text"
-      name="hours"
-      value={Math.floor(initialTime / 3600) || ""}
-      onChange={handleTimeChange}
-      className="w-16 p-2 mr-2 border border-gray-300 rounded text-center text-black" 
-      placeholder="Hrs"
-    />
-    <span className="text-2xl mr-2">:</span>
-    <input
-      type="text"
-      name="minutes"
-      value={Math.floor((initialTime % 3600) / 60) || ""}
-      onChange={handleTimeChange}
-      className="w-16 p-2 mr-2 border border-gray-300 rounded text-center text-black" 
-      placeholder="Min"
-    />
-    <span className="text-2xl mr-2">:</span>
-    <input
-      type="text"
-      name="seconds"
-      value={initialTime % 60 || ""}
-      onChange={handleTimeChange}
-      className="w-16 p-2 border border-gray-300 rounded text-center text-black" 
-      placeholder="Sec"
-    />
-  </div>
-  <p className="text-xl mb-3 text-gray-700"> {/* Adjusted margin for spacing */}
-    Time Remaining: {formatTime(timeRemaining)}
-  </p>
-      <div className="space-x-2">
-        <button
-          onClick={handleStart}
-          className="px-3 py-1 bg-gradient-to-r from-blue-400 to-purple-500 text-white rounded hover:from-blue-500 hover:to-purple-600 transition duration-300"
-          disabled={isLockedIn}
-        >
-          Start
-        </button>
-        <button
-          onClick={handlePause}
-          className="px-3 py-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded hover:from-yellow-500 hover:to-orange-600 transition duration-300"
-          disabled={!isLockedIn}
-        >
-          Pause
-        </button>
-        <button
-          onClick={handleEnd}
-          className="px-3 py-1 bg-gradient-to-r from-red-400 to-pink-500 text-white rounded hover:from-red-500 hover:to-pink-600 transition duration-300"
-        >
-          End
-        </button>
+    <div className="flex flex-col items-center justify-center py-2 bg-white text-black">
+      <div className="bg-white p-7  w-300">
+        <h1 className="text-2xl font-bold mb-4 text-center">Lock-In Mode</h1>
+        <p className="text-4xl font-bold mb-4 text-center">{formatTime(timeRemaining)}</p>
+        <input
+          type="range"
+          min="0"
+          max="7200" // 2 hours in seconds
+          value={timeRemaining}
+          onChange={handleSliderChange}
+          step="5" // Adjust step size to 30 seconds
+          className="w-full mb-4"
+        />
+        <div className="flex justify-center space-x-2">
+          <button
+            onClick={handleStart}
+            className="bg-[#2C3E50] text-white px-4 py-2 rounded-full hover:bg-[#34495E] transition duration-200"
+            disabled={isLockedIn}
+          >
+            Start
+          </button>
+          <button
+            onClick={handlePause}
+            className="bg-[#1A1A1A] text-white px-4 py-2 rounded-full hover:bg-[#333333] transition duration-200"
+            disabled={!isLockedIn}
+          >
+            Pause
+          </button>
+          <button
+            onClick={handleEnd}
+            className="bg-[#1E3A8A] text-white px-4 py-2 rounded-full hover:bg-[#1E40AF] transition duration-200"
+          >
+            End
+          </button>
+        </div>
       </div>
 
+      {/* Confirmation Modal */}
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-4 rounded shadow-lg text-center max-w-xs w-full">
-            <h2 className="text-lg font-bold mb-2 text-black">
+          <div className="bg-white p-4 shadow-md border border-gray-200 w-80">
+            <h2 className="text-lg font-bold mb-2 text-black text-center">
               Are you sure you want to quit?
             </h2>
-            <p className="mb-4 text-black">
+            <p className="mb-4 text-center text-black">
               All progress from this current timer will be lost.
             </p>
+            <div className="flex justify-center space-x-2">
+              <button
+                onClick={confirmEndSession}
+                className="px-4 py-2 text-white bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700"
+              >
+                Yes, Quit
+              </button>
+              <button
+                onClick={cancelEndSession}
+                className="px-4 py-2 text-white bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700"
+              >
+                No, Continue
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Congratulations Modal */}
+      {showCongratsModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-4 shadow-md border border-gray-200 w-80">
+            <h2 className="text-lg font-bold mb-2 text-black text-center">
+              Congratulations!
+            </h2>
+            <p className="mb-4 text-center text-black">
+              You have been productive for {formatTime(initialTime)}!
+            </p>
             <button
-              onClick={confirmEndSession}
-              className="px-3 py-1 bg-red-500 text-white rounded mr-2"
+              onClick={() => setShowCongratsModal(false)}
+              className="px-4 py-2 text-white bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700"
             >
-              Yes, Quit
-            </button>
-            <button
-              onClick={cancelEndSession}
-              className="px-3 py-1 bg-green-500 text-white rounded"
-            >
-              No, Continue
+              Close
             </button>
           </div>
         </div>

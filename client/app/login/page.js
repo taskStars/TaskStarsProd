@@ -51,15 +51,16 @@ export default function LoginPage() {
     <div>
       {/* Navbar Component */}
       <Navbar />
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-100 to-white">
-        <div className="relative bg-white bg-gradient-to-br from-blue-200 via-blue-300 to-blue-400 p-8 rounded-xl shadow-2xl w-full max-w-md text-black">
+      <div className="min-h-screen flex items-center justify-center bg-white"> {/* Updated solid background color */}
+        <div className="relative bg-[#1C2331] p-8 rounded-xl shadow-2xl w-full max-w-md text-white"> {/* Updated box color */}
           {/* Adjusted Heading */}
-          <h1 className="text-3xl font-bold mb-6 text-center text-white">Log In</h1>
+          <h1 className="text-3xl font-bold mb-6 text-center">Log In</h1>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-white">
                 Email:
               </label>
+              {/* Updated input styles */}
               <input
                 type="email"
                 id="email"
@@ -67,13 +68,14 @@ export default function LoginPage() {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="mt-1 p-2 w-full border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
+                className="mt-1 p-2 w-full border border-[#0A1F44] rounded-md focus:outline-none focus:ring-2 focus:ring-[#3B5998] text-black"
               />
             </div>
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-white">
                 Password:
               </label>
+              {/* Updated input styles */}
               <input
                 type="password"
                 id="password"
@@ -81,12 +83,12 @@ export default function LoginPage() {
                 value={formData.password}
                 onChange={handleChange}
                 required
-                className="mt-1 p-2 w-full border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
+                className="mt-1 p-2 w-full border border-[#0A1F44] rounded-md focus:outline-none focus:ring-2 focus:ring-[#3B5998] text-black"
               />
             </div>
             <button
               type="submit"
-              className="w-full py-2 px-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded hover:from-blue-600 hover:to-purple-700 transition duration-200 font-bold shadow-md"
+              className="w-full py-2 px-4 bg-[#0A1F44] text-white rounded hover:bg-[#1C2331] transition duration-200 font-bold shadow-md"
             >
               Log In
             </button>
@@ -96,13 +98,13 @@ export default function LoginPage() {
             <p className="text-center text-sm mb-4 text-white">Or sign in with:</p>
             <button
               onClick={() => router.push("http://localhost:3000/api/auth/signin")}
-              className="w-full py-2 px-4 mb-2 bg-gradient-to-r from-red-500 to-pink-600 text-white rounded hover:from-red-600 hover:to-pink-700 transition duration-200 font-bold shadow-md"
+              className="w-full py-2 px-4 mb-2 bg-[#3B5998] text-white rounded hover:bg-[#1C2331] transition duration-200 font-bold shadow-md"
             >
               Sign in with Google
             </button>
             <button
               onClick={() => router.push("http://localhost:3000/api/auth/signin")}
-              className="w-full py-2 px-4 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded hover:from-gray-900 hover:to-black transition duration-200 font-bold shadow-md"
+              className="w-full py-2 px-4 bg-[#1C2331] text-white rounded hover:bg-[#0A1F44] transition duration-200 font-bold shadow-md"
             >
               Sign in with GitHub
             </button>

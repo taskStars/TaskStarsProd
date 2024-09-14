@@ -1,15 +1,15 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import TaskCard from "./TaskCard"; // Ensure the import path is correct
+import TaskCard from "./TaskCard";
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedDate, setSelectedDate] = useState(null); // State to track selected date
+  const [selectedSection, setSelectedSection] = useState("Today's Tasks");
 
   useEffect(() => {
     const fetchTasks = async () => {
-      const token = localStorage.getItem("token"); // Retrieve token from localStorage
+      const token = localStorage.getItem("token");
       if (!token) {
         console.error("No token found, user is not authenticated.");
         setLoading(false);
@@ -23,7 +23,7 @@ const TaskList = () => {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`, // Include token for protected routes
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -47,65 +47,104 @@ const TaskList = () => {
     fetchTasks();
   }, []);
 
+  // Corrected time categorization
+  const today = new Date();
+  const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0, 0);
+  const endOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59, 999);
+
+  // Start and end of the current week (Monday to Sunday)
+  const startOfThisWeek = new Date(today);
+  startOfThisWeek.setDate(today.getDate() - today.getDay() + 1); // Monday
+  startOfThisWeek.setHours(0, 0, 0, 0);
+
+  const endOfThisWeek = new Date(startOfThisWeek);
+  endOfThisWeek.setDate(startOfThisWeek.getDate() + 6); // Sunday
+  endOfThisWeek.setHours(23, 59, 59, 999);
+
+  // Start and end of the next week
+  const startOfNextWeek = new Date(endOfThisWeek);
+  startOfNextWeek.setDate(endOfThisWeek.getDate() + 1); // Monday after this Sunday
+  startOfNextWeek.setHours(0, 0, 0, 0);
+
+  const endOfNextWeek = new Date(startOfNextWeek);
+  endOfNextWeek.setDate(startOfNextWeek.getDate() + 6); // Next Sunday
+  endOfNextWeek.setHours(23, 59, 59, 999);
+
+  // Start and end of next month
+  const startOfNextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+  const endOfNextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 0); // Last day of next month
+  endOfNextMonth.setHours(23, 59, 59, 999);
+
+  const todayTasks = tasks.filter(
+    (task) => new Date(task.deadline) >= startOfToday && new Date(task.deadline) <= endOfToday
+  );
+
+  const nextWeekTasks = tasks.filter(
+    (task) => new Date(task.deadline) >= startOfNextWeek && new Date(task.deadline) <= endOfNextWeek
+  );
+
+  const nextMonthTasks = tasks.filter(
+    (task) => new Date(task.deadline) > endOfNextWeek && new Date(task.deadline) <= endOfNextMonth
+  );
+
+  const sections = {
+    "Today's Tasks": todayTasks,
+    "Next Week": nextWeekTasks,
+    "Next Month": nextMonthTasks,
+  };
+
   if (loading) return <p>Loading tasks...</p>;
 
-  // Group tasks by date
-  const tasksByDate = tasks.reduce((group, task) => {
-    const date = new Date(task.deadline).toLocaleDateString("en-US", {
-      weekday: "short",
-      month: "long",
-      day: "numeric",
-    });
-    if (!group[date]) {
-      group[date] = [];
-    }
-    group[date].push(task);
-    return group;
-  }, {});
-
-  const dates = Object.keys(tasksByDate); // Get all unique dates
-
   return (
-    <div className="container mx-auto mt-8 p-8 flex flex-col items-center bg-gray-50 shadow-lg rounded-xl">
-      <h1 className="text-3xl font-bold mb-4 text-gray-900">
-        Tasks
-      </h1>
+    <div className="container mx-auto mt-8 p-8 bg-gray-100 shadow-lg">
+      <h1 className="text-2xl font-bold mb-4 text-gray-900">Work Plan</h1>
 
-      {/* Dates Display */}
-      <div className="flex overflow-x-auto mb-8 space-x-4 p-3 max-w-xl w-full justify-center bg-gray-100 rounded-lg">
-        {dates.map((date) => (
+      {/* Date Selection Buttons */}
+      <div className="flex space-x-2 mb-6">
+        {Object.keys(sections).map((section, index) => (
           <button
-            key={date}
-            className={`px-6 py-3 rounded-md transition-all duration-300 shadow-md ${
-              selectedDate === date
-                ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white"
-                : "bg-gradient-to-r from-gray-300 to-gray-400 text-gray-800 hover:from-gray-400 hover:to-gray-500"
+            key={section}
+            className={`px-4 py-2 text-sm font-medium transition-all duration-300 shadow rounded-full ${
+              selectedSection === section
+                ? index === 0
+                  ? "bg-[#3949AB] text-white"
+                  : index === 1
+                  ? "bg-[#283593] text-white"
+                  : "bg-[#1A237E] text-white border border-[#3949AB]"
+                : "bg-grey text-black border border-black hover:bg-[#BBDEFB] hover:text-[#283593]"
             }`}
-            onClick={() => setSelectedDate(date)}
+            onClick={() => setSelectedSection(section)}
           >
-            {date}
+            {section}
           </button>
         ))}
       </div>
 
-      {/* Task List for Selected Date */}
-      <div className="bg-white rounded-xl shadow-xl p-6 max-w-xl w-full">
-        {selectedDate ? (
-          <div>
-            <h2 className="text-xl font-semibold mb-4 text-gray-700">
-              {selectedDate} 
-            </h2>
-            <div className="space-y-4 max-h-[450px] overflow-y-auto">
-              {tasksByDate[selectedDate].map((task) => (
+      {/* Task List for Selected Section */}
+      <div className="bg-white shadow p-4 w-full">
+        <table className="w-full border-collapse">
+          <thead>
+            <tr className="border-b">
+              <th className="p-2 text-left font-semibold text-gray-600">Name</th>
+              <th className="p-2 text-left font-semibold text-gray-600">Description</th>
+              <th className="p-2 text-left font-semibold text-gray-600">Date</th>
+              <th className="p-2 text-left font-semibold text-gray-600">Due In</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sections[selectedSection].length > 0 ? (
+              sections[selectedSection].map((task) => (
                 <TaskCard key={task._id} task={task} />
-              ))}
-            </div>
-          </div>
-        ) : (
-          <p className="text-center text-gray-600">
-            Select a date to view tasks
-          </p>
-        )}
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" className="text-center text-gray-600 py-4">
+                  No tasks found for this section.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );
