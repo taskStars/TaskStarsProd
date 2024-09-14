@@ -1,12 +1,16 @@
+// app/dashboard/page.js
+
 import FriendsProductivity from "@/components/FriendsProductivity";
 import TaskManager from "../../components/TaskManager";
 import LockInTimer from "@/components/LockInTimer";
 import TaskList from "../../components/TaskList";
 import Navbar from "@/components/Navbar";
+import AIModal from "@/components/OpenAITaskCreator/AIModal";
+import FriendSearch from "@/components/FriendSearch"; // Assuming this component exists
 
 const Dashboard = () => {
   return (
-    <div className="min-h-screen flex flex-col overflow-hidden bg-white">
+    <div className="min-h-screen flex flex-col overflow-hidden bg-white"> {/* Full height, white background */}
       {/* Navbar */}
       <Navbar />
 
