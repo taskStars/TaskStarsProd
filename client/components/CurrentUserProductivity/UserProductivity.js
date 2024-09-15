@@ -58,7 +58,7 @@ const UserProductivity = () => {
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return <div className="text-black text-center">{error}</div>;
   }
 
   return (
