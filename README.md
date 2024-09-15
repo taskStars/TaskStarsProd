@@ -6,7 +6,6 @@ TaskStars is a collaborative task management platform designed to enhance produc
 
 - **Task Creation and Management**: Easily create and manage tasks with options to set due dates, priorities, and labels for efficient organization.
 - **Project Management**: Organize tasks under different projects, track progress, and get a clear overview of ongoing work.
-- **Collaborative Features**: Invite team members to collaborate on tasks and projects, ensuring everyone stays on the same page.
 - **Real-Time Updates**: Integrated with Socket.IO to provide real-time notifications and updates for task changes and project activities.
 - **Kanban Boards**: Visualize task progress using Kanban boards, allowing easy drag-and-drop task management.
 - **User Authentication**: Secure login and registration system with email-based authentication.
