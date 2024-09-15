@@ -3,6 +3,7 @@ const { Strategy: JwtStrategy, ExtractJwt } = require("passport-jwt");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const GitHubStrategy = require("passport-github2").Strategy;
 const jwt = require("jsonwebtoken");
+const axios = require("axios"); // Add axios to make HTTP requests
 const User = require("../models/User"); // Import the User model
 
 // JWT Strategy Options
@@ -62,8 +63,12 @@ passport.use(
         // If user doesn't exist, create a new user
         user = new User({
           googleId: profile.id,
-          username: profile.displayName,
-          email: profile.emails[0].value, // If you need the user's email
+          username: profile.displayName, // Use displayName as the username
+          name: profile.displayName, // Save the full name to the 'name' field
+          email:
+            profile.emails && profile.emails[0]
+              ? profile.emails[0].value
+              : null, // Added check for emails array
         });
 
         await user.save();
@@ -94,11 +99,42 @@ passport.use(
           return done(null, { user, token });
         }
 
-        // If user doesn't exist, create a new user
+        // If user doesn't exist, attempt to fetch emails using GitHub API
+        let email =
+          profile.emails && profile.emails[0] ? profile.emails[0].value : null;
+
+        if (!email) {
+          // Fetch emails using GitHub API if profile.emails is not available
+          const emailResponse = await axios.get(
+            "https://api.github.com/user/emails",
+            {
+              headers: {
+                Authorization: `token ${accessToken}`,
+              },
+            }
+          );
+
+          // Find the primary email from the response
+          const primaryEmail = emailResponse.data.find(
+            (emailObj) => emailObj.primary && emailObj.verified
+          );
+          email = primaryEmail ? primaryEmail.email : null;
+        }
+
+        // Check if email is still not available
+        if (!email) {
+          return done(
+            new Error("Email is required but not provided by GitHub"),
+            null
+          );
+        }
+
+        // Create a new user
         user = new User({
           githubId: profile.id,
           username: profile.username,
-          email: profile.emails[0].value, // If you need the user's email
+          name: profile.displayName || profile.username, // Use displayName if available, fallback to username
+          email, // Use the fetched or available email
         });
 
         await user.save();
