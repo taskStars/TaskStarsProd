@@ -1,6 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import io from "socket.io-client"; // Import socket.io-client
 import TaskCard from "./TaskCard";
+
+const socket = io("http://localhost:8080"); // Connect to your Socket.IO server
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]); // State to store tasks
@@ -45,6 +48,29 @@ const TaskList = () => {
     };
 
     fetchTasks();
+
+    // Socket.IO event listeners
+    socket.on("task_added", (newTask) => {
+      setTasks((prevTasks) => [...prevTasks, newTask]);
+    });
+
+    socket.on("task_updated", (updatedTask) => {
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task._id === updatedTask._id ? updatedTask : task
+        )
+      );
+    });
+
+    socket.on("task_deleted", (taskId) => {
+      setTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId));
+    });
+
+    return () => {
+      socket.off("task_added");
+      socket.off("task_updated");
+      socket.off("task_deleted");
+    };
   }, []);
 
   // Helper function to create a date at midnight in UTC
