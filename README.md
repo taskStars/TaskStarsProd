@@ -19,7 +19,7 @@ TaskStars is currently deployed on ...
 
 ## 🛠️ Technologies Used
 
-- **Frontend**: React, JavaScript, Material-UI
+- **Frontend**: Next.js/React, JavaScript, Material-UI
 - **Backend**: Node.js, Express.js
 - **Database**: MongoDB
 - **Authentication**: Passport.js
