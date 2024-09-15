@@ -61,7 +61,7 @@ const TaskManager = () => {
   };
 
   return (
-    <div className="p- bg-white"> {/* Updated background and added shadow */}
+    <div className="flex flex-col space-y-4 items-center"> {/* Updated background and added shadow */}
       {/* <h1 className="text-2xl font-bold mb-6 text-gray-800">Task Manager</h1> Changed text color to gray-800 */}
       {/* Use the ModalButton and pass the API functions */}
       <ModalButton

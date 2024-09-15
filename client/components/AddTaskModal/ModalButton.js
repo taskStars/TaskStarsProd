@@ -19,7 +19,7 @@ const ModalButton = ({ onSave, generateDescription }) => {
     <div>
       <button
         onClick={handleButtonClick}
-        className="bg-[#1E3A8A] text-white text-2xl px-10 py-7 rounded-full hover:bg-[#1E40AF] transition duration-200"
+        className="bg-[#1E3A8A] text-white text-xl px-5 py-3 rounded-full hover:bg-[#1E40AF] transition duration-200"
         aria-label="Add a new task"
         role="button"
       >

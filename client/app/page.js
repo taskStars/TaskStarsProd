@@ -98,7 +98,7 @@ export default function Home() {
           </div>
         </section>
 
-        <APIMessage />
+        
       </main>
     </>
   );
