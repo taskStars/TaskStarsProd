@@ -10,6 +10,7 @@
   "description": "",
   "dependencies": {
     "aws4": "^1.13.2",
+    "axios": "^1.7.7",
     "bcryptjs": "^2.4.3",
     "chrono-node": "^2.7.6",
     "cors": "^2.8.5",
@@ -22,6 +23,7 @@
     "nodemon": "^3.1.4",
     "openai": "^4.58.1",
     "passport": "^0.7.0",
+    "passport-github2": "^0.1.12",
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.1",
     "react": "^18.3.1",

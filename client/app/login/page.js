@@ -51,16 +51,17 @@ export default function LoginPage() {
     <div>
       {/* Navbar Component */}
       <Navbar />
-      <div className="min-h-screen flex items-center justify-center bg-white"> {/* Updated solid background color */}
-        <div className="relative bg-[#1C2331] p-8 rounded-xl shadow-2xl w-full max-w-md text-white"> {/* Updated box color */}
-          {/* Adjusted Heading */}
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="relative bg-[#1C2331] p-8 rounded-xl shadow-2xl w-full max-w-md text-white">
           <h1 className="text-3xl font-bold mb-6 text-center">Log In</h1>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-white">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-white"
+              >
                 Email:
               </label>
-              {/* Updated input styles */}
               <input
                 type="email"
                 id="email"
@@ -72,10 +73,12 @@ export default function LoginPage() {
               />
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-white">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-white"
+              >
                 Password:
               </label>
-              {/* Updated input styles */}
               <input
                 type="password"
                 id="password"
@@ -93,21 +96,26 @@ export default function LoginPage() {
               Log In
             </button>
           </form>
+
           {/* Sign in with Google/GitHub buttons */}
           <div className="mt-6">
-            <p className="text-center text-sm mb-4 text-white">Or sign in with:</p>
-            <button
-              onClick={() => router.push("http://localhost:3000/api/auth/signin")}
-              className="w-full py-2 px-4 mb-2 bg-[#3B5998] text-white rounded hover:bg-[#1C2331] transition duration-200 font-bold shadow-md"
+            <p className="text-center text-sm mb-4 text-white">
+              Or sign in with:
+            </p>
+            {/* OAuth login for Google */}
+            <a
+              href="http://localhost:8080/api/auth/google"
+              className="w-full block py-2 px-4 mb-2 bg-[#3B5998] text-white rounded hover:bg-[#1C2331] transition duration-200 font-bold shadow-md text-center"
             >
               Sign in with Google
-            </button>
-            <button
-              onClick={() => router.push("http://localhost:3000/api/auth/signin")}
-              className="w-full py-2 px-4 bg-[#1C2331] text-white rounded hover:bg-[#0A1F44] transition duration-200 font-bold shadow-md"
+            </a>
+            {/* OAuth login for GitHub */}
+            <a
+              href="http://localhost:8080/api/auth/github"
+              className="w-full block py-2 px-4 bg-[#1C2331] text-white rounded hover:bg-[#0A1F44] transition duration-200 font-bold shadow-md text-center"
             >
               Sign in with GitHub
-            </button>
+            </a>
           </div>
           {message && (
             <p className="mt-4 text-center text-sm text-red-500">{message}</p>

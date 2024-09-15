@@ -1,5 +1,4 @@
-// controllers/authController.js
-const bcrypt = require("bcryptjs"); // Use bcryptjs instead of bcrypt
+const bcrypt = require("bcryptjs"); // Use bcryptjs for password hashing
 const jwt = require("jsonwebtoken");
 const User = require("../models/User"); // Import the User model
 
@@ -21,7 +20,7 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ message: "User already exists." });
     }
 
-    // Create new user; password will be hashed by pre-save hook
+    // Create a new user; password will be hashed by pre-save hook
     const newUser = new User({
       email: email.trim(),
       password: password, // The password is in plain text; it will be hashed by the pre-save hook
