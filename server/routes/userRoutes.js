@@ -5,7 +5,9 @@ const {
   loginUser,
   getUserProfile,
   getFriendsProductivity,
-  addFriend, searchUsers
+  addFriend,
+  searchUsers,
+  getUserProductivity,
 } = require("../controllers/userController");
 const { protect } = require("../middlewares/authMiddleware");
 
@@ -20,5 +22,6 @@ router.post("/addFriend", protect, addFriend);
 router.get("/profile", getUserProfile); // Remove `protect` middleware temporarily
 router.get("/friendsProductivity", protect, getFriendsProductivity);
 router.get("/search", protect, searchUsers);
+router.get("/productivity", protect, getUserProductivity);
 
 module.exports = router;

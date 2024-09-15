@@ -6,6 +6,7 @@ import TaskList from "../../components/TaskList";
 import Navbar from "@/components/Navbar";
 import AIModal from "@/components/OpenAITaskCreator/AIModal";
 import FriendSearch from "@/components/SearchUser/FriendSearch"; 
+import UserProductivity from "@/components/CurrentUserProductivity/UserProductivity";
 
 const Dashboard = () => {
   return (
@@ -20,6 +21,10 @@ const Dashboard = () => {
           <div className="flex-1 border-b border-gray-300 flex items-center justify-center bg-white">
             <LockInTimer />
           </div>
+          <div className="flex-1 border-b border-gray-300 flex items-center justify-center bg-white">
+            <UserProductivity></UserProductivity>
+          </div>
+          
           <div className="flex-1 flex items-center justify-center bg-white">
             <TaskManager />
           </div>
