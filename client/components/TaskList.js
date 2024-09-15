@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import TaskCard from "./TaskCard";
 
 const TaskList = () => {
-  const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedSection, setSelectedSection] = useState("Today's Tasks");
+  const [tasks, setTasks] = useState([]); // State to store tasks
+  const [loading, setLoading] = useState(true); // State to manage loading state
+  const [selectedSection, setSelectedSection] = useState("Today"); // State to manage selected section
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -61,22 +61,15 @@ const TaskList = () => {
   endOfToday.setUTCDate(endOfToday.getUTCDate() + 1);
   endOfToday.setUTCMilliseconds(-1);
 
-  // Start and end of the current week (Monday to Sunday)
-  const startOfThisWeek = getUTCMidnightDate(today);
-  startOfThisWeek.setUTCDate(today.getUTCDate() - today.getUTCDay() + 1); // Monday
+  // Define the next 7 days range
+  const endOfNext7Days = new Date(startOfToday);
+  endOfNext7Days.setUTCDate(endOfNext7Days.getUTCDate() + 7);
+  endOfNext7Days.setUTCHours(23, 59, 59, 999);
 
-  const endOfThisWeek = new Date(startOfThisWeek);
-  endOfThisWeek.setUTCDate(startOfThisWeek.getUTCDate() + 6); // Sunday
-  endOfThisWeek.setUTCHours(23, 59, 59, 999);
-
-  // Start and end of the next week
-  const startOfNextWeek = new Date(endOfThisWeek);
-  startOfNextWeek.setUTCDate(endOfThisWeek.getUTCDate() + 1); // Monday after this Sunday
-  startOfNextWeek.setUTCHours(0, 0, 0, 0);
-
-  const endOfNextWeek = new Date(startOfNextWeek);
-  endOfNextWeek.setUTCDate(startOfNextWeek.getUTCDate() + 6); // Next Sunday
-  endOfNextWeek.setUTCHours(23, 59, 59, 999);
+  // Define the next 14 days range
+  const endOfNext14Days = new Date(startOfToday);
+  endOfNext14Days.setUTCDate(endOfNext14Days.getUTCDate() + 14);
+  endOfNext14Days.setUTCHours(23, 59, 59, 999);
 
   // Start and end of this month
   const startOfThisMonth = new Date(
@@ -94,29 +87,32 @@ const TaskList = () => {
       new Date(task.deadline) <= endOfToday
   );
 
-  const thisWeekTasks = tasks.filter(
+  const next7DaysTasks = tasks.filter(
     (task) =>
-      new Date(task.deadline) >= startOfThisWeek &&
-      new Date(task.deadline) <= endOfThisWeek
+      new Date(task.deadline) > endOfToday &&
+      new Date(task.deadline) <= endOfNext7Days
   );
 
-  const nextWeekTasks = tasks.filter(
+  const next14DaysTasks = tasks.filter(
     (task) =>
-      new Date(task.deadline) >= startOfNextWeek &&
-      new Date(task.deadline) <= endOfNextWeek
+      new Date(task.deadline) > endOfNext7Days &&
+      new Date(task.deadline) <= endOfNext14Days
   );
 
   const thisMonthTasks = tasks.filter(
     (task) =>
-      new Date(task.deadline) > endOfNextWeek &&
+      new Date(task.deadline) > endOfNext14Days &&
       new Date(task.deadline) <= endOfThisMonth
   );
 
+  const allTimeTasks = tasks; // All tasks without any filtering
+
   const sections = {
-    "Today's Tasks": todayTasks,
-    "This Week": thisWeekTasks,
-    "Next Week": nextWeekTasks,
+    Today: todayTasks,
+    "Next 7 Days": next7DaysTasks,
+    "Next 14 Days": next14DaysTasks,
     "This Month": thisMonthTasks,
+    "All Time": allTimeTasks,
   };
 
   if (loading) return <p>Loading tasks...</p>;
@@ -138,7 +134,9 @@ const TaskList = () => {
                   ? "bg-[#283593] text-white"
                   : index === 2
                   ? "bg-[#1A237E] text-white border border-[#3949AB]"
-                  : "bg-[#283593] text-white border border-[#3949AB]"
+                  : index === 3
+                  ? "bg-[#283593] text-white border border-[#3949AB]"
+                  : "bg-[#3949AB] text-white border border-[#3949AB]"
                 : "bg-grey text-black border border-black hover:bg-[#BBDEFB] hover:text-[#283593]"
             }`}
             onClick={() => setSelectedSection(section)}
