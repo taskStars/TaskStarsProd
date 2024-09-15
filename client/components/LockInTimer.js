@@ -163,13 +163,13 @@ const LockInTimer = () => {
             <div className="flex justify-center space-x-2">
               <button
                 onClick={confirmEndSession}
-                className="px-4 py-2 text-white bg-gradient-to-r from-red-400 to-red-600 hover:from-red-500 hover:to-red-700"
+                className="px-4 py-2 bg-[#1A1A1A] text-white rounded-full hover:bg-[#333333] transition duration-200"
               >
                 Yes, Quit
               </button>
               <button
                 onClick={cancelEndSession}
-                className="px-4 py-2 text-white bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700"
+                className="bg-[#1E3A8A] text-white px-4 py-2 rounded-full hover:bg-[#1E40AF] transition duration-200"
               >
                 No, Continue
               </button>

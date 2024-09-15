@@ -50,7 +50,7 @@ const AIModal = () => {
       {/* Button to open modal */}
       <button
         onClick={openModal}
-        className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+        className="bg-[#1E3A8A] text-white text-xl px-5 py-3 rounded-full hover:bg-[#1E40AF] transition duration-200"
       >
         Use AI to Generate Tasks
       </button>
