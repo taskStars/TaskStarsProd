@@ -1,12 +1,16 @@
+// app/dashboard/page.js
 import FriendsProductivity from "@/components/FriendsProductivity";
 import TaskManager from "../../components/TaskManager";
 import LockInTimer from "@/components/LockInTimer";
 import TaskList from "../../components/TaskList";
 import Navbar from "@/components/Navbar";
+import AIModal from "@/components/OpenAITaskCreator/AIModal";
+import FriendSearch from "@/components/SearchUser/FriendSearch"; 
+import UserProductivity from "@/components/CurrentUserProductivity/UserProductivity";
 
 const Dashboard = () => {
   return (
-    <div className="min-h-screen flex flex-col overflow-hidden bg-white">
+    <div className="min-h-screen flex flex-col overflow-hidden bg-white"> {/* Full height, white background */}
       {/* Navbar */}
       <Navbar />
 
@@ -17,6 +21,10 @@ const Dashboard = () => {
           <div className="flex-1 border-b border-gray-300 flex items-center justify-center bg-white">
             <LockInTimer />
           </div>
+          <div className="flex-1 border-b border-gray-300 flex items-center justify-center bg-white">
+            <UserProductivity></UserProductivity>
+          </div>
+          
           <div className="flex-1 flex items-center justify-center bg-white">
             <TaskManager />
           </div>

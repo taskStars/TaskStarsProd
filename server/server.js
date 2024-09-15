@@ -5,59 +5,74 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const next = require("next");
-const passport = require("./config/passportConfig"); // Import Passport configuration
+const passport = require("./config/passportConfig");
 const cors = require("cors");
-const connectDB = require("./config/db"); // Import your custom DB connection
+const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
-const taskRoutes = require("./routes/taskRoutes"); // Task routes
-const productivityRoutes = require("./routes/productivityRoutes"); // Import Productivity routes
+const taskRoutes = require("./routes/taskRoutes");
+const productivityRoutes = require("./routes/productivityRoutes");
 
-// Initialize Express app
+// Initialize Express app and server
 const app = express();
+const http = require("http");
+const server = http.createServer(app);
+
+// Initialize Socket.IO with the server
+const { Server } = require("socket.io");
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000", // Allow frontend URL
+    credentials: true,
+  },
+});
 
 // Database Connection
-connectDB(); // Connect to MongoDB using your custom connection file
+connectDB();
 
 // Next.js setup
 const dev = process.env.NODE_ENV !== "production";
-const nextApp = next({ dev, dir: "../client" }); // Ensure this path is correct
+const nextApp = next({ dev, dir: "../client" });
 const handle = nextApp.getRequestHandler();
 
 // Middleware
 app.use(
   cors({
-    origin: "http://localhost:3000", // Allow frontend URL
-    credentials: true, // If using cookies for sessions
+    origin: "http://localhost:3000",
+    credentials: true,
   })
-); // Add CORS middleware to prevent CORS issues
+);
 app.use(express.json());
-app.use(passport.initialize()); // Initialize Passport middleware
+app.use(passport.initialize());
 
-// Test Route - Keep this above the Next.js handler
+// Socket.IO connection handling
+io.on("connection", (socket) => {
+  console.log("A user connected");
+
+  socket.on("disconnect", () => {
+    console.log("A user disconnected");
+  });
+});
+
+// Test Route
 app.get("/test", (req, res) => {
   res.json({ message: "API is working properly!" });
 });
 
 // Routes
-app.use("/api/auth", authRoutes); // Authentication routes
-app.use("/api/users", userRoutes); // User routes
-app.use("/api/tasks", taskRoutes); // Task routes
-app.use("/api/productivity", productivityRoutes); // Register Productivity routes
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/tasks", taskRoutes(io)); // Pass io to task routes
+app.use("/api/productivity", productivityRoutes);
 
 // Next.js handling
 nextApp
   .prepare()
   .then(() => {
-    // Handle all other routes with Next.js
-    app.get("*", (req, res) => {
-      return handle(req, res);
-    });
+    app.get("*", (req, res) => handle(req, res));
 
     // Start the server
     const PORT = process.env.PORT || 8080;
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   })
-  .catch((err) => {
-    console.error("Error preparing Next.js app:", err);
-  });
+  .catch((err) => console.error("Error preparing Next.js app:", err));

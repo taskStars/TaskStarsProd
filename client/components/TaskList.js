@@ -1,11 +1,14 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import io from "socket.io-client"; // Import socket.io-client
 import TaskCard from "./TaskCard";
 
+const socket = io("http://localhost:8080"); // Connect to your Socket.IO server
+
 const TaskList = () => {
-  const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedSection, setSelectedSection] = useState("Today's Tasks");
+  const [tasks, setTasks] = useState([]); // State to store tasks
+  const [loading, setLoading] = useState(true); // State to manage loading state
+  const [selectedSection, setSelectedSection] = useState("Today"); // State to manage selected section
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -45,60 +48,105 @@ const TaskList = () => {
     };
 
     fetchTasks();
+
+    // Socket.IO event listeners
+    socket.on("task_added", (newTask) => {
+      setTasks((prevTasks) => [...prevTasks, newTask]);
+    });
+
+    socket.on("task_updated", (updatedTask) => {
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task._id === updatedTask._id ? updatedTask : task
+        )
+      );
+    });
+
+    socket.on("task_deleted", (taskId) => {
+      setTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId));
+    });
+
+    return () => {
+      socket.off("task_added");
+      socket.off("task_updated");
+      socket.off("task_deleted");
+    };
   }, []);
 
-  // Corrected time categorization
+  // Helper function to create a date at midnight in UTC
+  const getUTCMidnightDate = (date) => {
+    const utcDate = new Date(
+      Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())
+    );
+    return utcDate;
+  };
+
   const today = new Date();
-  const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0, 0);
-  const endOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59, 999);
+  const startOfToday = getUTCMidnightDate(today);
+  const endOfToday = new Date(startOfToday);
+  endOfToday.setUTCDate(endOfToday.getUTCDate() + 1);
+  endOfToday.setUTCMilliseconds(-1);
 
-  // Start and end of the current week (Monday to Sunday)
-  const startOfThisWeek = new Date(today);
-  startOfThisWeek.setDate(today.getDate() - today.getDay() + 1); // Monday
-  startOfThisWeek.setHours(0, 0, 0, 0);
+  // Define the next 7 days range
+  const endOfNext7Days = new Date(startOfToday);
+  endOfNext7Days.setUTCDate(endOfNext7Days.getUTCDate() + 7);
+  endOfNext7Days.setUTCHours(23, 59, 59, 999);
 
-  const endOfThisWeek = new Date(startOfThisWeek);
-  endOfThisWeek.setDate(startOfThisWeek.getDate() + 6); // Sunday
-  endOfThisWeek.setHours(23, 59, 59, 999);
+  // Define the next 14 days range
+  const endOfNext14Days = new Date(startOfToday);
+  endOfNext14Days.setUTCDate(endOfNext14Days.getUTCDate() + 14);
+  endOfNext14Days.setUTCHours(23, 59, 59, 999);
 
-  // Start and end of the next week
-  const startOfNextWeek = new Date(endOfThisWeek);
-  startOfNextWeek.setDate(endOfThisWeek.getDate() + 1); // Monday after this Sunday
-  startOfNextWeek.setHours(0, 0, 0, 0);
+  // Start and end of this month
+  const startOfThisMonth = new Date(
+    Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), 1)
+  );
+  const endOfThisMonth = new Date(
+    Date.UTC(today.getUTCFullYear(), today.getUTCMonth() + 1, 0)
+  );
+  endOfThisMonth.setUTCHours(23, 59, 59, 999);
 
-  const endOfNextWeek = new Date(startOfNextWeek);
-  endOfNextWeek.setDate(startOfNextWeek.getDate() + 6); // Next Sunday
-  endOfNextWeek.setHours(23, 59, 59, 999);
-
-  // Start and end of next month
-  const startOfNextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-  const endOfNextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 0); // Last day of next month
-  endOfNextMonth.setHours(23, 59, 59, 999);
-
+  // Filter tasks based on the corrected date ranges
   const todayTasks = tasks.filter(
-    (task) => new Date(task.deadline) >= startOfToday && new Date(task.deadline) <= endOfToday
+    (task) =>
+      new Date(task.deadline) >= startOfToday &&
+      new Date(task.deadline) <= endOfToday
   );
 
-  const nextWeekTasks = tasks.filter(
-    (task) => new Date(task.deadline) >= startOfNextWeek && new Date(task.deadline) <= endOfNextWeek
+  const next7DaysTasks = tasks.filter(
+    (task) =>
+      new Date(task.deadline) > endOfToday &&
+      new Date(task.deadline) <= endOfNext7Days
   );
 
-  const nextMonthTasks = tasks.filter(
-    (task) => new Date(task.deadline) > endOfNextWeek && new Date(task.deadline) <= endOfNextMonth
+  const next14DaysTasks = tasks.filter(
+    (task) =>
+      new Date(task.deadline) > endOfNext7Days &&
+      new Date(task.deadline) <= endOfNext14Days
   );
+
+  const thisMonthTasks = tasks.filter(
+    (task) =>
+      new Date(task.deadline) > endOfNext14Days &&
+      new Date(task.deadline) <= endOfThisMonth
+  );
+
+  const allTimeTasks = tasks; // All tasks without any filtering
 
   const sections = {
-    "Today's Tasks": todayTasks,
-    "Next Week": nextWeekTasks,
-    "Next Month": nextMonthTasks,
+    Today: todayTasks,
+    "Next 7 Days": next7DaysTasks,
+    "Next 14 Days": next14DaysTasks,
+    "This Month": thisMonthTasks,
+    "All Time": allTimeTasks,
   };
 
   if (loading) return <p>Loading tasks...</p>;
 
   return (
-    <div className="w-full h-full bg-gray-100 shadow-lg p-4"> {/* Adjusted padding */}
+    <div className="w-full h-full bg-gray-100 shadow-lg p-4">
       <h1 className="text-2xl font-bold mb-4 text-gray-900">Work Plan</h1>
-  
+
       {/* Date Selection Buttons */}
       <div className="flex space-x-2 mb-6">
         {Object.keys(sections).map((section, index) => (
@@ -110,7 +158,11 @@ const TaskList = () => {
                   ? "bg-[#3949AB] text-white"
                   : index === 1
                   ? "bg-[#283593] text-white"
-                  : "bg-[#1A237E] text-white border border-[#3949AB]"
+                  : index === 2
+                  ? "bg-[#1A237E] text-white border border-[#3949AB]"
+                  : index === 3
+                  ? "bg-[#283593] text-white border border-[#3949AB]"
+                  : "bg-[#3949AB] text-white border border-[#3949AB]"
                 : "bg-grey text-black border border-black hover:bg-[#BBDEFB] hover:text-[#283593]"
             }`}
             onClick={() => setSelectedSection(section)}
@@ -125,10 +177,18 @@ const TaskList = () => {
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b">
-              <th className="p-2 text-left font-semibold text-gray-600">Name</th>
-              <th className="p-2 text-left font-semibold text-gray-600">Description</th>
-              <th className="p-2 text-left font-semibold text-gray-600">Date</th>
-              <th className="p-2 text-left font-semibold text-gray-600">Due In</th>
+              <th className="p-2 text-left font-semibold text-gray-600">
+                Name
+              </th>
+              <th className="p-2 text-left font-semibold text-gray-600">
+                Description
+              </th>
+              <th className="p-2 text-left font-semibold text-gray-600">
+                Date
+              </th>
+              <th className="p-2 text-left font-semibold text-gray-600">
+                Due In
+              </th>
             </tr>
           </thead>
           <tbody>

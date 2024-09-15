@@ -2,6 +2,7 @@
 "use client"; // Mark this as a Client Component
 
 import ModalButton from "./AddTaskModal/ModalButton";
+import AIModal from "./OpenAITaskCreator/AIModal";
 
 const TaskManager = () => {
   // Function to save task to the database (API call)
@@ -67,6 +68,7 @@ const TaskManager = () => {
         onSave={handleSaveTask} // Pass the save function to the button
         generateDescription={generateDescription} // Pass the description generation function
       />
+      <AIModal></AIModal>
     </div>
   );
 };
