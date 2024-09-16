@@ -3,9 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar"; // Import Navbar component
 
-const BACKEND_URL =
-  process.env.NEXT_PUBLIC_BACKEND_URL ||
-  "http://localhost:8080";
+const BACKEND_URL = "https://taskstars.onrender.com"; // Use production URL directly
 
 export default function LoginPage() {
   const router = useRouter();

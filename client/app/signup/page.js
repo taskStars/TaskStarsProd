@@ -116,13 +116,13 @@ export default function SignupPage() {
           <div className="mt-6">
             <p className="text-center text-sm mb-4 text-white">Or sign up with:</p>
             <button
-              onClick={() => router.push("http://localhost:3000/api/auth/signin")}
+              onClick={() => router.push("https://taskstars.onrender.com/api/auth/google")}
               className="w-full py-2 px-4 mb-2 bg-[#3B5998] text-white rounded hover:bg-[#5A6FA9] transition duration-200 font-bold shadow-md"
             >
               Sign in with Google
             </button>
             <button
-              onClick={() => router.push("http://localhost:3000/api/auth/signin")}
+              onClick={() => router.push("https://taskstars.onrender.com/api/auth/github")}
               className="w-full py-2 px-4 bg-[#1C2331] text-white rounded hover:bg-[#2F3E56] transition duration-200 font-bold shadow-md"
             >
               Sign in with GitHub
