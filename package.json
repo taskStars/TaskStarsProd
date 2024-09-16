@@ -5,9 +5,9 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "server": "cd server && nodemon server.js",
     "client": "cd client && npx next dev",
-    "build": "cd client && npx next build",
+    "build": "cd client && npm install && npx next build",
     "start": "NODE_ENV=production node server/server.js",
-    "postinstall": "cd client && npm install && cd ../server && npm install"
+    "postinstall": "cd client && npm install && npm run build && cd ../server && npm install"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
