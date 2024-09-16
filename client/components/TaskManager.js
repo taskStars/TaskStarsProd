@@ -44,7 +44,7 @@ const TaskManager = () => {
   const generateDescription = async (taskName) => {
     try {
       const response = await fetch(
-        "https://taskstars.onrender.com//api/generateDescription",
+        "https://taskstars.onrender.com/api/generateDescription",
         {
           method: "POST",
           headers: {
