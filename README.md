@@ -15,7 +15,7 @@ TaskStars is a user-friendly task management application designed to help users 
 
 TaskStars is currently deployed on ...
 
-- [Live Demo on X](#) *(httpsX)*
+- [Live Demo on X](https://taskstars.onrender.com/) *(https://taskstars.onrender.com/)*
 
 ## 🛠️ Technologies Used
 
