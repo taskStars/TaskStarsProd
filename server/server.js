@@ -34,7 +34,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server, {
   cors: {
-    origin: dev ? "http://localhost:3000" : "https://taskstars.onrender.com", // Allow frontend URL based on environment
+    origin: "https://taskstars.onrender.com", // Use production URL directly
     credentials: true,
   },
 });
@@ -45,7 +45,7 @@ connectDB();
 // Middleware
 app.use(
   cors({
-    origin: dev ? "http://localhost:3000" : "https://taskstars.onrender.com", // Allow frontend URL based on environment
+    origin: "https://taskstars.onrender.com", // Use production URL directly
     credentials: true,
   })
 );
