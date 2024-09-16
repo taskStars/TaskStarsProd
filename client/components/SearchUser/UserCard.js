@@ -10,7 +10,7 @@ const UserCard = ({ user, onAddFriend }) => {
  const handleAddFriend = async () => {
    setLoading(true);
    setSuccess(null);
-   const result = await onAddFriend(user.email); // Calls the onAddFriend function passed from parent
+   const result = await onAddFriend(user.email); 
 
 
    if (result.success) {

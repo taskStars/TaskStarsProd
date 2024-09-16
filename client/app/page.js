@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import APIMessage from "@/components/apitest";
-import Navbar from "@/components/Navbar"; // Import Navbar component
+import Navbar from "@/components/Navbar"; 
 
 export default function Home() {
   return (

@@ -6,7 +6,7 @@ const SearchBar = ({ onSearch }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSearch(query); // Call the onSearch function passed from the parent component
+    onSearch(query);
   };
 
   return (

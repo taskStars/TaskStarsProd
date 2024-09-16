@@ -1,13 +1,12 @@
 // components/TaskManager.js
-"use client"; // Mark this as a Client Component
+"use client"; 
 
 import ModalButton from "./AddTaskModal/ModalButton";
 import AIModal from "./OpenAITaskCreator/AIModal";
 
 const TaskManager = () => {
-  // Function to save task to the database (API call)
   const handleSaveTask = async (task) => {
-    const token = localStorage.getItem("token"); // Retrieve token from localStorage
+    const token = localStorage.getItem("token"); 
     if (!token) {
       console.error("No token found, user is not authenticated.");
       alert("You are not authenticated. Please log in.");
@@ -19,9 +18,9 @@ const TaskManager = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Ensure JWT token is included
+          Authorization: `Bearer ${token}`, 
         },
-        body: JSON.stringify(task), // Send task data to the API
+        body: JSON.stringify(task), 
       });
 
       if (response.ok) {
@@ -39,7 +38,6 @@ const TaskManager = () => {
     }
   };
 
-  // Function to generate task description using OpenAI API (API call)
   const generateDescription = async (taskName) => {
     try {
       const response = await fetch("/api/generateDescription", {
@@ -48,12 +46,12 @@ const TaskManager = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          input: taskName, // Pass the taskName as input
+          input: taskName, 
         }),
       });
 
       const data = await response.json();
-      return data.text; // Assuming your API returns { text } for the description
+      return data.text; 
     } catch (error) {
       console.error("Error generating description:", error);
       return "Error generating description";
@@ -61,12 +59,10 @@ const TaskManager = () => {
   };
 
   return (
-    <div className="flex flex-col space-y-4 items-center"> {/* Updated background and added shadow */}
-      {/* <h1 className="text-2xl font-bold mb-6 text-gray-800">Task Manager</h1> Changed text color to gray-800 */}
-      {/* Use the ModalButton and pass the API functions */}
+    <div className="flex flex-col space-y-4 items-center"> 
       <ModalButton
-        onSave={handleSaveTask} // Pass the save function to the button
-        generateDescription={generateDescription} // Pass the description generation function
+        onSave={handleSaveTask} 
+        generateDescription={generateDescription} 
       />
       <AIModal></AIModal>
     </div>

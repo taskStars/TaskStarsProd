@@ -8,8 +8,8 @@ const LockInTimer = () => {
   const [timeRemaining, setTimeRemaining] = useState(1500); // Default to 25 minutes (1500 seconds)
   const [initialTime, setInitialTime] = useState(1500); // Initial time set for the timer (25 minutes)
   const [showModal, setShowModal] = useState(false);
-  const timerId = useRef(null); // Use a ref to store timerId to avoid re-renders
-  const isSessionEnded = useRef(false); // Flag to prevent multiple calls to endSession
+  const timerId = useRef(null); 
+  const isSessionEnded = useRef(false); 
 
   // Timer effect
   useEffect(() => {
@@ -17,28 +17,26 @@ const LockInTimer = () => {
       timerId.current = setInterval(() => {
         setTimeRemaining((prevTime) => {
           if (prevTime <= 1) {
-            // Check if prevTime is 1 or less
-            clearInterval(timerId.current); // Clear interval when time is up
-            endSession(prevTime); // Save session when timer ends naturally
-            return 0; // Set time to 0
+            clearInterval(timerId.current); 
+            endSession(prevTime); 
+            return 0; 
           }
-          return prevTime - 1; // Decrement time
+          return prevTime - 1; 
         });
       }, 1000);
 
-      // Cleanup interval on component unmount or timer stop
       return () => clearInterval(timerId.current);
     }
   }, [isLockedIn, timeRemaining]);
 
   const handleStart = () => {
     setIsLockedIn(true);
-    isSessionEnded.current = false; // Reset the flag when starting
+    isSessionEnded.current = false; 
   };
 
   const handlePause = () => {
     setIsLockedIn(false);
-    clearInterval(timerId.current); // Clear interval when pausing
+    clearInterval(timerId.current); 
   };
 
   const handleEnd = () => {
@@ -47,29 +45,28 @@ const LockInTimer = () => {
 
   const confirmEndSession = () => {
     setShowModal(false);
-    endSession(timeRemaining, false); // Pass the current timeRemaining and false to indicate early end
+    endSession(timeRemaining, false); 
   };
 
   const cancelEndSession = () => setShowModal(false);
 
   const endSession = (remainingTime, isNaturalEnd = true) => {
-    if (isSessionEnded.current) return; // Prevent multiple calls
-    isSessionEnded.current = true; // Set flag to prevent multiple requests
+    if (isSessionEnded.current) return; 
+    isSessionEnded.current = true; 
     setIsLockedIn(false);
     clearInterval(timerId.current);
 
     if (isNaturalEnd) {
-      // Save only if the session ends naturally
-      const timeElapsed = initialTime - remainingTime; // Calculate correct timeElapsed
+      const timeElapsed = initialTime - remainingTime; 
       if (token && timeElapsed > 0) {
-        saveProductivityData(timeElapsed); // Save the correct time elapsed
+        saveProductivityData(timeElapsed); 
       } else {
         console.error("Invalid session or time elapsed is zero.");
       }
       alert("Session completed! Your progress has been saved.");
     }
 
-    setTimeRemaining(initialTime); // Reset the timer to initial time
+    setTimeRemaining(initialTime); 
   };
 
   const saveProductivityData = async (timeElapsed) => {
@@ -80,9 +77,9 @@ const LockInTimer = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Include the token in the request headers
+            Authorization: `Bearer ${token}`, 
           },
-          body: JSON.stringify({ sessionTime: timeElapsed }), // Send sessionTime to backend
+          body: JSON.stringify({ sessionTime: timeElapsed }), 
         }
       );
       const data = await response.json();

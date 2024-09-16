@@ -70,7 +70,7 @@ const LockInTimer = () => {
       setShowCongratsModal(true); // Show congrats modal instead of alert
     }
 
-    setTimeRemaining(initialTime); // Reset the timer to initial time
+    setTimeRemaining(initialTime); 
   };
 
   const saveProductivityData = async (timeElapsed) => {
@@ -81,9 +81,9 @@ const LockInTimer = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Include the token in the request headers
+            Authorization: `Bearer ${token}`, 
           },
-          body: JSON.stringify({ sessionTime: timeElapsed }), // Send sessionTime to backend
+          body: JSON.stringify({ sessionTime: timeElapsed }), 
         }
       );
       const data = await response.json();
@@ -123,7 +123,7 @@ const LockInTimer = () => {
           max="7200" // 2 hours in seconds
           value={timeRemaining}
           onChange={handleSliderChange}
-          step="5" // Adjust step size to 30 seconds
+          step="5"
           className="w-full mb-4"
         />
         <div className="flex justify-center space-x-2">

@@ -30,7 +30,6 @@ UserSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-// Pre-save hook to hash the password if it's modified or new
 UserSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     return next();

@@ -1,6 +1,5 @@
 // app/lock-in/page.js
-import LockInTimer from "./components/LockInTimer"; // Adjust the path based on your folder structure
-
+import LockInTimer from "./components/LockInTimer"; 
 export default function LockInPage() {
   return (
     <div>

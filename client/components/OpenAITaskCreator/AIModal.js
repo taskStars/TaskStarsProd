@@ -5,12 +5,12 @@ import InputField from "./InputField";
 import SubmitButton from "./SubmitButton";
 
 const AIModal = () => {
-  const [taskDescription, setTaskDescription] = useState(""); // Use 'taskDescription' as the state
+  const [taskDescription, setTaskDescription] = useState(""); 
   const [chatHistory, setChatHistory] = useState([]);
-  const [isOpen, setIsOpen] = useState(false); // State to manage modal visibility
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleInputChange = (e) => {
-    setTaskDescription(e.target.value); // Set taskDescription state
+    setTaskDescription(e.target.value); 
   };
 
   const handleSubmit = async () => {
@@ -19,22 +19,20 @@ const AIModal = () => {
     const userMessage = { user: "User", message: taskDescription };
     setChatHistory([...chatHistory, userMessage]);
 
-    // Call the backend API here to generate the task
     const response = await fetch("https://taskstars.onrender.com/api/tasks/createTaskWithAI", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`, // Ensure user is authenticated
+        Authorization: `Bearer ${localStorage.getItem("token")}`, 
       },
-      // The key here should be `taskDescription` to match the backend
-      body: JSON.stringify({ taskDescription }), // Change 'input' to 'taskDescription'
+      body: JSON.stringify({ taskDescription }),
     });
 
     const data = await response.json();
     const aiMessage = { user: "AI", message: data.text || "Task created successfully" };
 
     setChatHistory([...chatHistory, userMessage, aiMessage]);
-    setTaskDescription(""); // Clear input after submission
+    setTaskDescription(""); 
   };
 
   const openModal = () => {

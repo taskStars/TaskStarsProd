@@ -4,9 +4,9 @@ const { Configuration, OpenAIApi } = require("openai");
 const OpenAI = require("openai");
 const chrono = require("chrono-node");
 
-// Export a function that receives `io` as an argument
+
 module.exports = (io) => {
-  // Create a new task
+  
   const createTask = async (req, res) => {
     try {
       const task = new Task({
@@ -16,7 +16,7 @@ module.exports = (io) => {
 
       await task.save();
 
-      // Emit an event to all connected clients when a new task is added
+      
       io.emit("task_added", task);
 
       res.status(201).json(task);
@@ -25,7 +25,7 @@ module.exports = (io) => {
     }
   };
 
-  // Get all tasks for the logged-in user
+  
   const getTasks = async (req, res) => {
     try {
       if (!req.user || !req.user.id) {
@@ -45,7 +45,7 @@ module.exports = (io) => {
     }
   };
 
-  // Get a single task by ID
+  
   const getTaskById = async (req, res) => {
     try {
       const task = await Task.findOne({
@@ -65,7 +65,7 @@ module.exports = (io) => {
     }
   };
 
-  // Update a task if it belongs to the logged-in user
+  
   const updateTask = async (req, res) => {
     try {
       const task = await Task.findOneAndUpdate(
@@ -80,7 +80,7 @@ module.exports = (io) => {
           .json({ message: "Task not found or not authorized" });
       }
 
-      // Emit an event to all connected clients when a task is updated
+      
       io.emit("task_updated", task);
 
       res.status(200).json(task);
@@ -89,7 +89,7 @@ module.exports = (io) => {
     }
   };
 
-  // Delete a task if it belongs to the logged-in user
+  
   const deleteTask = async (req, res) => {
     try {
       const task = await Task.findOneAndDelete({
@@ -103,7 +103,7 @@ module.exports = (io) => {
           .json({ message: "Task not found or not authorized" });
       }
 
-      // Emit an event to all connected clients when a task is deleted
+      
       io.emit("task_deleted", req.params.id);
 
       res.status(204).send();
@@ -112,7 +112,7 @@ module.exports = (io) => {
     }
   };
 
-  // Create a new task using OpenAI
+  
   const createTaskWithAI = async (req, res) => {
     try {
       const { taskDescription, priority = "Medium", tags = [] } = req.body;
@@ -123,12 +123,12 @@ module.exports = (io) => {
           .json({ message: "Task description is required." });
       }
 
-      // Initialize OpenAI API
+      
       const openai = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
       });
 
-      // Send request to OpenAI with a prompt to generate both a title and a description
+      
       const openaiResponse = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
         messages: [
@@ -169,7 +169,7 @@ module.exports = (io) => {
       });
 
       await task.save();
-      io.emit("task_added", task); // Emit an event for new AI-generated task
+      io.emit("task_added", task); 
       res.status(201).json(task);
     } catch (error) {
       console.error("Error creating task:", error.message);

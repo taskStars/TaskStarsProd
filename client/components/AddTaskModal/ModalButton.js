@@ -1,7 +1,7 @@
 // /components/AddtaskModal/ModalButton
 
 "use client";
-import TaskModal from "./TaskModal"; // Ensure the import path is correct
+import TaskModal from "./TaskModal"; 
 import { useState } from "react";
 
 const ModalButton = ({ onSave, generateDescription }) => {
@@ -39,4 +39,4 @@ const ModalButton = ({ onSave, generateDescription }) => {
   );
 };
 
-export default ModalButton; // Ensure this line exports the component correctly
+export default ModalButton; 

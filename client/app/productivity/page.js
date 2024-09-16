@@ -20,10 +20,10 @@ export default function ProductivityPage() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`, // Ensure JWT token is included
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           body: JSON.stringify({
-            sessionTime: Number(sessionTime), // Convert sessionTime to a Number
+            sessionTime: Number(sessionTime), 
           }),
         }
       );

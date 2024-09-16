@@ -2,7 +2,6 @@
 import UserCard from "./UserCard";
 
 const UserList = ({ users, onAddFriend }) => {
-  // Sort users in descending order (most recently found)
   const sortedUsers = [...users].sort((a, b) =>
     b.createdAt.localeCompare(a.createdAt)
   );

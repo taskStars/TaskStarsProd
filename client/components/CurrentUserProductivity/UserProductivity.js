@@ -7,12 +7,10 @@ const UserProductivity = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch user productivity time when component mounts
     const fetchProductivity = async () => {
       try {
         setLoading(true);
 
-        // Get token from localStorage (or context, or wherever you store it)
         const token = localStorage.getItem("token");
 
         const response = await fetch(
@@ -43,7 +41,6 @@ const UserProductivity = () => {
     fetchProductivity();
   }, []);
 
-  // Helper function to format time in seconds to HH:mm:ss
   const formatTime = (seconds) => {
     const hrs = Math.floor(seconds / 3600);
     const mins = Math.floor((seconds % 3600) / 60);

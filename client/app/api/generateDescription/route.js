@@ -12,17 +12,13 @@ export async function POST(request) {
 
     const apiKey = process.env.OPENAI_API_KEY?.trim();
 
-    // Debug: Ensure API key is loaded
 
     if (!apiKey) {
       return NextResponse.json({ message: 'API key is missing' }, { status: 500 });
     }
-    // Augment the input with a task description prompt
     const prompt = `Generate a task description in one line based on this input: ${input}`;
 
-    // Debug: Log the full prompt
 
-    // Updated API endpoint and payload structure for `gpt-4`
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {

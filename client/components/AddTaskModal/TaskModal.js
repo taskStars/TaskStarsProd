@@ -1,21 +1,19 @@
-"use client"; // Ensure it's marked as a Client Component
+"use client"; 
 import { useState } from "react";
 
 const TaskModal = ({ isOpen, onClose, onSave, generateDescription }) => {
   const [taskName, setTaskName] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
-  const [deadline, setDeadline] = useState(""); // State for the deadline
-  const [priority, setPriority] = useState("Medium"); // State for priority with default value
-  const [tags, setTags] = useState(""); // State for tags
+  const [deadline, setDeadline] = useState("");
+  const [priority, setPriority] = useState("Medium");
+  const [tags, setTags] = useState(""); 
 
   const handleSave = () => {
-    // Ensure required fields are not empty
     if (!taskName || !taskDescription || !deadline) {
       alert("Please fill in all required fields.");
       return;
     }
 
-    // Split tags by comma, remove empty spaces around them
     const tagsArray = tags.split(",").map((tag) => tag.trim());
 
     onSave({
@@ -26,13 +24,12 @@ const TaskModal = ({ isOpen, onClose, onSave, generateDescription }) => {
       tags: tagsArray,
     })
       .then(() => {
-        // If onSave is successful, close the modal and reset fields
         onClose();
         setTaskName("");
         setTaskDescription("");
-        setDeadline(""); // Reset the deadline
-        setPriority("Medium"); // Reset the priority to default
-        setTags(""); // Reset the tags
+        setDeadline(""); 
+        setPriority("Medium"); 
+        setTags(""); 
       })
       .catch((error) => {
         console.error("Error saving task:", error);

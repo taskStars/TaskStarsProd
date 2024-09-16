@@ -20,25 +20,22 @@ const DashboardPage = () => {
     const token = urlParams.get("token");
 
     if (token) {
-      // Store token in localStorage for authenticated API requests
       localStorage.setItem("token", token);
       console.log("Token stored in localStorage:", token);
-      setIsAuthenticated(true); // Set authentication state to true to trigger re-render
+      setIsAuthenticated(true); 
     } else {
-      // Check if there's already a token in localStorage
       const storedToken = localStorage.getItem("token");
       if (!storedToken) {
         alert("You are not authenticated. Please log in.");
-        router.push("/login"); // Redirect to login if no token found
+        router.push("/login"); 
       } else {
-        setIsAuthenticated(true); // If token exists in localStorage, set authentication state
+        setIsAuthenticated(true); 
       }
     }
   }, [router]);
 
-  // Only render dashboard content when authenticated
   if (!isAuthenticated) {
-    return null; // or a loading spinner
+    return null; 
   }
 
   return (

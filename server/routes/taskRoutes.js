@@ -11,13 +11,13 @@ module.exports = (io) => {
     getTaskById,
     updateTask,
     deleteTask,
-  } = require("../controllers/taskController")(io); // Pass `io` to controller function
+  } = require("../controllers/taskController")(io); 
 
   // Task CRUD routes with authentication
   router.post("/createtask", protect, createTask);
   router.post("/createTaskWithAI", protect, createTaskWithAI);
-  router.get("/readtasks", protect, getTasks); // Consistent route name for fetching all tasks
-  router.get("/:id", protect, getTaskById); // Route to fetch a single task by ID
+  router.get("/readtasks", protect, getTasks); 
+  router.get("/:id", protect, getTaskById); 
   router.put("/:id", protect, updateTask);
   router.delete("/:id", protect, deleteTask);
 

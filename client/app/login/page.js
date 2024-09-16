@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Navbar from "@/components/Navbar"; // Import Navbar component
+import Navbar from "@/components/Navbar"; 
 
-const BACKEND_URL = "https://taskstars.onrender.com"; // Use production URL directly
+const BACKEND_URL = "https://taskstars.onrender.com"; 
 
 export default function LoginPage() {
   const router = useRouter();
@@ -37,9 +37,9 @@ export default function LoginPage() {
 
       const data = await response.json();
       if (response.ok) {
-        localStorage.setItem("token", data.token); // Store the JWT token in localStorage
+        localStorage.setItem("token", data.token); 
         setMessage("Login successful!");
-        router.push("/dashboard"); // Redirect to dashboard or home page after successful login
+        router.push("/dashboard"); 
       } else {
         setMessage(data.message || "Login failed. Please try again.");
       }

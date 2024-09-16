@@ -20,10 +20,9 @@ const Navbar = ({ showAuthLinks = true, showGitHubLink = true }) => {
   };
 
   return (
-    <nav className="bg-[#2C3E50] shadow-md p-4"> {/* Updated background color to dark blue */}
+    <nav className="bg-[#2C3E50] shadow-md p-4"> 
       <div className="flex justify-between items-center px-4">
         <div className="flex items-center space-x-2">
-          {/* Star icon in front of TaskStars */}
           <Image
             src="/icon.svg"
             alt="Star Icon"
@@ -31,12 +30,11 @@ const Navbar = ({ showAuthLinks = true, showGitHubLink = true }) => {
             height={30}
             aria-label="TaskStars Logo"
           />
-          <h1 className="text-2xl font-bold text-white"> {/* Text color changed to white for better contrast */}
+          <h1 className="text-2xl font-bold text-white">
             <Link href="/">TaskStars</Link>
           </h1>
         </div>
         <div className="flex items-center space-x-4">
-          {/* Conditionally show GitHub Icon Link */}
           {showGitHubLink && (
             <a
               href="https://github.com/taskStars/TaskStarsProd.git"
@@ -48,7 +46,6 @@ const Navbar = ({ showAuthLinks = true, showGitHubLink = true }) => {
               <Image src="/github.svg" alt="GitHub" width={24} height={24} />
             </a>
           )}
-          {/* Conditionally show Auth Links or Logout button */}
           {isLoggedIn ? (
             <button
               onClick={handleLogout}

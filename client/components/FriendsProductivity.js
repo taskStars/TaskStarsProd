@@ -1,14 +1,13 @@
-"use client"; // Mark this as a Client Component
+"use client"; 
 import { useState, useEffect } from "react";
-import FriendCard from "./FriendCard"; // Import the new FriendCard component
-import FriendSearch from "@/components/SearchUser/FriendSearch"; // Import SearchUser component
+import FriendCard from "./FriendCard"; 
+import FriendSearch from "@/components/SearchUser/FriendSearch"; 
 
 const FriendsProductivity = () => {
   const [friends, setFriends] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch friends productivity times
   useEffect(() => {
     const fetchFriendsProductivity = async () => {
       try {
@@ -16,7 +15,7 @@ const FriendsProductivity = () => {
           "https://taskstars.onrender.com/api/users/friendsProductivity",
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`, // Ensure JWT token is included
+              Authorization: `Bearer ${localStorage.getItem("token")}`, 
             },
           }
         );
@@ -36,7 +35,7 @@ const FriendsProductivity = () => {
     };
 
     fetchFriendsProductivity();
-  }, []); // Empty dependency array to fetch once on mount
+  }, []); 
 
   if (loading) return <p>Loading friends...</p>;
   if (error) return <p className="text-black text-center">{error}</p>;

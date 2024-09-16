@@ -19,7 +19,7 @@ router.get("/test", (req, res) => {
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.post("/addFriend", protect, addFriend);
-router.get("/profile", getUserProfile); // Remove `protect` middleware temporarily
+router.get("/profile", getUserProfile); 
 router.get("/friendsProductivity", protect, getFriendsProductivity);
 router.get("/search", protect, searchUsers);
 router.get("/productivity", protect, getUserProductivity);

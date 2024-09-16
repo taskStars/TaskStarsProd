@@ -26,7 +26,6 @@ const TaskCard = ({ task }) => {
     }
   };
 
-  // Handle task deletion
   const handleDelete = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -49,7 +48,7 @@ const TaskCard = ({ task }) => {
 
       if (response.ok) {
         console.log("Task deleted successfully");
-        window.location.reload(); // Refresh the page after deletion
+        window.location.reload(); 
       } else {
         const errorData = await response.json();
         console.error("Failed to delete task:", errorData.message);
@@ -61,7 +60,6 @@ const TaskCard = ({ task }) => {
     }
   };
 
-  // Format date in UTC to avoid timezone issues
   const formattedDeadline = new Date(deadline).toLocaleDateString("en-US", {
     timeZone: "UTC",
   });

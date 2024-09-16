@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation"; // Import the useRouter hook
-import Navbar from "@/components/Navbar"; // Import Navbar component
+import { useRouter } from "next/navigation"; 
+import Navbar from "@/components/Navbar"; 
 
 export default function SignupPage() {
-  const router = useRouter(); // Initialize the useRouter hook
+  const router = useRouter(); 
   const [formData, setFormData] = useState({
     name: "",
     email: "",

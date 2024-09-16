@@ -1,7 +1,5 @@
-"use client"; // Mark this as a Client Component
+"use client"; 
 
-
-// Utility function to format seconds into hours, minutes, and seconds
 const formatTime = (seconds) => {
  const hrs = Math.floor(seconds / 3600);
  const mins = Math.floor((seconds % 3600) / 60);

@@ -1,4 +1,4 @@
-"use client"; // Enables Client Component
+"use client"; 
 
 import { useEffect, useState } from "react";
 
@@ -7,7 +7,7 @@ export default function APIMessage() {
 
   useEffect(() => {
     // Fetch from backend API
-    fetch("https://taskstars.onrender.com/test") // URL to the backend endpoint
+    fetch("https://taskstars.onrender.com/test") 
       .then((response) => response.json())
       .then((data) => setApiMessage(data.message))
       .catch((error) => console.error("Error fetching API:", error));
@@ -16,7 +16,7 @@ export default function APIMessage() {
   return (
     <div>
       <h1>Next.js and Express Integration Test (App Router)</h1>
-      <p>API Response: {apiMessage}</p> {/* Display the API response */}
+      <p>API Response: {apiMessage}</p> 
     </div>
   );
 }
