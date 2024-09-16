@@ -18,7 +18,7 @@ const taskRoutes = require("./routes/taskRoutes");
 const productivityRoutes = require("./routes/productivityRoutes");
 
 const dev = process.env.NODE_ENV !== "production";
-const nextApp = next({ dev, dir: "./client" }); 
+const nextApp = next({ dev, dir: "./client" }); // Ensure this points to your Next.js app directory
 const handle = nextApp.getRequestHandler();
 
 const app = express();
@@ -33,19 +33,28 @@ const io = new Server(server, {
   },
 });
 
-
 connectDB();
-
 
 app.use(
   cors({
-    origin: "https://taskstars.onrender.com", 
+    origin: "https://taskstars.onrender.com",
     credentials: true,
   })
 );
 app.use(express.json());
 app.use(passport.initialize());
 
+// Your Express routes
+app.get("/test", (req, res) => {
+  res.json({ message: "API is working properly!" });
+});
+
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/tasks", taskRoutes(io));
+app.use("/api/productivity", productivityRoutes);
+
+// Socket.io connection
 io.on("connection", (socket) => {
   console.log("A user connected");
 
@@ -54,19 +63,12 @@ io.on("connection", (socket) => {
   });
 });
 
-app.get("/test", (req, res) => {
-  res.json({ message: "API is working properly!" });
-});
-
-app.use("/api/auth", authRoutes);
-app.use("/api/users", userRoutes);
-app.use("/api/tasks", taskRoutes(io)); 
-app.use("/api/productivity", productivityRoutes);
-
+// Prepare Next.js and handle all other routes
 nextApp
   .prepare()
   .then(() => {
-    app.get("*", (req, res) => handle(req, res));
+    // Forward all unmatched requests to Next.js
+    app.all("*", (req, res) => handle(req, res));
 
     const PORT = process.env.PORT || 8080;
     server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
