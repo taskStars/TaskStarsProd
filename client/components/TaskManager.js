@@ -1,12 +1,12 @@
 // components/TaskManager.js
-"use client"; 
+"use client";
 
 import ModalButton from "./AddTaskModal/ModalButton";
 import AIModal from "./OpenAITaskCreator/AIModal";
 
 const TaskManager = () => {
   const handleSaveTask = async (task) => {
-    const token = localStorage.getItem("token"); 
+    const token = localStorage.getItem("token");
     if (!token) {
       console.error("No token found, user is not authenticated.");
       alert("You are not authenticated. Please log in.");
@@ -14,14 +14,17 @@ const TaskManager = () => {
     }
 
     try {
-      const response = await fetch("https://taskstars.onrender.com/api/tasks/createtask", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, 
-        },
-        body: JSON.stringify(task), 
-      });
+      const response = await fetch(
+        "https://taskstars.onrender.com/api/tasks/createtask",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(task),
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
@@ -40,18 +43,21 @@ const TaskManager = () => {
 
   const generateDescription = async (taskName) => {
     try {
-      const response = await fetch("/api/generateDescription", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          input: taskName, 
-        }),
-      });
+      const response = await fetch(
+        "https://taskstars.onrender.com//api/generateDescription",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            input: taskName,
+          }),
+        }
+      );
 
       const data = await response.json();
-      return data.text; 
+      return data.text;
     } catch (error) {
       console.error("Error generating description:", error);
       return "Error generating description";
@@ -59,10 +65,11 @@ const TaskManager = () => {
   };
 
   return (
-    <div className="flex flex-col space-y-4 items-center"> 
+    <div className="flex flex-col space-y-4 items-center">
+      {" "}
       <ModalButton
-        onSave={handleSaveTask} 
-        generateDescription={generateDescription} 
+        onSave={handleSaveTask}
+        generateDescription={generateDescription}
       />
       <AIModal></AIModal>
     </div>
