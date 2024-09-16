@@ -104,7 +104,7 @@ export default function LoginPage() {
             </p>
             {/* OAuth login for Google */}
             <a
-              href="http://localhost:8080/api/auth/google"
+              href="https://taskstars.onrender.com/api/auth/google"
               className="w-full block py-2 px-4 mb-2 bg-[#3B5998] text-white rounded hover:bg-[#1C2331] transition duration-200 font-bold shadow-md text-center"
             >
               Sign in with Google
