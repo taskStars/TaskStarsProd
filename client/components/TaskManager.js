@@ -43,21 +43,24 @@ const TaskManager = () => {
 
   const generateDescription = async (taskName) => {
     try {
-      const response = await fetch(
-        "https://taskstars.onrender.com/api/generateDescription",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            input: taskName,
-          }),
-        }
-      );
+      const response = await fetch("/api/generateDescription", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          input: taskName,
+        }),
+      });
 
-      const data = await response.json();
-      return data.text;
+      if (response.ok) {
+        const data = await response.json();
+        return data.text;
+      } else {
+        const errorData = await response.json();
+        console.error("Failed to generate description:", errorData.message);
+        return "Error generating description";
+      }
     } catch (error) {
       console.error("Error generating description:", error);
       return "Error generating description";
