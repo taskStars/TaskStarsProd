@@ -4,26 +4,21 @@
 
 :root {
   --foreground-rgb: 0, 0, 0; /* Black text for light mode */
-  --background-start-rgb: 47, 53, 66; /* Dark slate gray color */
-  --background-end-rgb: 47, 53, 66; /* Dark slate gray color */
+  --background-start-rgb: 255, 255, 255; /* White color for light mode */
+  --background-end-rgb: 255, 255, 255; /* White color for light mode */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255; /* White text for dark mode */
-    --background-start-rgb: 47, 53, 66; /* Dark slate gray color for dark mode */
-    --background-end-rgb: 47, 53, 66; /* Dark slate gray color for dark mode */
+    --background-start-rgb: 255, 255, 255; /* White color for dark mode */
+    --background-end-rgb: 255, 255, 255; /* White color for dark mode */
   }
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: rgb(var(--background-start-rgb)); /* Set background to solid white */
 }
 
 @layer utilities {
