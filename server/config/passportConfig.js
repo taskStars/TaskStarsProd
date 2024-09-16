@@ -48,7 +48,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://taskstars.onrender.com/api/auth/google/callback",
+      callbackURL: "https://taskstars.onrender.com/api/auth/google/callback", // Use production URL directly
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
@@ -87,7 +87,7 @@ passport.use(
     {
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL: process.env.GITHUB_CALLBACK_URL || "http://localhost:8080/api/auth/github/callback",
+      callbackURL: "https://taskstars.onrender.com/api/auth/github/callback", // Use production URL directly
     },
     async (accessToken, refreshToken, profile, done) => {
       try {

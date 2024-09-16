@@ -3,7 +3,6 @@ const passport = require("passport");
 const { registerUser, loginUser } = require("../controllers/authController");
 
 const router = express.Router();
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
 
 // Register route
 router.post("/register", registerUser);
@@ -24,9 +23,9 @@ router.get(
   (req, res) => {
     const { token } = req.user;
     if (token) {
-      res.redirect(`${FRONTEND_URL}/dashboard?token=${token}`);
+      res.redirect(`https://taskstars.onrender.com/dashboard?token=${token}`);
     } else {
-      res.redirect(`${FRONTEND_URL}/login?error=TokenMissing`);
+      res.redirect(`https://taskstars.onrender.com/login?error=TokenMissing`);
     }
   }
 );
@@ -44,9 +43,9 @@ router.get(
   (req, res) => {
     const { token } = req.user;
     if (token) {
-      res.redirect(`${FRONTEND_URL}/dashboard?token=${token}`);
+      res.redirect(`https://taskstars.onrender.com/dashboard?token=${token}`);
     } else {
-      res.redirect(`${FRONTEND_URL}/login?error=TokenMissing`);
+      res.redirect(`https://taskstars.onrender.com/login?error=TokenMissing`);
     }
   }
 );
