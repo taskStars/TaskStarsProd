@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import io from "socket.io-client"; // Import socket.io-client
 import TaskCard from "./TaskCard";
 
-const socket = io("http://localhost:8080"); // Connect to your Socket.IO server
+const socket = io("https://taskstars.onrender.com"); // Connect to your Socket.IO server
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]); // State to store tasks
@@ -21,7 +21,7 @@ const TaskList = () => {
 
       try {
         const response = await fetch(
-          "http://localhost:8080/api/tasks/readtasks",
+          "https://taskstars.onrender.com/api/tasks/readtasks",
           {
             method: "GET",
             headers: {

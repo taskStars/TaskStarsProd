@@ -13,7 +13,7 @@ const FriendsProductivity = () => {
     const fetchFriendsProductivity = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/api/users/friendsProductivity",
+          "https://taskstars.onrender.com/api/users/friendsProductivity",
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`, // Ensure JWT token is included

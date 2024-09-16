@@ -76,7 +76,7 @@ const LockInTimer = () => {
   const saveProductivityData = async (timeElapsed) => {
     try {
       const response = await fetch(
-        "http://localhost:8080/api/productivity/saveProductivity",
+        "https://taskstars.onrender.com/api/productivity/saveProductivity",
         {
           method: "POST",
           headers: {

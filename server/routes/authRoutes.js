@@ -3,6 +3,7 @@ const passport = require("passport");
 const { registerUser, loginUser } = require("../controllers/authController");
 
 const router = express.Router();
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
 
 // Register route
 router.post("/register", registerUser);
@@ -21,11 +22,11 @@ router.get(
   "/google/callback",
   passport.authenticate("google", { session: false }),
   (req, res) => {
-    const { token } = req.user; // Extract token from req.user
+    const { token } = req.user;
     if (token) {
-      res.redirect(`http://localhost:3000/dashboard?token=${token}`);
+      res.redirect(`${FRONTEND_URL}/dashboard?token=${token}`);
     } else {
-      res.redirect("http://localhost:3000/login?error=TokenMissing");
+      res.redirect(`${FRONTEND_URL}/login?error=TokenMissing`);
     }
   }
 );
@@ -41,11 +42,11 @@ router.get(
   "/github/callback",
   passport.authenticate("github", { session: false }),
   (req, res) => {
-    const { token } = req.user; // Extract token from req.user
+    const { token } = req.user;
     if (token) {
-      res.redirect(`http://localhost:3000/dashboard?token=${token}`);
+      res.redirect(`${FRONTEND_URL}/dashboard?token=${token}`);
     } else {
-      res.redirect("http://localhost:3000/login?error=TokenMissing");
+      res.redirect(`${FRONTEND_URL}/login?error=TokenMissing`);
     }
   }
 );

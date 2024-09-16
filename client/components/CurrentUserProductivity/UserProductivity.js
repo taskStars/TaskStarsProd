@@ -16,7 +16,7 @@ const UserProductivity = () => {
         const token = localStorage.getItem("token");
 
         const response = await fetch(
-          "http://localhost:8080/api/users/productivity",
+          "https://taskstars.onrender.com/api/users/productivity",
           {
             method: "GET",
             headers: {

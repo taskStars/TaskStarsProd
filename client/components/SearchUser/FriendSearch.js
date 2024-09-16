@@ -15,7 +15,7 @@ const FriendSearch = () => {
    setError(null);
    try {
      const response = await fetch(
-       `http://localhost:8080/api/users/search?query=${query}`,
+       `https://taskstars.onrender.com/api/users/search?query=${query}`,
        {
          headers: {
            Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -39,7 +39,7 @@ const FriendSearch = () => {
  const handleAddFriend = async (email) => {
    try {
      const response = await fetch(
-       "http://localhost:8080/api/users/addFriend",
+       "https://taskstars.onrender.com/api/users/addFriend",
        {
          method: "POST",
          headers: {

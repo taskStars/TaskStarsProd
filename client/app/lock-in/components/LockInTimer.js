@@ -16,12 +16,11 @@ const LockInTimer = () => {
     if (isLockedIn && timeRemaining > 0) {
       timerId.current = setInterval(() => {
         setTimeRemaining((prevTime) => {
-          if (prevTime === 1) {
-            // Check if prevTime is 1
+          if (prevTime <= 1) {
+            // Check if prevTime is 1 or less
             clearInterval(timerId.current); // Clear interval when time is up
-            setIsLockedIn(false); // Stop the timer
             endSession(prevTime); // Save session when timer ends naturally
-            return prevTime; // Return current time without decrementing
+            return 0; // Set time to 0
           }
           return prevTime - 1; // Decrement time
         });
@@ -63,7 +62,7 @@ const LockInTimer = () => {
       // Save only if the session ends naturally
       const timeElapsed = initialTime - remainingTime; // Calculate correct timeElapsed
       if (token && timeElapsed > 0) {
-        saveProductivityData(timeElapsed + 1); // Add 1 second before saving the correct time elapsed
+        saveProductivityData(timeElapsed); // Save the correct time elapsed
       } else {
         console.error("Invalid session or time elapsed is zero.");
       }
@@ -76,7 +75,7 @@ const LockInTimer = () => {
   const saveProductivityData = async (timeElapsed) => {
     try {
       const response = await fetch(
-        "http://localhost:8080/api/saveProductivity",
+        `${process.env.BACKEND_URL}/api/saveProductivity`,
         {
           method: "POST",
           headers: {

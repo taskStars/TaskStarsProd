@@ -3,6 +3,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar"; // Import Navbar component
 
+const BACKEND_URL =
+  process.env.NEXT_PUBLIC_BACKEND_URL ||
+  "http://localhost:8080";
+
 export default function LoginPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
@@ -25,7 +29,7 @@ export default function LoginPage() {
     setMessage("");
 
     try {
-      const response = await fetch("http://localhost:8080/api/auth/login", {
+      const response = await fetch(`${BACKEND_URL}/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -104,14 +108,14 @@ export default function LoginPage() {
             </p>
             {/* OAuth login for Google */}
             <a
-              href="https://taskstars.onrender.com/api/auth/google"
+              href={`${BACKEND_URL}/api/auth/google`}
               className="w-full block py-2 px-4 mb-2 bg-[#3B5998] text-white rounded hover:bg-[#1C2331] transition duration-200 font-bold shadow-md text-center"
             >
               Sign in with Google
             </a>
             {/* OAuth login for GitHub */}
             <a
-              href="http://localhost:8080/api/auth/github"
+              href={`${BACKEND_URL}/api/auth/github`}
               className="w-full block py-2 px-4 bg-[#1C2331] text-white rounded hover:bg-[#0A1F44] transition duration-200 font-bold shadow-md text-center"
             >
               Sign in with GitHub

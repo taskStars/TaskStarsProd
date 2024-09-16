@@ -20,7 +20,7 @@ const AIModal = () => {
     setChatHistory([...chatHistory, userMessage]);
 
     // Call the backend API here to generate the task
-    const response = await fetch("http://localhost:8080/api/tasks/createTaskWithAI", {
+    const response = await fetch("https://taskstars.onrender.com/api/tasks/createTaskWithAI", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

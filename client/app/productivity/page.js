@@ -15,7 +15,7 @@ export default function ProductivityPage() {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/api/saveProductivity",
+        "https://taskstars.onrender.com/api/saveProductivity",
         {
           method: "POST",
           headers: {

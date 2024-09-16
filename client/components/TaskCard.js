@@ -37,7 +37,7 @@ const TaskCard = ({ task }) => {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/api/tasks/${task._id}`,
+        `https://taskstars.onrender.com/api/tasks/${task._id}`,
         {
           method: "DELETE",
           headers: {
