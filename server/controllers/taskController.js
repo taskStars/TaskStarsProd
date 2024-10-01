@@ -1,8 +1,8 @@
 const Task = require("../models/Task");
-const { Configuration, OpenAIApi } = require("openai");
+const OpenAI = require("openai");
 const chrono = require("chrono-node");
 
-// Export a function that receives `io` as an argument
+// Export a function that receives io as an argument
 module.exports = (io) => {
   // Create a new task
   const createTask = async (req, res) => {
@@ -122,13 +122,12 @@ module.exports = (io) => {
       }
 
       // Initialize OpenAI API
-      const configuration = new Configuration({
+      const openai = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
       });
-      const openai = new OpenAIApi(configuration);
 
       // Send request to OpenAI with a prompt to generate both a title and a description
-      const openaiResponse = await openai.createChatCompletion({
+      const openaiResponse = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
         messages: [
           {
@@ -139,7 +138,7 @@ module.exports = (io) => {
         max_tokens: 150,
       });
 
-      const gptOutput = openaiResponse.data.choices[0].message.content.trim();
+      const gptOutput = openaiResponse.choices[0].message.content.trim();
       const titleMatch = gptOutput.match(/Title:\s*(.+)/);
       const descriptionMatch = gptOutput.match(/Description:\s*(.+)/);
       const deadlineMatch = gptOutput.match(/Deadline:\s*(.+)/);
@@ -152,7 +151,7 @@ module.exports = (io) => {
       let deadline = null;
 
       if (deadlineString && deadlineString.toLowerCase() !== "no deadline") {
-        const now = new Date(); // Current date
+        const now = new Date();
         let parsedDate = chrono.parseDate(deadlineString, now);
 
         if (parsedDate) {
@@ -177,7 +176,7 @@ module.exports = (io) => {
       io.emit("task_added", task); // Emit an event for new AI-generated task
       res.status(201).json(task);
     } catch (error) {
-      console.error("Error creating task:", error);
+      console.error("Error creating task:", error.message);
       res.status(500).json({ error: "Internal Server Error" });
     }
   };
@@ -199,24 +198,23 @@ module.exports = (io) => {
 
       const prompt = `Generate a task description in one line based on this input: ${input}`;
 
-      // Initialize OpenAI API
-      const configuration = new Configuration({
+      // Initialize OpenAI API using version 4.x pattern
+      const openai = new OpenAI({
         apiKey: apiKey,
       });
-      const openai = new OpenAIApi(configuration);
 
-      // Call the OpenAI API
-      const openaiResponse = await openai.createChatCompletion({
+      // Call the OpenAI API using the version 4.x method
+      const openaiResponse = await openai.chat.completions.create({
         model: "gpt-4",
         messages: [{ role: "user", content: prompt }],
         max_tokens: 100,
       });
 
-      const text = openaiResponse.data.choices[0].message.content.trim();
+      const text = openaiResponse.choices[0].message.content.trim();
 
       return res.json({ text });
     } catch (error) {
-      console.error("Error fetching from OpenAI:", error);
+      console.error("Error fetching from OpenAI:", error.message);
       return res.status(500).json({ message: "Internal Server Error" });
     }
   };
