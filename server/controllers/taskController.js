@@ -1,6 +1,4 @@
 const Task = require("../models/Task");
-const User = require("../models/User");
-const { Configuration, OpenAIApi } = require("openai");
 const OpenAI = require("openai");
 const chrono = require("chrono-node");
 
@@ -177,6 +175,45 @@ module.exports = (io) => {
     }
   };
 
+  // Generate a task description using OpenAI
+  const generateTaskDescription = async (req, res) => {
+    try {
+      const { input } = req.body;
+
+      if (!input) {
+        return res.status(400).json({ message: "Input is required" });
+      }
+
+      const apiKey = process.env.OPENAI_API_KEY?.trim();
+
+      if (!apiKey) {
+        return res.status(500).json({ message: "API key is missing" });
+      }
+
+      const prompt = `Generate a task description in one line based on this input: ${input}`;
+
+      // Initialize OpenAI API using version 4.x pattern
+      const openai = new OpenAI({
+        apiKey: apiKey,
+      });
+
+      // Call the OpenAI API using the version 4.x method
+      const openaiResponse = await openai.chat.completions.create({
+        model: "gpt-4",
+        messages: [{ role: "user", content: prompt }],
+        max_tokens: 100,
+      });
+
+      const text = openaiResponse.choices[0].message.content.trim();
+
+      return res.json({ text });
+    } catch (error) {
+      console.error("Error fetching from OpenAI:", error.message);
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
+  };
+
+  // Export the functions
   return {
     createTask,
     getTasks,
@@ -184,5 +221,6 @@ module.exports = (io) => {
     updateTask,
     deleteTask,
     createTaskWithAI,
+    generateTaskDescription,
   };
 };

@@ -11,6 +11,7 @@ module.exports = (io) => {
     getTaskById,
     updateTask,
     deleteTask,
+    generateTaskDescription, // Include the new function here
   } = require("../controllers/taskController")(io); // Pass `io` to controller function
 
   // Task CRUD routes with authentication
@@ -20,6 +21,9 @@ module.exports = (io) => {
   router.get("/:id", protect, getTaskById); // Route to fetch a single task by ID
   router.put("/:id", protect, updateTask);
   router.delete("/:id", protect, deleteTask);
+
+  // New route for generating task description with AI
+  router.post("/generateTaskDescription", protect, generateTaskDescription);
 
   return router;
 };
