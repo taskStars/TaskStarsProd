@@ -18,7 +18,7 @@ const TaskManager = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/api/tasks/createtask",
+        "https://taskstars.onrender.com/api/tasks/createtask",
         {
           method: "POST",
           headers: {
@@ -55,7 +55,7 @@ const TaskManager = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/api/tasks/generateTaskDescription",
+        "https://taskstars.onrender.com/api/tasks/generateTaskDescription",
         {
           method: "POST",
           headers: {
