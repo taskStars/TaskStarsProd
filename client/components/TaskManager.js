@@ -84,7 +84,7 @@ const TaskManager = () => {
   };
 
   return (
-    <div className="flex flex-col space-y-4 items-center">
+    <div className="flex flex-col gap-3 items-center w-full">
       {/* ModalButton is responsible for creating tasks */}
       <ModalButton
         onSave={handleSaveTask} // Pass the save function to the button

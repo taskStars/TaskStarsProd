@@ -8,7 +8,6 @@ if (process.env.NODE_ENV === "production") {
 
 const express = require("express");
 const mongoose = require("mongoose");
-const next = require("next");
 const passport = require("./config/passportConfig");
 const cors = require("cors");
 const connectDB = require("./config/db");
@@ -17,10 +16,6 @@ const userRoutes = require("./routes/userRoutes");
 const taskRoutes = require("./routes/taskRoutes");
 const productivityRoutes = require("./routes/productivityRoutes");
 
-const dev = process.env.NODE_ENV !== "production";
-const nextApp = next({ dev, dir: "./client" }); // Ensure this points to your Next.js app directory
-const handle = nextApp.getRequestHandler();
-
 const app = express();
 const http = require("http");
 const server = http.createServer(app);
@@ -28,7 +23,11 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:3001",
+      process.env.CLIENT_URL
+    ].filter(Boolean),
     credentials: true,
   },
 });
@@ -37,7 +36,11 @@ connectDB();
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:3001",
+      process.env.CLIENT_URL
+    ].filter(Boolean),
     credentials: true,
   })
 );
@@ -63,14 +66,9 @@ io.on("connection", (socket) => {
   });
 });
 
-// Prepare Next.js and handle all other routes
-nextApp
-  .prepare()
-  .then(() => {
-    // Forward all unmatched requests to Next.js
-    app.all("*", (req, res) => handle(req, res));
-
-    const PORT = process.env.PORT || 8080;
-    server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-  })
-  .catch((err) => console.error("Error preparing Next.js app:", err));
+// Start server
+const PORT = process.env.PORT || 8080;
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+});

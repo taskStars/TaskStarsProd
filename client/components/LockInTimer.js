@@ -1,5 +1,10 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { FiPlay, FiPause, FiSquare, FiClock } from "react-icons/fi";
+import { toast } from "react-hot-toast";
+import Button from "./ui/Button";
+import Card from "./ui/Card";
 import { API_URL } from "@/config/api";
 
 const LockInTimer = () => {
@@ -114,92 +119,176 @@ const LockInTimer = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center py-2 bg-white text-black">
-      <div className="bg-white p-7  w-300">
-        <h1 className="text-2xl font-bold mb-4 text-center">Lock-In Mode</h1>
-        <p className="text-4xl font-bold mb-4 text-center">
-          {formatTime(timeRemaining)}
-        </p>
-        <input
-          type="range"
-          min="0"
-          max="7200" // 2 hours in seconds
-          value={timeRemaining}
-          onChange={handleSliderChange}
-          step="5"
-          className="w-full mb-4"
-        />
-        <div className="flex justify-center space-x-2">
-          <button
-            onClick={handleStart}
-            className="bg-[#2C3E50] text-white px-4 py-2 rounded-full hover:bg-[#34495E] transition duration-200"
-            disabled={isLockedIn}
+    <div className="w-full h-full flex items-center justify-center p-4">
+      <Card className="w-full max-w-sm p-6">
+        <motion.div
+          initial={{ scale: 0.95, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="text-center"
+        >
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <FiClock className="text-primary-500" size={24} />
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+              Lock-In Mode
+            </h2>
+          </div>
+
+          <motion.div
+            animate={isLockedIn ? { scale: [1, 1.05, 1] } : {}}
+            transition={{ duration: 1, repeat: isLockedIn ? Infinity : 0 }}
+            className={`text-5xl font-bold mb-6 ${
+              isLockedIn
+                ? "text-gradient-fire"
+                : "text-gray-900 dark:text-white"
+            }`}
           >
-            Start
-          </button>
-          <button
-            onClick={handlePause}
-            className="bg-[#1A1A1A] text-white px-4 py-2 rounded-full hover:bg-[#333333] transition duration-200"
-            disabled={!isLockedIn}
-          >
-            Pause
-          </button>
-          <button
-            onClick={handleEnd}
-            className="bg-[#1E3A8A] text-white px-4 py-2 rounded-full hover:bg-[#1E40AF] transition duration-200"
-          >
-            End
-          </button>
-        </div>
-      </div>
+            {formatTime(timeRemaining)}
+          </motion.div>
+
+          <div className="mb-6">
+            <input
+              type="range"
+              min="0"
+              max="7200"
+              value={timeRemaining}
+              onChange={handleSliderChange}
+              step="5"
+              disabled={isLockedIn}
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-dark-700 accent-primary-500"
+              style={{
+                background: `linear-gradient(to right, #0ea5e9 0%, #0ea5e9 ${
+                  (timeRemaining / 7200) * 100
+                }%, #e2e8f0 ${(timeRemaining / 7200) * 100}%, #e2e8f0 100%)`,
+              }}
+            />
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+              Drag to set time (up to 2 hours)
+            </p>
+          </div>
+
+          <div className="flex justify-center gap-2">
+            <Button
+              onClick={handleStart}
+              disabled={isLockedIn}
+              variant="success"
+              size="sm"
+              className="gap-2"
+            >
+              <FiPlay /> Start
+            </Button>
+            <Button
+              onClick={handlePause}
+              disabled={!isLockedIn}
+              variant="secondary"
+              size="sm"
+              className="gap-2"
+            >
+              <FiPause /> Pause
+            </Button>
+            <Button
+              onClick={handleEnd}
+              variant="danger"
+              size="sm"
+              className="gap-2"
+            >
+              <FiSquare /> End
+            </Button>
+          </div>
+        </motion.div>
+      </Card>
 
       {/* Confirmation Modal */}
-      {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-4 shadow-md border border-gray-200 w-80">
-            <h2 className="text-lg font-bold mb-2 text-black text-center">
-              Are you sure you want to quit?
-            </h2>
-            <p className="mb-4 text-center text-black">
-              All progress from this current timer will be lost.
-            </p>
-            <div className="flex justify-center space-x-2">
-              <button
-                onClick={confirmEndSession}
-                className="px-4 py-2 bg-[#1A1A1A] text-white rounded-full hover:bg-[#333333] transition duration-200"
-              >
-                Yes, Quit
-              </button>
-              <button
-                onClick={cancelEndSession}
-                className="bg-[#1E3A8A] text-white px-4 py-2 rounded-full hover:bg-[#1E40AF] transition duration-200"
-              >
-                No, Continue
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {showModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50"
+            onClick={cancelEndSession}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white dark:bg-dark-800 p-6 rounded-2xl shadow-2xl w-96 border border-gray-200 dark:border-dark-700"
+            >
+              <h2 className="text-2xl font-bold mb-3 text-gray-900 dark:text-white text-center">
+                ⚠️ End Session?
+              </h2>
+              <p className="mb-6 text-center text-gray-600 dark:text-gray-400">
+                All progress from this current timer will be lost.
+              </p>
+              <div className="flex gap-3">
+                <Button
+                  onClick={cancelEndSession}
+                  variant="secondary"
+                  className="flex-1"
+                >
+                  Continue
+                </Button>
+                <Button
+                  onClick={confirmEndSession}
+                  variant="danger"
+                  className="flex-1"
+                >
+                  Yes, Quit
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Congratulations Modal */}
-      {showCongratsModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-4 shadow-md border border-gray-200 w-80">
-            <h2 className="text-lg font-bold mb-2 text-black text-center">
-              Congratulations!
-            </h2>
-            <p className="mb-4 text-center text-black">
-              You have been productive for {formatTime(initialTime)}!
-            </p>
-            <button
-              onClick={() => setShowCongratsModal(false)}
-              className="px-4 py-2 text-white bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700"
+      <AnimatePresence>
+        {showCongratsModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50"
+            onClick={() => setShowCongratsModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.5, rotate: -10 }}
+              animate={{ scale: 1, rotate: 0 }}
+              exit={{ scale: 0.5, rotate: 10 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white dark:bg-dark-800 p-8 rounded-2xl shadow-2xl w-96 border border-gray-200 dark:border-dark-700 text-center"
             >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
+              <motion.div
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 0.5, repeat: 2 }}
+                className="text-6xl mb-4"
+              >
+                🎉
+              </motion.div>
+              <h2 className="text-3xl font-bold mb-3 text-gradient">
+                Congratulations!
+              </h2>
+              <p className="mb-6 text-gray-600 dark:text-gray-400 text-lg">
+                You've been productive for{" "}
+                <span className="font-bold text-success-600 dark:text-success-400">
+                  {formatTime(initialTime)}
+                </span>
+                !
+              </p>
+              <Button
+                onClick={() => {
+                  setShowCongratsModal(false);
+                  toast.success("Great work! Keep it up! 🚀");
+                }}
+                variant="success"
+                className="w-full"
+              >
+                Awesome!
+              </Button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import io from "socket.io-client"; // Import socket.io-client
+import { motion } from "framer-motion";
+import io from "socket.io-client";
 import TaskCard from "./TaskCard";
 import { API_URL, SOCKET_URL } from "@/config/api";
 
@@ -139,70 +140,119 @@ const TaskList = () => {
     "All Time": allTimeTasks,
   };
 
-  if (loading) return <p>Loading tasks...</p>;
+  if (loading) {
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          className="w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full"
+        />
+      </div>
+    );
+  }
 
   return (
-    <div className="w-full h-full bg-gray-100 shadow-lg p-4">
-      <h1 className="text-2xl font-bold mb-4 text-gray-900">Work Plan</h1>
+    <div className="w-full h-full flex flex-col">
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          Work Plan
+        </h1>
+        <p className="text-gray-600 dark:text-gray-400">
+          Organize and track your tasks
+        </p>
+      </div>
 
       {/* Date Selection Buttons */}
-      <div className="flex space-x-2 mb-6">
-        {Object.keys(sections).map((section, index) => (
-          <button
-            key={section}
-            className={`px-4 py-2 text-sm font-medium transition-all duration-300 shadow rounded-full ${
-              selectedSection === section
-                ? index === 0
-                  ? "bg-[#3949AB] text-white"
-                  : index === 1
-                  ? "bg-[#283593] text-white"
-                  : index === 2
-                  ? "bg-[#1A237E] text-white border border-[#3949AB]"
-                  : index === 3
-                  ? "bg-[#283593] text-white border border-[#3949AB]"
-                  : "bg-[#3949AB] text-white border border-[#3949AB]"
-                : "bg-grey text-black border border-black hover:bg-[#BBDEFB] hover:text-[#283593]"
-            }`}
-            onClick={() => setSelectedSection(section)}
-          >
-            {section}
-          </button>
-        ))}
+      <div className="flex flex-wrap gap-2 mb-6">
+        {Object.keys(sections).map((section, index) => {
+          const isSelected = selectedSection === section;
+          const variants = [
+            "primary",
+            "accent",
+            "success",
+            "warning",
+            "primary",
+          ];
+          const variant = variants[index % variants.length];
+
+          return (
+            <motion.button
+              key={section}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`px-4 py-2 text-sm font-medium transition-all duration-300 rounded-full ${
+                isSelected
+                  ? variant === "primary"
+                    ? "bg-primary-500 text-white shadow-lg shadow-primary-500/50"
+                    : variant === "accent"
+                    ? "bg-accent-500 text-white shadow-lg shadow-accent-500/50"
+                    : variant === "success"
+                    ? "bg-success-500 text-white shadow-lg shadow-success-500/50"
+                    : "bg-warning-500 text-white shadow-lg shadow-warning-500/50"
+                  : "bg-gray-200 dark:bg-dark-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-dark-600"
+              }`}
+              onClick={() => setSelectedSection(section)}
+            >
+              {section}
+            </motion.button>
+          );
+        })}
       </div>
 
       {/* Task List for Selected Section */}
-      <div className="bg-white shadow p-4 w-full">
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="border-b">
-              <th className="p-2 text-left font-semibold text-gray-600">
-                Name
-              </th>
-              <th className="p-2 text-left font-semibold text-gray-600">
-                Description
-              </th>
-              <th className="p-2 text-left font-semibold text-gray-600">
-                Date
-              </th>
-              <th className="p-2 text-left font-semibold text-gray-600">
-                Due In
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {sections[selectedSection].length > 0 ? (
-              sections[selectedSection].map((task) => (
-                <TaskCard key={task._id} task={task} />
-              ))
-            ) : (
-              <tr>
-                <td colSpan="4" className="text-center text-gray-600 py-4">
-                  No tasks found for this section.
-                </td>
+      <div className="flex-1 overflow-auto bg-white dark:bg-dark-800 rounded-2xl shadow-lg border border-gray-200 dark:border-dark-700">
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse">
+            <thead className="sticky top-0 bg-gray-50 dark:bg-dark-700 z-10">
+              <tr className="border-b border-gray-200 dark:border-dark-600">
+                <th className="p-4 text-left font-semibold text-gray-700 dark:text-gray-300">
+                  Name
+                </th>
+                <th className="p-4 text-left font-semibold text-gray-700 dark:text-gray-300">
+                  Description
+                </th>
+                <th className="p-4 text-left font-semibold text-gray-700 dark:text-gray-300">
+                  Date
+                </th>
+                <th className="p-4 text-left font-semibold text-gray-700 dark:text-gray-300">
+                  Due In
+                </th>
+                <th className="p-4 text-left font-semibold text-gray-700 dark:text-gray-300">
+                  Actions
+                </th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {sections[selectedSection].length > 0 ? (
+                sections[selectedSection].map((task) => (
+                  <TaskCard key={task._id} task={task} />
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan="5"
+                    className="text-center text-gray-500 dark:text-gray-400 py-12"
+                  >
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="flex flex-col items-center gap-3"
+                    >
+                      <div className="text-4xl">📋</div>
+                      <p className="text-lg font-medium">
+                        No tasks found for this section
+                      </p>
+                      <p className="text-sm">
+                        Create a new task to get started!
+                      </p>
+                    </motion.div>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

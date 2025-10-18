@@ -1,8 +1,9 @@
-// /components/AddtaskModal/ModalButton
-
 "use client";
-import TaskModal from "./TaskModal"; 
+import TaskModal from "./TaskModal";
 import { useState } from "react";
+import { motion } from "framer-motion";
+import { FiPlus } from "react-icons/fi";
+import Button from "../ui/Button";
 
 const ModalButton = ({ onSave, generateDescription }) => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -16,15 +17,17 @@ const ModalButton = ({ onSave, generateDescription }) => {
   };
 
   return (
-    <div>
-      <button
+    <div className="w-full">
+      <Button
         onClick={handleButtonClick}
-        className="bg-[#1E3A8A] text-white text-xl px-5 py-3 rounded-full hover:bg-[#1E40AF] transition duration-200"
+        variant="primary"
+        size="lg"
+        className="w-full gap-2"
         aria-label="Add a new task"
-        role="button"
       >
+        <FiPlus size={20} />
         Add Task
-      </button>
+      </Button>
 
       {/* Render the Task Modal */}
       {isModalOpen && (

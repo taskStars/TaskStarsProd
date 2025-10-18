@@ -1,5 +1,7 @@
 "use client";
 import { useState } from "react";
+import { motion } from "framer-motion";
+import { FiUserPlus } from "react-icons/fi";
 import SearchBar from "./SearchBar";
 import UserList from "./UserList";
 import { API_URL } from "@/config/api";
@@ -56,18 +58,40 @@ const FriendSearch = () => {
   };
 
   return (
-    <div className="p-2 h-60 overflow-y-auto bg-white border-t border-gray-200">
-      {" "}
-      {/* Added height and scroll styles */}
-      <h2 className="text-lg font-bold mb-2 text-gray-800">Search for Users</h2>
+    <div className="space-y-3">
+      <div className="flex items-center gap-2">
+        <FiUserPlus className="text-primary-500" size={18} />
+        <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+          Add Friends
+        </h3>
+      </div>
+      
       <SearchBar onSearch={handleSearch} />
-      {loading && <p>Loading users...</p>}
-      {error && <p className="text-red-500">{error}</p>}
-      {!loading && users.length > 0 && (
-        <UserList users={users} onAddFriend={handleAddFriend} />
+      
+      {loading && (
+        <div className="flex justify-center py-4">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            className="w-6 h-6 border-4 border-primary-500 border-t-transparent rounded-full"
+          />
+        </div>
       )}
+      
+      {error && (
+        <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
+      )}
+      
+      {!loading && users.length > 0 && (
+        <div className="max-h-48 overflow-y-auto">
+          <UserList users={users} onAddFriend={handleAddFriend} />
+        </div>
+      )}
+      
       {!loading && users.length === 0 && !error && (
-        <p className="text-gray-600">No users found.</p>
+        <p className="text-gray-500 dark:text-gray-400 text-sm text-center py-2">
+          Search for users to add as friends
+        </p>
       )}
     </div>
   );

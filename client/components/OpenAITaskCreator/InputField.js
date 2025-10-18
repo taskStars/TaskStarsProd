@@ -1,12 +1,14 @@
 "use client";
+import React from "react";
+
 const InputField = ({ value, onChange }) => {
   return (
     <input
       type="text"
-      className="w-full p-2 border border-gray-300 rounded-md text-black"
+      className="input w-full text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400"
       value={value}
       onChange={onChange}
-      placeholder="Enter task description along with the deadline..."
+      placeholder="Enter task description with deadline..."
     />
   );
 };
