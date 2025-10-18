@@ -3,7 +3,6 @@ const Task = require("../models/Task");
 const Productivity = require("../models/Productivity");
 const jwt = require("jsonwebtoken");
 
-
 const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -19,19 +18,35 @@ const registerUser = async (req, res) => {
   }
 };
 
-
-const loginUser = async (req, res) => {
-  
-};
-
+const loginUser = async (req, res) => {};
 
 const getUserProfile = async (req, res) => {
-  
+  try {
+    if (!req.user) {
+      return res
+        .status(401)
+        .json({ message: "Not authorized, user not authenticated" });
+    }
+
+    const user = await User.findById(req.user.id).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      friends: user.friends,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
 const getFriendsProductivity = async (req, res) => {
   try {
-    
     const user = await User.findById(req.user.id).populate(
       "friends",
       "name email"
@@ -41,17 +56,13 @@ const getFriendsProductivity = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    
     const friendsProductivity = [];
 
-    
     for (const friend of user.friends) {
-      
       const productivitySessions = await Productivity.find({
         userId: friend._id,
       });
 
-      
       const totalProductivityTime = productivitySessions.reduce(
         (acc, session) => {
           return acc + session.sessionTime;
@@ -62,7 +73,7 @@ const getFriendsProductivity = async (req, res) => {
       friendsProductivity.push({
         id: friend._id,
         name: friend.name,
-        productivityTime: totalProductivityTime, 
+        productivityTime: totalProductivityTime,
       });
     }
 
@@ -76,23 +87,19 @@ const addFriend = async (req, res) => {
   const { email } = req.body;
 
   try {
-    
     console.log("Received Friend Email:", email);
     console.log("Authenticated User:", req.user);
 
-    
     if (!req.user) {
       return res
         .status(401)
         .json({ message: "Not authorized, user not authenticated" });
     }
 
-    
     if (!email) {
       return res.status(400).json({ message: "Friend email is required." });
     }
 
-    
     const user = await User.findById(req.user.id);
     if (user.email === email) {
       return res
@@ -100,18 +107,14 @@ const addFriend = async (req, res) => {
         .json({ message: "You cannot add yourself as a friend." });
     }
 
-    
     const friend = await User.findOne({ email });
 
-    
     console.log("Found Friend:", friend);
 
-    
     if (!friend) {
       return res.status(404).json({ message: "Friend not found" });
     }
 
-    
     const isAlreadyFriend = user.friends.some(
       (f) => f.toString() === friend._id.toString()
     );
@@ -121,7 +124,6 @@ const addFriend = async (req, res) => {
       return res.status(400).json({ message: "Friend already added" });
     }
 
-    
     user.friends.push(friend._id);
     await user.save();
 
@@ -134,18 +136,16 @@ const addFriend = async (req, res) => {
   }
 };
 
-
 const searchUsers = async (req, res) => {
   const { query } = req.query;
 
   try {
-    
     const users = await User.find({
       $or: [
         { name: { $regex: query, $options: "i" } },
         { email: { $regex: query, $options: "i" } },
       ],
-    }).select("-password"); 
+    }).select("-password");
 
     res.status(200).json(users);
   } catch (error) {
@@ -153,22 +153,18 @@ const searchUsers = async (req, res) => {
   }
 };
 
-
 const getUserProductivity = async (req, res) => {
   try {
-    
     if (!req.user) {
       return res
         .status(401)
         .json({ message: "Not authorized, user not authenticated" });
     }
 
-    
     const productivitySessions = await Productivity.find({
       userId: req.user.id,
     });
 
-    
     const totalProductivityTime = productivitySessions.reduce(
       (acc, session) => {
         return acc + session.sessionTime;
@@ -177,8 +173,8 @@ const getUserProductivity = async (req, res) => {
     );
 
     res.status(200).json({
-      totalProductivityTime, 
-      productivitySessions, 
+      totalProductivityTime,
+      productivitySessions,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });

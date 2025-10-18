@@ -1,7 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiSparkles, FiX, FiSend } from "react-icons/fi";
+import { FiX, FiSend } from "react-icons/fi";
+import { HiSparkles } from "react-icons/hi2";
 import ChatBox from "./ChatBox";
 import InputField from "./InputField";
 import Button from "../ui/Button";
@@ -68,7 +69,7 @@ const AIModal = () => {
         size="lg"
         className="w-full gap-2"
       >
-        <FiSparkles size={20} />
+        <HiSparkles size={20} />
         AI Task Generator
       </Button>
 
@@ -92,7 +93,7 @@ const AIModal = () => {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <div className="p-2 bg-gradient-to-r from-accent-500 to-accent-600 rounded-lg">
-                    <FiSparkles className="text-white" size={20} />
+                    <HiSparkles className="text-white" size={20} />
                   </div>
                   <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
                     AI Task Generator

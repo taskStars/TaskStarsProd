@@ -3,8 +3,35 @@ import { motion } from "framer-motion";
 import { FaFire } from "react-icons/fa";
 import Card from "./Card";
 
-export default function StreakCounter({ streak = 0, maxStreak = 0 }) {
+export default function StreakCounter({
+  streak = 0,
+  maxStreak = 0,
+  compact = false,
+}) {
   const isActive = streak > 0;
+
+  // Compact mode for dashboard stats
+  if (compact) {
+    return (
+      <div className="flex items-center gap-1">
+        {isActive && (
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              rotate: [0, 10, -10, 0],
+            }}
+            transition={{
+              duration: 1,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          >
+            <FaFire className="text-orange-500 text-sm" />
+          </motion.div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <Card className="p-6 relative overflow-hidden">

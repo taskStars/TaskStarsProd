@@ -7,6 +7,7 @@ export default function ProgressRing({
   size = 120,
   strokeWidth = 8,
   color = "#0ea5e9",
+  showText = true,
 }) {
   const [mounted, setMounted] = useState(false);
 
@@ -50,19 +51,21 @@ export default function ProgressRing({
       </svg>
 
       {/* Percentage text */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <motion.span
-          initial={{ scale: 0 }}
-          animate={mounted ? { scale: 1 } : {}}
-          transition={{ delay: 0.5, type: "spring", stiffness: 200 }}
-          className="text-2xl font-bold text-gray-900 dark:text-gray-50"
-        >
-          {Math.round(progress)}%
-        </motion.span>
-        <span className="text-xs text-gray-500 dark:text-gray-400">
-          Complete
-        </span>
-      </div>
+      {showText && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <motion.span
+            initial={{ scale: 0 }}
+            animate={mounted ? { scale: 1 } : {}}
+            transition={{ delay: 0.5, type: "spring", stiffness: 200 }}
+            className="text-2xl font-bold text-gray-900 dark:text-gray-50"
+          >
+            {Math.round(progress)}%
+          </motion.span>
+          <span className="text-xs text-gray-500 dark:text-gray-400">
+            Complete
+          </span>
+        </div>
+      )}
     </div>
   );
 }
