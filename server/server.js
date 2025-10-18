@@ -28,7 +28,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server, {
   cors: {
-    origin: "https://taskstars.onrender.com",
+    origin: process.env.CLIENT_URL || "http://localhost:3000",
     credentials: true,
   },
 });
@@ -37,7 +37,7 @@ connectDB();
 
 app.use(
   cors({
-    origin: "https://taskstars.onrender.com",
+    origin: process.env.CLIENT_URL || "http://localhost:3000",
     credentials: true,
   })
 );

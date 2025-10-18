@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import DescriptionModal from "./DescriptionModal";
+import { API_URL } from "@/config/api";
 
 const TaskCard = ({ task }) => {
   const { title, description, deadline, priority, tags } = task;
@@ -35,20 +36,17 @@ const TaskCard = ({ task }) => {
     }
 
     try {
-      const response = await fetch(
-        `https://taskstars.onrender.com/api/tasks/${task._id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`${API_URL}/api/tasks/${task._id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (response.ok) {
         console.log("Task deleted successfully");
-        window.location.reload(); 
+        window.location.reload();
       } else {
         const errorData = await response.json();
         console.error("Failed to delete task:", errorData.message);

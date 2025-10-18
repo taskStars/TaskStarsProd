@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { API_URL } from "@/config/api";
 
 export default function ProductivityPage() {
   const router = useRouter();
@@ -14,19 +15,16 @@ export default function ProductivityPage() {
     e.preventDefault();
 
     try {
-      const response = await fetch(
-        "https://taskstars.onrender.com/api/saveProductivity",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify({
-            sessionTime: Number(sessionTime), 
-          }),
-        }
-      );
+      const response = await fetch(`${API_URL}/api/saveProductivity`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          sessionTime: Number(sessionTime),
+        }),
+      });
 
       const data = await response.json();
       if (response.ok) {

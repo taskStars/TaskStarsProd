@@ -3,6 +3,7 @@
 import ModalButton from "./AddTaskModal/ModalButton";
 import AIModal from "./OpenAITaskCreator/AIModal";
 import { useState } from "react";
+import { API_URL } from "@/config/api";
 
 const TaskManager = () => {
   const [taskDescription, setTaskDescription] = useState(""); // For storing the generated task description
@@ -17,17 +18,14 @@ const TaskManager = () => {
     }
 
     try {
-      const response = await fetch(
-        "https://taskstars.onrender.com/api/tasks/createtask",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Ensure JWT token is included
-          },
-          body: JSON.stringify(task), // Send task data to the API
-        }
-      );
+      const response = await fetch(`${API_URL}/api/tasks/createtask`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Ensure JWT token is included
+        },
+        body: JSON.stringify(task), // Send task data to the API
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -55,7 +53,7 @@ const TaskManager = () => {
 
     try {
       const response = await fetch(
-        "https://taskstars.onrender.com/api/tasks/generateTaskDescription",
+        `${API_URL}/api/tasks/generateTaskDescription`,
         {
           method: "POST",
           headers: {

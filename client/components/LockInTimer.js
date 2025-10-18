@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import { API_URL } from "@/config/api";
 
 const LockInTimer = () => {
   const token =
@@ -70,20 +71,20 @@ const LockInTimer = () => {
       setShowCongratsModal(true); // Show congrats modal instead of alert
     }
 
-    setTimeRemaining(initialTime); 
+    setTimeRemaining(initialTime);
   };
 
   const saveProductivityData = async (timeElapsed) => {
     try {
       const response = await fetch(
-        "https://taskstars.onrender.com/api/productivity/saveProductivity",
+        `${API_URL}/api/productivity/saveProductivity`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, 
+            Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ sessionTime: timeElapsed }), 
+          body: JSON.stringify({ sessionTime: timeElapsed }),
         }
       );
       const data = await response.json();
@@ -116,7 +117,9 @@ const LockInTimer = () => {
     <div className="flex flex-col items-center justify-center py-2 bg-white text-black">
       <div className="bg-white p-7  w-300">
         <h1 className="text-2xl font-bold mb-4 text-center">Lock-In Mode</h1>
-        <p className="text-4xl font-bold mb-4 text-center">{formatTime(timeRemaining)}</p>
+        <p className="text-4xl font-bold mb-4 text-center">
+          {formatTime(timeRemaining)}
+        </p>
         <input
           type="range"
           min="0"

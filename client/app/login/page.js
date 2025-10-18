@@ -1,9 +1,8 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Navbar from "@/components/Navbar"; 
-
-const BACKEND_URL = "https://taskstars.onrender.com"; 
+import Navbar from "@/components/Navbar";
+import { BACKEND_URL } from "@/config/api";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -37,9 +36,9 @@ export default function LoginPage() {
 
       const data = await response.json();
       if (response.ok) {
-        localStorage.setItem("token", data.token); 
+        localStorage.setItem("token", data.token);
         setMessage("Login successful!");
-        router.push("/dashboard"); 
+        router.push("/dashboard");
       } else {
         setMessage(data.message || "Login failed. Please try again.");
       }

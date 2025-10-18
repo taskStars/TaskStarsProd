@@ -3,24 +3,24 @@ const { Strategy: JwtStrategy, ExtractJwt } = require("passport-jwt");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const GitHubStrategy = require("passport-github2").Strategy;
 const jwt = require("jsonwebtoken");
-const axios = require("axios"); 
-const User = require("../models/User"); 
+const axios = require("axios");
+const User = require("../models/User");
 
 // JWT Strategy Options
 const jwtOpts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: process.env.JWT_SECRET, 
+  secretOrKey: process.env.JWT_SECRET,
 };
 
 // JWT Strategy
 passport.use(
   new JwtStrategy(jwtOpts, async (jwt_payload, done) => {
     try {
-      const user = await User.findById(jwt_payload.id); 
+      const user = await User.findById(jwt_payload.id);
       if (user) {
-        return done(null, user); 
+        return done(null, user);
       } else {
-        return done(null, false); 
+        return done(null, false);
       }
     } catch (err) {
       return done(err, false);
@@ -45,7 +45,9 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://taskstars.onrender.com/api/auth/google/callback",
+      callbackURL: `${
+        process.env.SERVER_URL || "http://localhost:8080"
+      }/api/auth/google/callback`,
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
@@ -58,12 +60,12 @@ passport.use(
 
         user = new User({
           googleId: profile.id,
-          username: profile.displayName, 
-          name: profile.displayName, 
+          username: profile.displayName,
+          name: profile.displayName,
           email:
             profile.emails && profile.emails[0]
               ? profile.emails[0].value
-              : null, 
+              : null,
         });
 
         await user.save();
@@ -81,7 +83,9 @@ passport.use(
     {
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL: "https://taskstars.onrender.com/api/auth/github/callback", 
+      callbackURL: `${
+        process.env.SERVER_URL || "http://localhost:8080"
+      }/api/auth/github/callback`,
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
@@ -122,8 +126,8 @@ passport.use(
         user = new User({
           githubId: profile.id,
           username: profile.username,
-          name: profile.displayName || profile.username, 
-          email, 
+          name: profile.displayName || profile.username,
+          email,
         });
 
         await user.save();

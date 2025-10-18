@@ -1,7 +1,8 @@
-"use client"; 
+"use client";
 import { useState, useEffect } from "react";
-import FriendCard from "./FriendCard"; 
-import FriendSearch from "@/components/SearchUser/FriendSearch"; 
+import FriendCard from "./FriendCard";
+import FriendSearch from "@/components/SearchUser/FriendSearch";
+import { API_URL } from "@/config/api";
 
 const FriendsProductivity = () => {
   const [friends, setFriends] = useState([]);
@@ -12,10 +13,10 @@ const FriendsProductivity = () => {
     const fetchFriendsProductivity = async () => {
       try {
         const response = await fetch(
-          "https://taskstars.onrender.com/api/users/friendsProductivity",
+          `${API_URL}/api/users/friendsProductivity`,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`, 
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           }
         );
@@ -35,7 +36,7 @@ const FriendsProductivity = () => {
     };
 
     fetchFriendsProductivity();
-  }, []); 
+  }, []);
 
   if (loading) return <p>Loading friends...</p>;
   if (error) return <p className="text-black text-center">{error}</p>;

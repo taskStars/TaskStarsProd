@@ -2,12 +2,15 @@
   "name": "TaskStars",
   "version": "1.0.0",
   "scripts": {
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "cd server && nodemon server.js",
-    "client": "cd client && npx next dev",
-    "build": "cd client && npm install && npx next build",
+    "dev": "NODE_ENV=development concurrently \"npm run server:dev\" \"npm run client:dev\"",
+    "server:dev": "cd server && npm run dev",
+    "client:dev": "cd client && npm run dev",
+    "build": "cd client && npm install && npm run build",
     "start": "NODE_ENV=production node server/server.js",
-    "postinstall": "cd client && npm install && npm run build && cd ../server && npm install"
+    "postinstall": "cd client && npm install && cd ../server && npm install",
+    "setup": "echo 'Setting up environment files...' && npm run setup:server && npm run setup:client",
+    "setup:server": "cd server && cp env.template .env.local && echo 'Created server/.env.local - please edit with your values'",
+    "setup:client": "cd client && cp env.template .env.local && echo 'Created client/.env.local - please edit with your values'"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.6.0",

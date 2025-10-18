@@ -1,10 +1,11 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation"; 
-import Navbar from "@/components/Navbar"; 
+import { useRouter } from "next/navigation";
+import Navbar from "@/components/Navbar";
+import { BACKEND_URL } from "@/config/api";
 
 export default function SignupPage() {
-  const router = useRouter(); 
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -26,7 +27,7 @@ export default function SignupPage() {
     setMessage("");
 
     try {
-      const response = await fetch("https://taskstars.onrender.com/api/auth/register", {
+      const response = await fetch(`${BACKEND_URL}/api/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -51,9 +52,12 @@ export default function SignupPage() {
     <div className="min-h-screen bg-white">
       {/* Navbar Component */}
       <Navbar /> {/* Add Navbar at the top */}
-      
-      <div className="min-h-screen flex items-center justify-center bg-white"> {/* Updated background color */}
-        <div className="relative bg-[#1C2331] p-8 rounded-xl shadow-2xl w-full max-w-md text-white"> {/* Updated box color */}
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        {" "}
+        {/* Updated background color */}
+        <div className="relative bg-[#1C2331] p-8 rounded-xl shadow-2xl w-full max-w-md text-white">
+          {" "}
+          {/* Updated box color */}
           {/* Back Button */}
           <button
             onClick={() => router.push("/")}
@@ -61,10 +65,14 @@ export default function SignupPage() {
           >
             Back
           </button>
-          <h1 className="text-3xl font-bold mb-6 text-center">Sign Up</h1> {/* Adjusted Heading */}
+          <h1 className="text-3xl font-bold mb-6 text-center">Sign Up</h1>{" "}
+          {/* Adjusted Heading */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-white">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-white"
+              >
                 Name:
               </label>
               <input
@@ -78,7 +86,10 @@ export default function SignupPage() {
               />
             </div>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-white">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-white"
+              >
                 Email:
               </label>
               <input
@@ -92,7 +103,10 @@ export default function SignupPage() {
               />
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-white">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-white"
+              >
                 Password:
               </label>
               <input
@@ -114,15 +128,17 @@ export default function SignupPage() {
           </form>
           {/* Sign in with Google/GitHub buttons */}
           <div className="mt-6">
-            <p className="text-center text-sm mb-4 text-white">Or sign up with:</p>
+            <p className="text-center text-sm mb-4 text-white">
+              Or sign up with:
+            </p>
             <button
-              onClick={() => router.push("https://taskstars.onrender.com/api/auth/google")}
+              onClick={() => router.push(`${BACKEND_URL}/api/auth/google`)}
               className="w-full py-2 px-4 mb-2 bg-[#3B5998] text-white rounded hover:bg-[#5A6FA9] transition duration-200 font-bold shadow-md"
             >
               Sign in with Google
             </button>
             <button
-              onClick={() => router.push("https://taskstars.onrender.com/api/auth/github")}
+              onClick={() => router.push(`${BACKEND_URL}/api/auth/github`)}
               className="w-full py-2 px-4 bg-[#1C2331] text-white rounded hover:bg-[#2F3E56] transition duration-200 font-bold shadow-md"
             >
               Sign in with GitHub

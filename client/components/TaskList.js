@@ -2,8 +2,9 @@
 import React, { useEffect, useState } from "react";
 import io from "socket.io-client"; // Import socket.io-client
 import TaskCard from "./TaskCard";
+import { API_URL, SOCKET_URL } from "@/config/api";
 
-const socket = io("https://taskstars.onrender.com"); // Connect to your Socket.IO server
+const socket = io(SOCKET_URL); // Connect to your Socket.IO server
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]); // State to store tasks
@@ -20,16 +21,13 @@ const TaskList = () => {
       }
 
       try {
-        const response = await fetch(
-          "https://taskstars.onrender.com/api/tasks/readtasks",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch(`${API_URL}/api/tasks/readtasks`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (!response.ok) {
           const errorData = await response.json();

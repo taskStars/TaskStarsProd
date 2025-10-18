@@ -3,14 +3,15 @@ import React, { useState } from "react";
 import ChatBox from "./ChatBox";
 import InputField from "./InputField";
 import SubmitButton from "./SubmitButton";
+import { API_URL } from "@/config/api";
 
 const AIModal = () => {
-  const [taskDescription, setTaskDescription] = useState(""); 
+  const [taskDescription, setTaskDescription] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
   const handleInputChange = (e) => {
-    setTaskDescription(e.target.value); 
+    setTaskDescription(e.target.value);
   };
 
   const handleSubmit = async () => {
@@ -19,20 +20,23 @@ const AIModal = () => {
     const userMessage = { user: "User", message: taskDescription };
     setChatHistory([...chatHistory, userMessage]);
 
-    const response = await fetch("https://taskstars.onrender.com/api/tasks/createTaskWithAI", {
+    const response = await fetch(`${API_URL}/api/tasks/createTaskWithAI`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`, 
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify({ taskDescription }),
     });
 
     const data = await response.json();
-    const aiMessage = { user: "AI", message: data.text || "Task created successfully" };
+    const aiMessage = {
+      user: "AI",
+      message: data.text || "Task created successfully",
+    };
 
     setChatHistory([...chatHistory, userMessage, aiMessage]);
-    setTaskDescription(""); 
+    setTaskDescription("");
   };
 
   const openModal = () => {
@@ -59,7 +63,10 @@ const AIModal = () => {
             <h2 className="text-xl font-bold mb-4">AI Task Generator</h2>
             <ChatBox chatHistory={chatHistory} />
             <div className="mt-4">
-              <InputField value={taskDescription} onChange={handleInputChange} />
+              <InputField
+                value={taskDescription}
+                onChange={handleInputChange}
+              />
             </div>
             <div className="mt-4 flex justify-end space-x-3">
               <SubmitButton onClick={handleSubmit} />

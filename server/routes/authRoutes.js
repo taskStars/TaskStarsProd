@@ -22,10 +22,11 @@ router.get(
   passport.authenticate("google", { session: false }),
   (req, res) => {
     const { token } = req.user;
+    const clientUrl = process.env.CLIENT_URL || "http://localhost:3000";
     if (token) {
-      res.redirect(`https://taskstars.onrender.com/dashboard?token=${token}`);
+      res.redirect(`${clientUrl}/dashboard?token=${token}`);
     } else {
-      res.redirect(`https://taskstars.onrender.com/login?error=TokenMissing`);
+      res.redirect(`${clientUrl}/login?error=TokenMissing`);
     }
   }
 );
@@ -42,10 +43,11 @@ router.get(
   passport.authenticate("github", { session: false }),
   (req, res) => {
     const { token } = req.user;
+    const clientUrl = process.env.CLIENT_URL || "http://localhost:3000";
     if (token) {
-      res.redirect(`https://taskstars.onrender.com/dashboard?token=${token}`);
+      res.redirect(`${clientUrl}/dashboard?token=${token}`);
     } else {
-      res.redirect(`https://taskstars.onrender.com/login?error=TokenMissing`);
+      res.redirect(`${clientUrl}/login?error=TokenMissing`);
     }
   }
 );
